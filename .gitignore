@@ -15,6 +15,15 @@ token.json
 
 # Database
 *.db
+*.db-shm
+*.db-wal
+
+# Personal data
+manifest.json
+web/graph.json
+
+# Temp
+tmp_mcp_results/
 
 # IDE
 .idea/

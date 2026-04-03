@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LifeGraph</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0a0f; color: #e0e0e0; overflow: hidden; }
+    #canvas { width: 100vw; height: 100vh; display: block; }
+
+    /* Sidebar */
+    #sidebar {
+      position: fixed; top: 0; right: -420px; width: 420px; height: 100vh;
+      background: #111119; border-left: 1px solid #1e1e2e;
+      transition: right 0.3s ease; z-index: 10;
+      overflow-y: auto; padding: 28px;
+    }
+    #sidebar.open { right: 0; }
+    #sidebar h2 { font-size: 20px; margin-bottom: 4px; color: #fff; font-weight: 600; }
+    #sidebar .meta { font-size: 13px; color: #666; margin-bottom: 20px; }
+    #sidebar .section-title { font-size: 12px; color: #555; text-transform: uppercase; letter-spacing: 1px; margin: 20px 0 10px; }
+    #sidebar .close-btn {
+      position: absolute; top: 18px; right: 18px;
+      background: none; border: none; color: #555; font-size: 22px; cursor: pointer;
+    }
+    #sidebar .close-btn:hover { color: #fff; }
+
+    .topic-chip {
+      display: inline-block; padding: 5px 12px; margin: 3px 4px 3px 0;
+      border-radius: 14px; font-size: 12px; cursor: pointer;
+      transition: all 0.15s; border: 1px solid #2a2a3a; background: #16162a;
+      color: #aaa;
+    }
+    .topic-chip:hover { background: #252548; color: #fff; border-color: #4a4a6a; }
+    .topic-chip .count { color: #555; margin-left: 4px; }
+
+    .doc-list { list-style: none; }
+    .doc-list li {
+      padding: 12px 14px; margin-bottom: 6px;
+      background: #16162a; border-radius: 10px; border: 1px solid #1e1e2e;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .doc-list li:hover { background: #1e1e3a; border-color: #3a3a5a; }
+    .doc-list li .doc-title { font-size: 13px; color: #ddd; line-height: 1.4; }
+    .doc-list li .doc-meta { font-size: 11px; color: #555; margin-top: 4px; }
+
+    /* Header */
+    #header { position: fixed; top: 20px; left: 24px; z-index: 5; }
+    #header h1 {
+      font-size: 24px; font-weight: 700; color: #fff;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #a78bfa, #6366f1);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    #header p { font-size: 11px; color: #444; margin-top: 2px; }
+
+    /* Search */
+    #search { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 5; }
+    #search input {
+      width: 300px; padding: 9px 16px; border-radius: 20px;
+      border: 1px solid #1e1e2e; background: #111119; color: #ddd;
+      font-size: 13px; outline: none;
+    }
+    #search input:focus { border-color: #6366f1; box-shadow: 0 0 0 2px rgba(99,102,241,0.15); }
+    #search .results {
+      position: absolute; top: 42px; left: 0; width: 300px;
+      background: #111119; border: 1px solid #1e1e2e; border-radius: 12px;
+      max-height: 260px; overflow-y: auto; display: none;
+    }
+    #search .results.visible { display: block; }
+    #search .results div {
+      padding: 10px 16px; cursor: pointer; font-size: 13px;
+      border-bottom: 1px solid #1a1a2a;
+    }
+    #search .results div:hover { background: #1e1e3a; }
+    #search .results div:last-child { border: none; }
+
+    /* Legend */
+    #legend {
+      position: fixed; bottom: 20px; left: 24px; z-index: 5;
+      display: flex; flex-wrap: wrap; gap: 8px; max-width: 500px;
+    }
+    .legend-item {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 11px; color: #555; cursor: pointer;
+      padding: 3px 8px; border-radius: 10px;
+      transition: all 0.15s;
+    }
+    .legend-item:hover { color: #aaa; background: rgba(255,255,255,0.03); }
+    .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+    /* Stats */
+    #stats {
+      position: fixed; bottom: 20px; right: 24px; z-index: 5;
+      font-size: 11px; color: #333;
+    }
+
+    .tooltip {
+      position: fixed; padding: 8px 14px; background: #16162a;
+      border: 1px solid #2a2a3a; border-radius: 10px;
+      font-size: 12px; pointer-events: none; z-index: 20;
+      display: none; box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+    .tooltip .tt-count { color: #6366f1; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <svg id="canvas"></svg>
+
+  <div id="header">
+    <h1>LifeGraph</h1>
+    <p id="headerSub">Knowledge graph of 106 documents</p>
+  </div>
+
+  <div id="search">
+    <input type="text" placeholder="Search topics..." id="searchInput">
+    <div class="results" id="searchResults"></div>
+  </div>
+
+  <div id="legend"></div>
+  <div id="stats"></div>
+
+  <div id="sidebar">
+    <button class="close-btn" onclick="closeSidebar()">&times;</button>
+    <h2 id="sidebarTitle"></h2>
+    <div class="meta" id="sidebarMeta"></div>
+    <div class="section-title">Connected topics</div>
+    <div id="relatedChips"></div>
+    <div class="section-title" style="margin-top:20px">Documents</div>
+    <ul class="doc-list" id="docList"></ul>
+  </div>
+
+  <div class="tooltip" id="tooltip"></div>
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script>
+    let graphData, simulation, svg, g, nodeEls, linkEls, labelEls;
+    let docMap = {};
+
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    // Category colors
+    const catColors = {
+      posture:   '#a78bfa',  // purple
+      automation:'#6366f1',  // indigo
+      strategy:  '#3b82f6',  // blue
+      ux:        '#06b6d4',  // cyan
+      team:      '#14b8a6',  // teal
+      teaching:  '#f59e0b',  // amber
+      personal:  '#f472b6',  // pink
+      code:      '#34d399',  // emerald
+      other:     '#6b7280',  // gray
+    };
+
+    const catLabels = {
+      posture: 'Posture & Coverage',
+      automation: 'Automation & AI',
+      strategy: 'Strategy & Planning',
+      ux: 'UX & Design',
+      team: 'Team & Meetings',
+      teaching: 'Teaching & Education',
+      personal: 'Personal',
+      code: 'Code & Engineering',
+    };
+
+    // Category cluster positions (radial layout)
+    const catAngles = {
+      posture: -Math.PI / 4,
+      automation: -Math.PI / 2,
+      strategy: -3 * Math.PI / 4,
+      ux: Math.PI,
+      team: 3 * Math.PI / 4,
+      teaching: Math.PI / 2,
+      personal: Math.PI / 4,
+      code: 0,
+      other: 0,
+    };
+
+    async function init() {
+      const resp = await fetch('graph.json');
+      graphData = await resp.json();
+      graphData.documents.forEach(d => docMap[d.id] = d);
+
+      document.getElementById('stats').textContent =
+        `${graphData.nodes.length} topics / ${graphData.edges.length} connections / ${graphData.documents.length} documents`;
+
+      svg = d3.select('#canvas').attr('width', width).attr('height', height);
+      const zoom = d3.zoom().scaleExtent([0.3, 4])
+        .on('zoom', (e) => g.attr('transform', e.transform));
+      svg.call(zoom);
+      g = svg.append('g');
+
+      // Defs for glow
+      const defs = svg.append('defs');
+      const filter = defs.append('filter').attr('id', 'glow');
+      filter.append('feGaussianBlur').attr('stdDeviation', '3').attr('result', 'blur');
+      filter.append('feMerge').selectAll('feMergeNode')
+        .data(['blur', 'SourceGraphic']).join('feMergeNode').attr('in', d => d);
+
+      render();
+      buildLegend();
+      setupSearch();
+    }
+
+    function render() {
+      g.selectAll('*').remove();
+      const nodes = graphData.nodes;
+      const edges = graphData.edges;
+
+      const sizeScale = d3.scaleSqrt()
+        .domain([d3.min(nodes, n => n.doc_count), d3.max(nodes, n => n.doc_count)])
+        .range([8, 40]);
+
+      const edgeScale = d3.scaleLinear()
+        .domain([d3.min(edges, e => e.weight) || 1, d3.max(edges, e => e.weight) || 1])
+        .range([0.5, 3]);
+
+      // Cluster force: pull nodes toward their category's radial position
+      const clusterRadius = Math.min(width, height) * 0.25;
+      function clusterForce(alpha) {
+        nodes.forEach(n => {
+          const angle = catAngles[n.category] || 0;
+          const tx = width / 2 + Math.cos(angle) * clusterRadius;
+          const ty = height / 2 + Math.sin(angle) * clusterRadius;
+          n.vx += (tx - n.x) * alpha * 0.08;
+          n.vy += (ty - n.y) * alpha * 0.08;
+        });
+      }
+
+      simulation = d3.forceSimulation(nodes)
+        .force('link', d3.forceLink(edges).id(d => d.id).distance(60).strength(e => e.weight * 0.03))
+        .force('charge', d3.forceManyBody().strength(-200))
+        .force('center', d3.forceCenter(width / 2, height / 2).strength(0.05))
+        .force('collision', d3.forceCollide().radius(d => sizeScale(d.doc_count) + 10))
+        .force('cluster', clusterForce);
+
+      // Edges
+      linkEls = g.append('g')
+        .selectAll('line')
+        .data(edges)
+        .join('line')
+        .attr('stroke', d => {
+          const sNode = nodes.find(n => n.id === (typeof d.source === 'object' ? d.source.id : d.source));
+          return sNode ? catColors[sNode.category] || '#333' : '#333';
+        })
+        .attr('stroke-width', d => edgeScale(d.weight))
+        .attr('stroke-opacity', 0.08);
+
+      // Node groups
+      const nodeGroup = g.append('g').selectAll('g').data(nodes).join('g')
+        .style('cursor', 'pointer')
+        .on('mouseover', onNodeHover)
+        .on('mouseout', onNodeOut)
+        .on('click', onNodeClick)
+        .call(d3.drag().on('start', dragStart).on('drag', dragging).on('end', dragEnd));
+
+      // Outer glow circle
+      nodeGroup.append('circle')
+        .attr('r', d => sizeScale(d.doc_count) + 4)
+        .attr('fill', d => catColors[d.category] || '#555')
+        .attr('opacity', 0.08)
+        .attr('filter', 'url(#glow)');
+
+      // Main circle
+      nodeEls = nodeGroup.append('circle')
+        .attr('r', d => sizeScale(d.doc_count))
+        .attr('fill', d => catColors[d.category] || '#555')
+        .attr('fill-opacity', 0.7)
+        .attr('stroke', d => catColors[d.category] || '#555')
+        .attr('stroke-width', 1.5)
+        .attr('stroke-opacity', 0.4);
+
+      // Labels
+      labelEls = nodeGroup.append('text')
+        .text(d => d.name)
+        .attr('font-size', d => Math.max(9, Math.min(13, 7 + d.doc_count * 0.4)))
+        .attr('fill', '#bbb')
+        .attr('text-anchor', 'middle')
+        .attr('dy', d => -sizeScale(d.doc_count) - 8)
+        .style('pointer-events', 'none')
+        .style('text-shadow', '0 0 8px #0a0a0f, 0 0 16px #0a0a0f');
+
+      // Doc count badge
+      nodeGroup.append('text')
+        .text(d => d.doc_count)
+        .attr('font-size', d => Math.max(8, sizeScale(d.doc_count) * 0.55))
+        .attr('fill', '#fff')
+        .attr('text-anchor', 'middle')
+        .attr('dominant-baseline', 'central')
+        .attr('font-weight', 600)
+        .style('pointer-events', 'none');
+
+      simulation.on('tick', () => {
+        linkEls
+          .attr('x1', d => d.source.x).attr('y1', d => d.source.y)
+          .attr('x2', d => d.target.x).attr('y2', d => d.target.y);
+        nodeGroup.attr('transform', d => `translate(${d.x},${d.y})`);
+      });
+    }
+
+    function onNodeHover(event, d) {
+      const tooltip = document.getElementById('tooltip');
+      tooltip.style.display = 'block';
+      tooltip.style.left = (event.clientX + 14) + 'px';
+      tooltip.style.top = (event.clientY - 10) + 'px';
+      tooltip.innerHTML = `${d.name} <span class="tt-count">${d.doc_count} docs</span>`;
+
+      const connected = new Set();
+      graphData.edges.forEach(e => {
+        const s = typeof e.source === 'object' ? e.source.id : e.source;
+        const t = typeof e.target === 'object' ? e.target.id : e.target;
+        if (s === d.id) connected.add(t);
+        if (t === d.id) connected.add(s);
+      });
+
+      g.selectAll('g > g').each(function(n) {
+        d3.select(this).attr('opacity', n.id === d.id || connected.has(n.id) ? 1 : 0.12);
+      });
+      linkEls.attr('stroke-opacity', e => {
+        const s = typeof e.source === 'object' ? e.source.id : e.source;
+        const t = typeof e.target === 'object' ? e.target.id : e.target;
+        return s === d.id || t === d.id ? 0.35 : 0.02;
+      });
+    }
+
+    function onNodeOut() {
+      document.getElementById('tooltip').style.display = 'none';
+      g.selectAll('g > g').attr('opacity', 1);
+      linkEls.attr('stroke-opacity', 0.08);
+    }
+
+    function onNodeClick(event, d) { openSidebar(d); }
+
+    function openSidebar(topic) {
+      document.getElementById('sidebarTitle').textContent = topic.name;
+      document.getElementById('sidebarMeta').innerHTML =
+        `<span style="color:${catColors[topic.category]}">${catLabels[topic.category] || topic.category}</span> &middot; ${topic.doc_count} documents`;
+
+      // Docs
+      const docs = (topic.doc_ids || []).map(id => docMap[id]).filter(Boolean)
+        .sort((a, b) => (b.created_at || '').localeCompare(a.created_at || ''));
+      document.getElementById('docList').innerHTML = docs.map(d => `
+        <li onclick="window.open('${d.source_url || '#'}', '_blank')">
+          <div class="doc-title">${d.title}</div>
+          <div class="doc-meta">${d.source}${d.created_at ? ' &middot; ' + d.created_at.split('T')[0] : ''}</div>
+        </li>
+      `).join('');
+
+      // Related topics
+      const related = new Map();
+      graphData.edges.forEach(e => {
+        const s = typeof e.source === 'object' ? e.source.id : e.source;
+        const t = typeof e.target === 'object' ? e.target.id : e.target;
+        if (s === topic.id) related.set(t, e.weight);
+        if (t === topic.id) related.set(s, e.weight);
+      });
+
+      const nodeMap = {};
+      graphData.nodes.forEach(n => nodeMap[n.id] = n);
+
+      const sorted = [...related.entries()].sort((a, b) => b[1] - a[1]);
+      document.getElementById('relatedChips').innerHTML = sorted.map(([id, w]) => {
+        const n = nodeMap[id];
+        if (!n) return '';
+        return `<span class="topic-chip" style="border-color:${catColors[n.category]}44"
+          onclick="openSidebar(graphData.nodes.find(x=>x.id===${id}))">${n.name}<span class="count">${w}</span></span>`;
+      }).join('');
+
+      document.getElementById('sidebar').classList.add('open');
+    }
+
+    function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); }
+
+    function buildLegend() {
+      const cats = new Set(graphData.nodes.map(n => n.category));
+      document.getElementById('legend').innerHTML = [...cats].map(c =>
+        `<div class="legend-item" onclick="highlightCategory('${c}')">
+          <div class="legend-dot" style="background:${catColors[c]}"></div>${catLabels[c] || c}
+        </div>`
+      ).join('');
+    }
+
+    function highlightCategory(cat) {
+      g.selectAll('g > g').each(function(n) {
+        d3.select(this).attr('opacity', n.category === cat ? 1 : 0.12);
+      });
+      linkEls.attr('stroke-opacity', 0.02);
+      // Reset after 3s
+      setTimeout(() => {
+        g.selectAll('g > g').attr('opacity', 1);
+        linkEls.attr('stroke-opacity', 0.08);
+      }, 3000);
+    }
+
+    function setupSearch() {
+      const input = document.getElementById('searchInput');
+      const results = document.getElementById('searchResults');
+      input.addEventListener('input', () => {
+        const q = input.value.toLowerCase();
+        if (q.length < 2) { results.classList.remove('visible'); return; }
+        const matches = graphData.nodes.filter(n => n.name.toLowerCase().includes(q)).slice(0, 8);
+        if (!matches.length) { results.classList.remove('visible'); return; }
+        results.innerHTML = matches.map(n =>
+          `<div onclick="focusNode(${n.id})">${n.name} <span style="color:#6366f1">(${n.doc_count})</span></div>`
+        ).join('');
+        results.classList.add('visible');
+      });
+      input.addEventListener('blur', () => setTimeout(() => results.classList.remove('visible'), 200));
+    }
+
+    function focusNode(id) {
+      const node = graphData.nodes.find(n => n.id === id);
+      if (!node || !node.x) return;
+      document.getElementById('searchInput').value = '';
+      document.getElementById('searchResults').classList.remove('visible');
+      const transform = d3.zoomIdentity.translate(width/2, height/2).scale(2).translate(-node.x, -node.y);
+      svg.transition().duration(750).call(
+        d3.zoom().scaleExtent([0.3, 4]).on('zoom', e => g.attr('transform', e.transform)).transform, transform
+      );
+      openSidebar(node);
+    }
+
+    function dragStart(e, d) { if (!e.active) simulation.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; }
+    function dragging(e, d) { d.fx = e.x; d.fy = e.y; }
+    function dragEnd(e, d) { if (!e.active) simulation.alphaTarget(0); d.fx = null; d.fy = null; }
+
+    init();
+  </script>
+</body>
+</html>
