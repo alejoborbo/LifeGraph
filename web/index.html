@@ -577,29 +577,29 @@
 
       const sizeScale = d3.scaleSqrt()
         .domain([d3.min(nodes, n => n.doc_count), d3.max(nodes, n => n.doc_count)])
-        .range([8, 40]);
+        .range([10, 42]);
 
       const edgeScale = d3.scaleLinear()
         .domain([d3.min(edges, e => e.weight) || 1, d3.max(edges, e => e.weight) || 1])
-        .range([0.5, 3]);
+        .range([0.5, 2.5]);
 
       // Cluster force: pull nodes toward their category's radial position
-      const clusterRadius = Math.min(width, height) * 0.25;
+      const clusterRadius = Math.min(width, height) * 0.35;
       function clusterForce(alpha) {
         nodes.forEach(n => {
           const angle = catAngles[n.category] || 0;
           const tx = width / 2 + Math.cos(angle) * clusterRadius;
           const ty = height / 2 + Math.sin(angle) * clusterRadius;
-          n.vx += (tx - n.x) * alpha * 0.08;
-          n.vy += (ty - n.y) * alpha * 0.08;
+          n.vx += (tx - n.x) * alpha * 0.1;
+          n.vy += (ty - n.y) * alpha * 0.1;
         });
       }
 
       simulation = d3.forceSimulation(nodes)
-        .force('link', d3.forceLink(edges).id(d => d.id).distance(60).strength(e => e.weight * 0.03))
-        .force('charge', d3.forceManyBody().strength(-200))
-        .force('center', d3.forceCenter(width / 2, height / 2).strength(0.05))
-        .force('collision', d3.forceCollide().radius(d => sizeScale(d.doc_count) + 10))
+        .force('link', d3.forceLink(edges).id(d => d.id).distance(90).strength(e => e.weight * 0.02))
+        .force('charge', d3.forceManyBody().strength(-400))
+        .force('center', d3.forceCenter(width / 2, height / 2).strength(0.03))
+        .force('collision', d3.forceCollide().radius(d => sizeScale(d.doc_count) + 20))
         .force('cluster', clusterForce);
 
       // Edges
@@ -627,19 +627,25 @@
         catCenters[cat].docs += n.doc_count;
       });
 
+      // Place category labels at the outer edge of each cluster zone
       clusterLabels = g.append('g').attr('class', 'cluster-labels')
         .selectAll('g')
         .data(Object.entries(catCenters))
         .join('g')
-        .attr('transform', ([cat, c]) => `translate(${c.x},${c.y - clusterRadius * 0.35})`);
+        .attr('transform', ([cat, c]) => {
+          const angle = catAngles[cat] || 0;
+          const lx = width / 2 + Math.cos(angle) * clusterRadius * 1.55;
+          const ly = height / 2 + Math.sin(angle) * clusterRadius * 1.55;
+          return `translate(${lx},${ly})`;
+        });
 
       clusterLabels.append('text')
         .text(([cat]) => catLabels[cat] || cat)
         .attr('text-anchor', 'middle')
-        .attr('font-size', 15)
+        .attr('font-size', 13)
         .attr('font-weight', 700)
         .attr('fill', ([cat]) => catColors[cat] || '#555')
-        .attr('fill-opacity', 0.25)
+        .attr('fill-opacity', 0.35)
         .style('pointer-events', 'none')
         .style('text-transform', 'uppercase')
         .style('letter-spacing', '2px');
@@ -668,16 +674,19 @@
         .attr('stroke-width', 1.5)
         .attr('stroke-opacity', 0.4);
 
-      // Labels -- always visible for top topics (doc_count >= 5), dimmer for small ones
+      // Labels — only show for nodes with >= 5 docs; small ones appear on hover
+      function truncate(s, max) { return s.length > max ? s.slice(0, max - 1) + '...' : s; }
       labelEls = nodeGroup.append('text')
-        .text(d => d.name)
-        .attr('font-size', d => Math.max(9, Math.min(14, 7 + d.doc_count * 0.4)))
-        .attr('fill', d => d.doc_count >= 5 ? '#ddd' : '#666')
+        .text(d => truncate(d.name, 28))
+        .attr('class', 'node-label')
+        .attr('font-size', d => Math.max(10, Math.min(13, 8 + d.doc_count * 0.3)))
+        .attr('fill', '#ddd')
         .attr('font-weight', d => d.doc_count >= 10 ? 600 : 400)
         .attr('text-anchor', 'middle')
         .attr('dy', d => -sizeScale(d.doc_count) - 8)
+        .attr('opacity', d => d.doc_count >= 5 ? 0.9 : 0)
         .style('pointer-events', 'none')
-        .style('text-shadow', '0 0 8px #0a0a0f, 0 0 16px #0a0a0f');
+        .style('text-shadow', '0 0 6px #0a0a0f, 0 0 12px #0a0a0f, 0 0 20px #0a0a0f');
 
       // Doc count badge
       nodeGroup.append('text')
@@ -712,8 +721,11 @@
         if (t === d.id) connected.add(s);
       });
 
+      // Dim unrelated nodes, show all labels for connected nodes
       g.selectAll('g > g').each(function(n) {
-        d3.select(this).attr('opacity', n.id === d.id || connected.has(n.id) ? 1 : 0.12);
+        const isRelevant = n.id === d.id || connected.has(n.id);
+        d3.select(this).attr('opacity', isRelevant ? 1 : 0.12);
+        d3.select(this).select('.node-label').attr('opacity', isRelevant ? 1 : 0);
       });
       linkEls.attr('stroke-opacity', e => {
         const s = typeof e.source === 'object' ? e.source.id : e.source;
@@ -725,6 +737,8 @@
     function onNodeOut() {
       document.getElementById('tooltip').style.display = 'none';
       g.selectAll('g > g').attr('opacity', 1);
+      // Restore label visibility based on doc count
+      g.selectAll('.node-label').attr('opacity', d => d.doc_count >= 5 ? 0.9 : 0);
       linkEls.attr('stroke-opacity', 0.08);
     }
 
