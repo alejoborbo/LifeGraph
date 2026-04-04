@@ -276,7 +276,7 @@
         <div class="report-sub" id="reportSub"></div>
       </div>
       <div class="report-period">
-        <select id="reportRange" onchange="updateReport()">
+        <select id="reportRange" onchange="applyPreset()">
           <option value="7">Last 7 days</option>
           <option value="14">Last 14 days</option>
           <option value="30" selected>Last 30 days</option>
@@ -284,10 +284,11 @@
           <option value="90">Last 90 days</option>
           <option value="180">Last 6 months</option>
           <option value="365">Last year</option>
-          <option value="custom">Custom range</option>
         </select>
-        <input type="date" id="reportFrom" style="display:none" onchange="updateReport()">
-        <input type="date" id="reportTo" style="display:none" onchange="updateReport()">
+        <span style="color:#555; font-size:12px;">from</span>
+        <input type="date" id="reportFrom" onchange="onDateInputChange()">
+        <span style="color:#555; font-size:12px;">to</span>
+        <input type="date" id="reportTo" onchange="onDateInputChange()">
       </div>
       <div id="reportContent"></div>
     </div>
@@ -919,27 +920,29 @@
 
     // ── Report View ──────────────────────────────────────────
 
+    function toLocalDateStr(d) {
+      return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+    }
+
+    function applyPreset() {
+      const days = parseInt(document.getElementById('reportRange').value);
+      const end = new Date();
+      const start = new Date();
+      start.setDate(start.getDate() - days);
+      document.getElementById('reportFrom').value = toLocalDateStr(start);
+      document.getElementById('reportTo').value = toLocalDateStr(end);
+      renderReport(start, end);
+    }
+
+    function onDateInputChange() {
+      const from = document.getElementById('reportFrom').value;
+      const to = document.getElementById('reportTo').value;
+      if (!from || !to) return;
+      renderReport(new Date(from), new Date(to));
+    }
+
     function updateReport() {
-      const rangeSelect = document.getElementById('reportRange');
-      const fromInput = document.getElementById('reportFrom');
-      const toInput = document.getElementById('reportTo');
-
-      const isCustom = rangeSelect.value === 'custom';
-      fromInput.style.display = isCustom ? 'inline-block' : 'none';
-      toInput.style.display = isCustom ? 'inline-block' : 'none';
-
-      let startDate, endDate = new Date();
-      if (isCustom) {
-        if (!fromInput.value || !toInput.value) return;
-        startDate = new Date(fromInput.value);
-        endDate = new Date(toInput.value);
-      } else {
-        const days = parseInt(rangeSelect.value);
-        startDate = new Date();
-        startDate.setDate(startDate.getDate() - days);
-      }
-
-      renderReport(startDate, endDate);
+      applyPreset();
     }
 
     function renderReport(startDate, endDate) {
