@@ -76,6 +76,45 @@
     #search .results div:hover { background: #1e1e3a; }
     #search .results div:last-child { border: none; }
 
+    /* Overview panel */
+    #overview-toggle {
+      position: fixed; top: 20px; right: 24px; z-index: 6;
+      background: #111119; border: 1px solid #1e1e2e; color: #888;
+      padding: 8px 16px; border-radius: 20px; font-size: 12px;
+      cursor: pointer; transition: all 0.15s; font-family: inherit;
+    }
+    #overview-toggle:hover { color: #fff; border-color: #6366f1; }
+    #overview-toggle.active { color: #6366f1; border-color: #6366f1; background: #12122a; }
+
+    #overview {
+      position: fixed; top: 60px; right: 24px; z-index: 5;
+      width: 320px; max-height: calc(100vh - 100px);
+      background: #111119; border: 1px solid #1e1e2e; border-radius: 16px;
+      overflow-y: auto; padding: 20px;
+      display: none;
+    }
+    #overview.visible { display: block; }
+    #overview h3 {
+      font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px;
+      color: #555; margin-bottom: 16px;
+    }
+
+    .overview-cat {
+      margin-bottom: 18px; cursor: pointer;
+      padding: 12px 14px; border-radius: 12px;
+      border: 1px solid transparent;
+      transition: all 0.15s;
+    }
+    .overview-cat:hover { background: #16162a; border-color: #1e1e2e; }
+    .overview-cat .cat-header {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
+    }
+    .overview-cat .cat-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .overview-cat .cat-name { font-size: 14px; font-weight: 600; color: #ddd; }
+    .overview-cat .cat-count { font-size: 12px; color: #555; margin-left: auto; }
+    .overview-cat .cat-topics { font-size: 12px; color: #666; line-height: 1.6; }
+    .overview-cat .cat-topics span { color: #999; }
+
     /* Legend */
     #legend {
       position: fixed; bottom: 20px; left: 24px; z-index: 5;
@@ -118,6 +157,12 @@
     <div class="results" id="searchResults"></div>
   </div>
 
+  <button id="overview-toggle" onclick="toggleOverview()">Overview</button>
+  <div id="overview">
+    <h3>Work areas</h3>
+    <div id="overviewContent"></div>
+  </div>
+
   <div id="legend"></div>
   <div id="stats"></div>
 
@@ -135,7 +180,7 @@
 
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script>
-    let graphData, simulation, svg, g, nodeEls, linkEls, labelEls;
+    let graphData, simulation, svg, g, nodeEls, linkEls, labelEls, clusterLabels;
     let docMap = {};
 
     const width = window.innerWidth;
@@ -143,15 +188,15 @@
 
     // Category colors
     const catColors = {
-      posture:   '#a78bfa',  // purple
-      automation:'#6366f1',  // indigo
-      strategy:  '#3b82f6',  // blue
-      ux:        '#06b6d4',  // cyan
-      team:      '#14b8a6',  // teal
-      teaching:  '#f59e0b',  // amber
-      personal:  '#f472b6',  // pink
-      code:      '#34d399',  // emerald
-      other:     '#6b7280',  // gray
+      posture:   '#a78bfa',
+      automation:'#6366f1',
+      strategy:  '#3b82f6',
+      ux:        '#06b6d4',
+      team:      '#14b8a6',
+      teaching:  '#f59e0b',
+      personal:  '#f472b6',
+      code:      '#34d399',
+      other:     '#6b7280',
     };
 
     const catLabels = {
@@ -202,6 +247,7 @@
 
       render();
       buildLegend();
+      buildOverview();
       setupSearch();
     }
 
@@ -249,6 +295,36 @@
         .attr('stroke-width', d => edgeScale(d.weight))
         .attr('stroke-opacity', 0.08);
 
+      // Category group labels (floating behind nodes)
+      const catCenters = {};
+      const catCounts = {};
+      nodes.forEach(n => {
+        const cat = n.category || 'other';
+        if (!catCenters[cat]) { catCenters[cat] = { x: 0, y: 0, count: 0, docs: 0 }; }
+        const angle = catAngles[cat] || 0;
+        catCenters[cat].x = width / 2 + Math.cos(angle) * clusterRadius;
+        catCenters[cat].y = height / 2 + Math.sin(angle) * clusterRadius;
+        catCenters[cat].count++;
+        catCenters[cat].docs += n.doc_count;
+      });
+
+      clusterLabels = g.append('g').attr('class', 'cluster-labels')
+        .selectAll('g')
+        .data(Object.entries(catCenters))
+        .join('g')
+        .attr('transform', ([cat, c]) => `translate(${c.x},${c.y - clusterRadius * 0.35})`);
+
+      clusterLabels.append('text')
+        .text(([cat]) => catLabels[cat] || cat)
+        .attr('text-anchor', 'middle')
+        .attr('font-size', 15)
+        .attr('font-weight', 700)
+        .attr('fill', ([cat]) => catColors[cat] || '#555')
+        .attr('fill-opacity', 0.25)
+        .style('pointer-events', 'none')
+        .style('text-transform', 'uppercase')
+        .style('letter-spacing', '2px');
+
       // Node groups
       const nodeGroup = g.append('g').selectAll('g').data(nodes).join('g')
         .style('cursor', 'pointer')
@@ -273,11 +349,12 @@
         .attr('stroke-width', 1.5)
         .attr('stroke-opacity', 0.4);
 
-      // Labels
+      // Labels -- always visible for top topics (doc_count >= 5), dimmer for small ones
       labelEls = nodeGroup.append('text')
         .text(d => d.name)
-        .attr('font-size', d => Math.max(9, Math.min(13, 7 + d.doc_count * 0.4)))
-        .attr('fill', '#bbb')
+        .attr('font-size', d => Math.max(9, Math.min(14, 7 + d.doc_count * 0.4)))
+        .attr('fill', d => d.doc_count >= 5 ? '#ddd' : '#666')
+        .attr('font-weight', d => d.doc_count >= 10 ? 600 : 400)
         .attr('text-anchor', 'middle')
         .attr('dy', d => -sizeScale(d.doc_count) - 8)
         .style('pointer-events', 'none')
@@ -383,16 +460,71 @@
       ).join('');
     }
 
+    function buildOverview() {
+      // Group nodes by category, compute stats
+      const cats = {};
+      graphData.nodes.forEach(n => {
+        const cat = n.category || 'other';
+        if (!cats[cat]) cats[cat] = { topics: [], totalDocs: 0 };
+        cats[cat].topics.push(n);
+        cats[cat].totalDocs += n.doc_count;
+      });
+
+      // Sort categories by total docs
+      const sorted = Object.entries(cats).sort((a, b) => b[1].totalDocs - a[1].totalDocs);
+
+      document.getElementById('overviewContent').innerHTML = sorted.map(([cat, data]) => {
+        const topTopics = data.topics
+          .sort((a, b) => b.doc_count - a.doc_count)
+          .slice(0, 4)
+          .map(t => `<span>${t.name}</span> (${t.doc_count})`)
+          .join(', ');
+
+        return `
+          <div class="overview-cat" onclick="highlightCategory('${cat}')">
+            <div class="cat-header">
+              <div class="cat-dot" style="background:${catColors[cat]}"></div>
+              <div class="cat-name">${catLabels[cat] || cat}</div>
+              <div class="cat-count">${data.totalDocs} docs</div>
+            </div>
+            <div class="cat-topics">${topTopics}</div>
+          </div>`;
+      }).join('');
+    }
+
+    function toggleOverview() {
+      const panel = document.getElementById('overview');
+      const btn = document.getElementById('overview-toggle');
+      const isVisible = panel.classList.toggle('visible');
+      btn.classList.toggle('active', isVisible);
+    }
+
     function highlightCategory(cat) {
+      // Close overview for cleaner view
+      document.getElementById('overview').classList.remove('visible');
+      document.getElementById('overview-toggle').classList.remove('active');
+
       g.selectAll('g > g').each(function(n) {
         d3.select(this).attr('opacity', n.category === cat ? 1 : 0.12);
       });
-      linkEls.attr('stroke-opacity', 0.02);
-      // Reset after 3s
+      linkEls.attr('stroke-opacity', e => {
+        const s = typeof e.source === 'object' ? e.source : { id: e.source };
+        const t = typeof e.target === 'object' ? e.target : { id: e.target };
+        const sNode = graphData.nodes.find(n => n.id === s.id);
+        const tNode = graphData.nodes.find(n => n.id === t.id);
+        return (sNode?.category === cat && tNode?.category === cat) ? 0.25 : 0.02;
+      });
+
+      // Also highlight the cluster label
+      clusterLabels.select('text')
+        .attr('fill-opacity', ([c]) => c === cat ? 0.6 : 0.08);
+
+      // Reset after 4s
       setTimeout(() => {
         g.selectAll('g > g').attr('opacity', 1);
         linkEls.attr('stroke-opacity', 0.08);
-      }, 3000);
+        clusterLabels.select('text').attr('fill-opacity', 0.25);
+      }, 4000);
     }
 
     function setupSearch() {
