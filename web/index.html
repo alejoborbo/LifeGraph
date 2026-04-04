@@ -110,7 +110,7 @@
 
   <div id="header">
     <h1>LifeGraph</h1>
-    <p id="headerSub">Knowledge graph of 106 documents</p>
+    <p id="headerSub"></p>
   </div>
 
   <div id="search">
@@ -183,6 +183,7 @@
       graphData = await resp.json();
       graphData.documents.forEach(d => docMap[d.id] = d);
 
+      document.getElementById('headerSub').textContent = `Knowledge graph of ${graphData.documents.length} documents`;
       document.getElementById('stats').textContent =
         `${graphData.nodes.length} topics / ${graphData.edges.length} connections / ${graphData.documents.length} documents`;
 
