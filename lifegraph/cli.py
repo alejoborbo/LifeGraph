@@ -3,10 +3,14 @@ import click
 from lifegraph.connectors.google_docs import GoogleDocsConnector
 from lifegraph.db import (
     count_documents_by_source,
+    get_all_projects,
     get_all_topics_with_counts,
     get_documents_without_topics,
+    get_project_by_name,
+    get_project_documents,
     get_work_summary,
     init_db,
+    update_project_status,
 )
 from lifegraph.extractor import process_document
 from lifegraph.graph import export_graph_json
@@ -273,6 +277,84 @@ def report(days, since_date, until_date, fmt):
             else:
                 click.echo(f"    - {doc['title']} ({date_str})")
         click.echo()
+
+
+@cli.command()
+def projects():
+    """List all projects with status and doc count."""
+    all_projects = get_all_projects()
+    if not all_projects:
+        click.echo("No projects yet. Run: python scripts/seed_projects.py")
+        return
+
+    status_colors = {
+        "active": "blue", "shipped": "green", "blocked": "yellow",
+        "idea": "white", "abandoned": "red",
+    }
+
+    # Group by category
+    from collections import defaultdict
+    by_cat = defaultdict(list)
+    for p in all_projects:
+        by_cat[p["category"] or "other"].append(p)
+
+    for cat in sorted(by_cat.keys()):
+        projs = by_cat[cat]
+        click.echo(click.style(f"\n{cat.upper()}", fg="cyan", bold=True))
+        for p in projs:
+            status = p["status"]
+            color = status_colors.get(status, "white")
+            last = p["last_activity"][:10] if p["last_activity"] else "—"
+            click.echo(
+                f"  [{click.style(status, fg=color)}] "
+                f"{p['name']} ({p['doc_count']} docs, last: {last})"
+            )
+
+
+@cli.command("project")
+@click.argument("name")
+def project_show(name):
+    """Show details for a project by name (partial match)."""
+    # Find by partial match
+    all_projects = get_all_projects()
+    matches = [p for p in all_projects if name.lower() in p["name"].lower()]
+    if not matches:
+        click.echo(f"No project matching '{name}'")
+        return
+    p = matches[0]
+    click.echo(f"\n{click.style(p['name'], bold=True)}")
+    click.echo(f"  Status:   {p['status']}")
+    click.echo(f"  Category: {p['category'] or '—'}")
+    click.echo(f"  Docs:     {p['doc_count']}")
+    click.echo(f"  Started:  {(p['start_date'] or '—')[:10]}")
+    click.echo(f"  Last:     {(p['last_activity'] or '—')[:10]}")
+
+    docs = get_project_documents(p["id"])
+    if docs:
+        click.echo(f"\n  Documents:")
+        for d in docs[:15]:
+            date = d["created_at"][:10] if d["created_at"] else ""
+            click.echo(f"    - {d['title']} ({d['source']}, {date})")
+        if len(docs) > 15:
+            click.echo(f"    ... and {len(docs) - 15} more")
+
+
+@cli.command("set-status")
+@click.argument("name")
+@click.argument("status", type=click.Choice(["idea", "active", "blocked", "shipped", "abandoned"]))
+def set_status(name, status):
+    """Set the status of a project."""
+    p = get_project_by_name(name)
+    if not p:
+        # Try partial match
+        all_projects = get_all_projects()
+        matches = [pr for pr in all_projects if name.lower() in pr["name"].lower()]
+        if not matches:
+            click.echo(f"No project matching '{name}'")
+            return
+        p = matches[0]
+    update_project_status(p["id"], status)
+    click.echo(f"Updated '{p['name']}' -> {status}")
 
 
 if __name__ == "__main__":

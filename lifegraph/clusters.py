@@ -434,12 +434,42 @@ def build_clustered_graph(min_edge_weight: int = 2) -> dict:
             d["snippet"] = raw[:200].replace("\n", " ").strip()
             documents.append(d)
 
+    # Projects
+    project_rows = conn.execute("""
+        SELECT p.*, COUNT(pd.doc_id) as doc_count,
+               MIN(d.created_at) as first_activity,
+               MAX(d.created_at) as last_activity
+        FROM projects p
+        LEFT JOIN project_documents pd ON p.id = pd.project_id
+        LEFT JOIN documents d ON pd.doc_id = d.id
+        GROUP BY p.id
+        ORDER BY last_activity DESC NULLS LAST
+    """).fetchall()
+
+    projects = []
+    for r in project_rows:
+        p = dict(r)
+        # Get doc_ids for this project
+        pd_rows = conn.execute(
+            "SELECT doc_id, role FROM project_documents WHERE project_id = ?",
+            (p["id"],)
+        ).fetchall()
+        p["doc_ids"] = [row["doc_id"] for row in pd_rows]
+
+        # Count artifact types
+        roles = [row["role"] for row in pd_rows]
+        from collections import Counter as C
+        role_counts = dict(C(roles))
+        p["artifacts"] = role_counts
+        projects.append(p)
+
     conn.close()
 
     return {
         "nodes": sorted(nodes, key=lambda x: -x["doc_count"]),
         "edges": edges,
         "documents": documents,
+        "projects": projects,
     }
 
 

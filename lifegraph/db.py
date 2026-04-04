@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 from typing import Optional
 
 from lifegraph.config import DATABASE_PATH
-from lifegraph.models import Document
+from lifegraph.models import Document, Project
 
 CREATE_DOCUMENTS_TABLE = """
 CREATE TABLE IF NOT EXISTS documents (
@@ -36,6 +36,31 @@ CREATE TABLE IF NOT EXISTS doc_topics (
 )
 """
 
+CREATE_PROJECTS_TABLE = """
+CREATE TABLE IF NOT EXISTS projects (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL UNIQUE,
+    status TEXT NOT NULL DEFAULT 'active',
+    category TEXT,
+    description TEXT,
+    parent_id INTEGER REFERENCES projects(id),
+    start_date TEXT,
+    end_date TEXT,
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL
+)
+"""
+
+CREATE_PROJECT_DOCUMENTS_TABLE = """
+CREATE TABLE IF NOT EXISTS project_documents (
+    project_id INTEGER NOT NULL REFERENCES projects(id),
+    doc_id INTEGER NOT NULL REFERENCES documents(id),
+    role TEXT DEFAULT 'reference',
+    added_at TEXT NOT NULL,
+    PRIMARY KEY (project_id, doc_id)
+)
+"""
+
 
 def get_connection() -> sqlite3.Connection:
     conn = sqlite3.connect(str(DATABASE_PATH))
@@ -48,6 +73,8 @@ def init_db():
     conn.execute(CREATE_DOCUMENTS_TABLE)
     conn.execute(CREATE_TOPICS_TABLE)
     conn.execute(CREATE_DOC_TOPICS_TABLE)
+    conn.execute(CREATE_PROJECTS_TABLE)
+    conn.execute(CREATE_PROJECT_DOCUMENTS_TABLE)
     conn.commit()
     conn.close()
 
@@ -162,3 +189,90 @@ def get_all_topics_with_counts() -> list[dict]:
     ).fetchall()
     conn.close()
     return [dict(r) for r in rows]
+
+
+# ── Project queries ──────────────────────────────────────
+
+
+def create_project(project: Project) -> int:
+    now = datetime.now(timezone.utc).isoformat()
+    conn = get_connection()
+    cur = conn.execute(
+        """INSERT OR IGNORE INTO projects
+           (name, status, category, description, parent_id, start_date, end_date, created_at, updated_at)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+        (project.name, project.status, project.category, project.description,
+         project.parent_id, project.start_date, project.end_date,
+         project.created_at or now, project.updated_at or now),
+    )
+    conn.commit()
+    pid = cur.lastrowid
+    conn.close()
+    return pid
+
+
+def get_project_by_name(name: str) -> Optional[dict]:
+    conn = get_connection()
+    row = conn.execute("SELECT * FROM projects WHERE name = ?", (name,)).fetchone()
+    conn.close()
+    return dict(row) if row else None
+
+
+def get_all_projects() -> list[dict]:
+    conn = get_connection()
+    rows = conn.execute("""
+        SELECT p.*, COUNT(pd.doc_id) as doc_count,
+               MAX(d.created_at) as last_activity
+        FROM projects p
+        LEFT JOIN project_documents pd ON p.id = pd.project_id
+        LEFT JOIN documents d ON pd.doc_id = d.id
+        GROUP BY p.id
+        ORDER BY last_activity DESC NULLS LAST
+    """).fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+
+def update_project_status(project_id: int, status: str):
+    now = datetime.now(timezone.utc).isoformat()
+    conn = get_connection()
+    conn.execute(
+        "UPDATE projects SET status = ?, updated_at = ? WHERE id = ?",
+        (status, now, project_id),
+    )
+    conn.commit()
+    conn.close()
+
+
+def link_doc_to_project(project_id: int, doc_id: int, role: str = "reference"):
+    now = datetime.now(timezone.utc).isoformat()
+    conn = get_connection()
+    conn.execute(
+        "INSERT OR IGNORE INTO project_documents (project_id, doc_id, role, added_at) VALUES (?, ?, ?, ?)",
+        (project_id, doc_id, role, now),
+    )
+    conn.commit()
+    conn.close()
+
+
+def get_project_documents(project_id: int) -> list[dict]:
+    conn = get_connection()
+    rows = conn.execute("""
+        SELECT d.id, d.title, d.source, d.source_url, d.created_at, pd.role
+        FROM documents d
+        JOIN project_documents pd ON d.id = pd.doc_id
+        WHERE pd.project_id = ?
+        ORDER BY d.created_at DESC
+    """, (project_id,)).fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+
+def get_project_doc_ids(project_id: int) -> list[int]:
+    conn = get_connection()
+    rows = conn.execute(
+        "SELECT doc_id FROM project_documents WHERE project_id = ?",
+        (project_id,),
+    ).fetchall()
+    conn.close()
+    return [r["doc_id"] for r in rows]

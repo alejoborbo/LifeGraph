@@ -232,6 +232,65 @@
 
     .report-empty { font-size: 14px; color: #444; text-align: center; padding: 40px; }
 
+    /* Projects view */
+    #projectsView {
+      position: fixed; inset: 0; z-index: 4;
+      background: #0a0a0f; overflow-y: auto;
+      padding: 80px 40px 40px; display: none;
+    }
+    #projectsView.visible { display: block; }
+    .projects-container { max-width: 1100px; margin: 0 auto; }
+    .projects-header { margin-bottom: 24px; }
+    .projects-header h2 { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .projects-header .projects-sub { font-size: 13px; color: #555; }
+    .projects-controls {
+      display: flex; gap: 10px; align-items: center; margin-bottom: 24px; flex-wrap: wrap;
+    }
+    .projects-controls select {
+      padding: 7px 12px; border-radius: 12px;
+      border: 1px solid #1e1e2e; background: #111119; color: #ddd;
+      font-size: 12px; font-family: inherit; outline: none;
+    }
+    .project-cat-section { margin-bottom: 32px; }
+    .project-cat-title {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 1px; margin-bottom: 14px; padding-bottom: 8px;
+      border-bottom: 1px solid #1a1a2a;
+    }
+    .project-cat-title .pct-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .project-cat-title .pct-count { font-weight: 400; color: #555; margin-left: auto; font-size: 11px; }
+    .project-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px;
+    }
+    .project-card {
+      background: #111119; border: 1px solid #1e1e2e; border-radius: 14px;
+      padding: 18px 20px; cursor: pointer; transition: all 0.2s;
+    }
+    .project-card:hover { border-color: #3a3a5a; background: #14142a; transform: translateY(-1px); }
+    .project-card .pc-top { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .project-card .pc-name { font-size: 15px; font-weight: 600; color: #ddd; flex: 1; line-height: 1.3; }
+    .project-card .pc-status {
+      font-size: 10px; padding: 3px 10px; border-radius: 10px;
+      font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap;
+    }
+    .ps-active { background: #1e3a5f; color: #60a5fa; }
+    .ps-shipped { background: #1a3a2a; color: #4ade80; }
+    .ps-blocked { background: #3a2a1a; color: #fbbf24; }
+    .ps-idea { background: #1e1e2e; color: #888; }
+    .ps-abandoned { background: #2a1a1a; color: #888; }
+    .project-card .pc-stats {
+      display: flex; gap: 16px; font-size: 12px; color: #666; margin-bottom: 8px;
+    }
+    .project-card .pc-dates { font-size: 11px; color: #444; }
+    .project-card .pc-docs-preview {
+      margin-top: 10px; padding-top: 10px; border-top: 1px solid #1a1a2a;
+    }
+    .project-card .pc-doc-item {
+      font-size: 11px; color: #666; padding: 2px 0;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+
     /* Password gate */
     #gate {
       position: fixed; inset: 0; z-index: 100;
@@ -279,6 +338,7 @@
     <button class="view-btn active" id="graphBtn" onclick="switchView('graph')">Graph</button>
     <button class="view-btn" id="timelineBtn" onclick="switchView('timeline')">Timeline</button>
     <button class="view-btn" id="reportBtn" onclick="switchView('report')">Report</button>
+    <button class="view-btn" id="projectsBtn" onclick="switchView('projects')">Projects</button>
     <button class="view-btn" id="overview-toggle" onclick="toggleOverview()">Overview</button>
   </div>
   <div id="catFilters"></div>
@@ -309,6 +369,30 @@
         <input type="date" id="reportTo" onchange="onDateInputChange()">
       </div>
       <div id="reportContent"></div>
+    </div>
+  </div>
+
+  <div id="projectsView">
+    <div class="projects-container">
+      <div class="projects-header">
+        <h2>Projects</h2>
+        <div class="projects-sub" id="projectsSub"></div>
+      </div>
+      <div class="projects-controls">
+        <select id="projectsSort" onchange="renderProjects()">
+          <option value="activity">Sort by last activity</option>
+          <option value="docs">Sort by doc count</option>
+          <option value="name">Sort by name</option>
+        </select>
+        <select id="projectsStatus" onchange="renderProjects()">
+          <option value="all">All statuses</option>
+          <option value="active">Active</option>
+          <option value="shipped">Shipped</option>
+          <option value="blocked">Blocked</option>
+          <option value="idea">Idea</option>
+        </select>
+      </div>
+      <div id="projectsContent"></div>
     </div>
   </div>
 
@@ -832,19 +916,23 @@
       document.getElementById('graphBtn').classList.toggle('active', view === 'graph');
       document.getElementById('timelineBtn').classList.toggle('active', view === 'timeline');
       document.getElementById('reportBtn').classList.toggle('active', view === 'report');
+      document.getElementById('projectsBtn').classList.toggle('active', view === 'projects');
 
-      // Hide legend in non-graph modes
+      const isOverlay = view === 'report' || view === 'projects';
       document.getElementById('legend').style.display = view === 'graph' ? 'flex' : 'none';
-      document.getElementById('stats').style.display = view === 'report' ? 'none' : 'block';
+      document.getElementById('stats').style.display = isOverlay ? 'none' : 'block';
       document.getElementById('timelineControls').style.display = view === 'timeline' ? 'flex' : 'none';
 
-      // Show/hide canvas vs report
-      document.getElementById('canvas').style.display = view === 'report' ? 'none' : 'block';
+      document.getElementById('canvas').style.display = isOverlay ? 'none' : 'block';
       document.getElementById('reportView').classList.toggle('visible', view === 'report');
+      document.getElementById('projectsView').classList.toggle('visible', view === 'projects');
 
       if (view === 'report') {
         if (simulation) simulation.stop();
         updateReport();
+      } else if (view === 'projects') {
+        if (simulation) simulation.stop();
+        renderProjects();
       } else {
         // Reset zoom
         svg.call(d3.zoom().scaleExtent([0.3, 4]).on('zoom', e => g.attr('transform', e.transform))
@@ -1182,6 +1270,124 @@
       }
 
       document.getElementById('reportContent').innerHTML = html;
+    }
+
+    // ── Projects View ──────────────────────────────────────────
+
+    function renderProjects() {
+      const statusFilter = document.getElementById('projectsStatus').value;
+      const sortBy = document.getElementById('projectsSort').value;
+
+      let projects = (graphData.projects || [])
+        .filter(p => !hiddenCategories.has(p.category))
+        .filter(p => statusFilter === 'all' || p.status === statusFilter);
+
+      // Sort
+      if (sortBy === 'activity') {
+        projects.sort((a, b) => (b.last_activity || '').localeCompare(a.last_activity || ''));
+      } else if (sortBy === 'docs') {
+        projects.sort((a, b) => b.doc_count - a.doc_count);
+      } else {
+        projects.sort((a, b) => a.name.localeCompare(b.name));
+      }
+
+      document.getElementById('projectsSub').textContent =
+        `${projects.length} projects across ${graphData.documents.length} documents`;
+
+      // Group by category
+      const catOrder = ['posture','automation','strategy','ux','team','teaching','code','personal','other'];
+      const catGroups = {};
+      projects.forEach(p => {
+        const cat = p.category || 'other';
+        if (!catGroups[cat]) catGroups[cat] = [];
+        catGroups[cat].push(p);
+      });
+
+      let html = '';
+      catOrder.forEach(cat => {
+        const projs = catGroups[cat];
+        if (!projs || !projs.length) return;
+
+        html += `<div class="project-cat-section">
+          <div class="project-cat-title">
+            <div class="pct-dot" style="background:${catColors[cat]}"></div>
+            <span style="color:${catColors[cat]}">${catLabels[cat] || cat}</span>
+            <span class="pct-count">${projs.length} projects</span>
+          </div>
+          <div class="project-grid">`;
+
+        projs.forEach(p => {
+          const startDate = p.start_date ? new Date(p.start_date).toLocaleDateString('en-US', {month:'short', year:'numeric'}) : '';
+          const lastDate = p.last_activity ? new Date(p.last_activity).toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'}) : '';
+
+          // Recent docs preview (last 3)
+          const recentDocs = (p.doc_ids || [])
+            .map(id => docMap[id])
+            .filter(Boolean)
+            .sort((a, b) => (b.created_at || '').localeCompare(a.created_at || ''))
+            .slice(0, 3);
+
+          const docsPreview = recentDocs.map(d =>
+            `<div class="pc-doc-item">${d.title}</div>`
+          ).join('');
+
+          html += `<div class="project-card" onclick="openProjectSidebar(${p.id})">
+            <div class="pc-top">
+              <div class="pc-name">${p.name}</div>
+              <div class="pc-status ps-${p.status}">${p.status}</div>
+            </div>
+            <div class="pc-stats">
+              <span>${p.doc_count} docs</span>
+            </div>
+            <div class="pc-dates">
+              ${startDate ? 'Since ' + startDate : ''}${lastDate ? ' · Last: ' + lastDate : ''}
+            </div>
+            ${docsPreview ? `<div class="pc-docs-preview">${docsPreview}</div>` : ''}
+          </div>`;
+        });
+
+        html += `</div></div>`;
+      });
+
+      document.getElementById('projectsContent').innerHTML = html;
+    }
+
+    function openProjectSidebar(projectId) {
+      const project = graphData.projects.find(p => p.id === projectId);
+      if (!project) return;
+
+      document.getElementById('sidebarTitle').textContent = project.name;
+      document.getElementById('sidebarMeta').innerHTML =
+        `<span style="color:${catColors[project.category]}">${catLabels[project.category] || project.category}</span>` +
+        ` · <span class="pc-status ps-${project.status}" style="display:inline-block">${project.status}</span>` +
+        ` · ${project.doc_count} documents`;
+
+      // Documents sorted by date
+      const docs = (project.doc_ids || []).map(id => docMap[id]).filter(Boolean)
+        .sort((a, b) => (b.created_at || '').localeCompare(a.created_at || ''));
+      document.getElementById('docList').innerHTML = docs.map(d => `
+        <li onclick="window.open('${d.source_url || '#'}', '_blank')">
+          <div class="doc-title">${d.title}</div>
+          <div class="doc-meta">${d.source}${d.created_at ? ' · ' + d.created_at.split('T')[0] : ''}</div>
+        </li>
+      `).join('');
+
+      // Related projects: those that share docs
+      const sharedProjects = new Map();
+      const myDocs = new Set(project.doc_ids || []);
+      graphData.projects.forEach(other => {
+        if (other.id === projectId) return;
+        const shared = (other.doc_ids || []).filter(id => myDocs.has(id)).length;
+        if (shared > 0) sharedProjects.set(other, shared);
+      });
+
+      const sortedRelated = [...sharedProjects.entries()].sort((a, b) => b[1] - a[1]).slice(0, 8);
+      document.getElementById('relatedChips').innerHTML = sortedRelated.map(([p, count]) =>
+        `<span class="topic-chip" style="border-color:${catColors[p.category]}44"
+          onclick="openProjectSidebar(${p.id})">${p.name}<span class="count">${count}</span></span>`
+      ).join('');
+
+      document.getElementById('sidebar').classList.add('open');
     }
 
   </script>
