@@ -156,6 +156,65 @@
     }
     .tooltip .tt-count { color: #6366f1; font-weight: 600; }
 
+    /* Report view */
+    #reportView {
+      position: fixed; inset: 0; z-index: 4;
+      background: #0a0a0f; overflow-y: auto;
+      padding: 80px 40px 40px;
+      display: none;
+    }
+    #reportView.visible { display: block; }
+    #reportView .report-container { max-width: 800px; margin: 0 auto; }
+    #reportView .report-header {
+      margin-bottom: 32px;
+    }
+    #reportView .report-header h2 {
+      font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 8px;
+    }
+    #reportView .report-header .report-sub { font-size: 13px; color: #555; }
+    #reportView .report-period {
+      display: flex; gap: 12px; align-items: center; margin-bottom: 28px;
+    }
+    #reportView .report-period select,
+    #reportView .report-period input {
+      padding: 8px 14px; border-radius: 12px;
+      border: 1px solid #1e1e2e; background: #111119; color: #ddd;
+      font-size: 13px; outline: none; font-family: inherit;
+    }
+    #reportView .report-period select:focus,
+    #reportView .report-period input:focus { border-color: #6366f1; }
+
+    .report-category {
+      margin-bottom: 28px;
+    }
+    .report-cat-header {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 14px; padding-bottom: 8px;
+      border-bottom: 1px solid #1a1a2a;
+    }
+    .report-cat-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .report-cat-name { font-size: 16px; font-weight: 600; color: #ddd; }
+    .report-cat-count { font-size: 12px; color: #555; margin-left: auto; }
+
+    .report-cluster { margin-bottom: 16px; margin-left: 8px; }
+    .report-cluster-name {
+      font-size: 13px; font-weight: 600; color: #aaa; margin-bottom: 8px;
+    }
+    .report-doc {
+      display: flex; align-items: baseline; gap: 10px;
+      padding: 8px 12px; margin-bottom: 4px;
+      border-radius: 8px; cursor: pointer; transition: background 0.15s;
+    }
+    .report-doc:hover { background: #16162a; }
+    .report-doc .doc-title { font-size: 13px; color: #ccc; flex: 1; }
+    .report-doc .doc-date { font-size: 11px; color: #555; white-space: nowrap; }
+    .report-doc .doc-source {
+      font-size: 10px; padding: 2px 8px; border-radius: 8px;
+      background: #16162a; color: #666; white-space: nowrap;
+    }
+
+    .report-empty { font-size: 14px; color: #444; text-align: center; padding: 40px; }
+
     /* Password gate */
     #gate {
       position: fixed; inset: 0; z-index: 100;
@@ -202,11 +261,36 @@
   <div class="view-toggles">
     <button class="view-btn active" id="graphBtn" onclick="switchView('graph')">Graph</button>
     <button class="view-btn" id="timelineBtn" onclick="switchView('timeline')">Timeline</button>
+    <button class="view-btn" id="reportBtn" onclick="switchView('report')">Report</button>
     <button class="view-btn" id="overview-toggle" onclick="toggleOverview()">Overview</button>
   </div>
   <div id="overview">
     <h3>Work areas</h3>
     <div id="overviewContent"></div>
+  </div>
+
+  <div id="reportView">
+    <div class="report-container">
+      <div class="report-header">
+        <h2>What did I work on?</h2>
+        <div class="report-sub" id="reportSub"></div>
+      </div>
+      <div class="report-period">
+        <select id="reportRange" onchange="updateReport()">
+          <option value="7">Last 7 days</option>
+          <option value="14">Last 14 days</option>
+          <option value="30" selected>Last 30 days</option>
+          <option value="60">Last 60 days</option>
+          <option value="90">Last 90 days</option>
+          <option value="180">Last 6 months</option>
+          <option value="365">Last year</option>
+          <option value="custom">Custom range</option>
+        </select>
+        <input type="date" id="reportFrom" style="display:none" onchange="updateReport()">
+        <input type="date" id="reportTo" style="display:none" onchange="updateReport()">
+      </div>
+      <div id="reportContent"></div>
+    </div>
   </div>
 
   <div id="legend"></div>
@@ -663,20 +747,31 @@
 
       document.getElementById('graphBtn').classList.toggle('active', view === 'graph');
       document.getElementById('timelineBtn').classList.toggle('active', view === 'timeline');
+      document.getElementById('reportBtn').classList.toggle('active', view === 'report');
 
-      // Hide legend in timeline mode
+      // Hide legend in non-graph modes
       document.getElementById('legend').style.display = view === 'graph' ? 'flex' : 'none';
+      document.getElementById('stats').style.display = view === 'report' ? 'none' : 'block';
 
-      // Reset zoom
-      svg.call(d3.zoom().scaleExtent([0.3, 4]).on('zoom', e => g.attr('transform', e.transform))
-        .transform, d3.zoomIdentity);
+      // Show/hide canvas vs report
+      document.getElementById('canvas').style.display = view === 'report' ? 'none' : 'block';
+      document.getElementById('reportView').classList.toggle('visible', view === 'report');
 
-      if (view === 'graph') {
+      if (view === 'report') {
         if (simulation) simulation.stop();
-        render();
+        updateReport();
       } else {
-        if (simulation) simulation.stop();
-        renderTimeline();
+        // Reset zoom
+        svg.call(d3.zoom().scaleExtent([0.3, 4]).on('zoom', e => g.attr('transform', e.transform))
+          .transform, d3.zoomIdentity);
+
+        if (view === 'graph') {
+          if (simulation) simulation.stop();
+          render();
+        } else {
+          if (simulation) simulation.stop();
+          renderTimeline();
+        }
       }
 
       closeSidebar();
@@ -820,6 +915,142 @@
           d3.select(event.target).attr('r', 4).attr('fill-opacity', 0.7);
         })
         .on('click', (event, d) => openSidebar(d.node));
+    }
+
+    // ── Report View ──────────────────────────────────────────
+
+    function updateReport() {
+      const rangeSelect = document.getElementById('reportRange');
+      const fromInput = document.getElementById('reportFrom');
+      const toInput = document.getElementById('reportTo');
+
+      const isCustom = rangeSelect.value === 'custom';
+      fromInput.style.display = isCustom ? 'inline-block' : 'none';
+      toInput.style.display = isCustom ? 'inline-block' : 'none';
+
+      let startDate, endDate = new Date();
+      if (isCustom) {
+        if (!fromInput.value || !toInput.value) return;
+        startDate = new Date(fromInput.value);
+        endDate = new Date(toInput.value);
+      } else {
+        const days = parseInt(rangeSelect.value);
+        startDate = new Date();
+        startDate.setDate(startDate.getDate() - days);
+      }
+
+      renderReport(startDate, endDate);
+    }
+
+    function renderReport(startDate, endDate) {
+      // Filter docs in date range
+      const docs = graphData.documents.filter(d => {
+        if (!d.created_at) return false;
+        const date = new Date(d.created_at);
+        return date >= startDate && date <= endDate;
+      }).sort((a, b) => (b.created_at || '').localeCompare(a.created_at || ''));
+
+      const startStr = startDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+      const endStr = endDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+      document.getElementById('reportSub').textContent = `${startStr} - ${endStr} (${docs.length} documents)`;
+
+      if (!docs.length) {
+        document.getElementById('reportContent').innerHTML = '<div class="report-empty">No documents found in this period.</div>';
+        return;
+      }
+
+      // Build doc ID set for this period
+      const docIdSet = new Set(docs.map(d => d.id));
+
+      // Map docs to clusters via nodes
+      // node -> docs in this period that belong to it
+      const nodeDocMap = {};
+      graphData.nodes.forEach(n => {
+        const periodDocs = (n.doc_ids || []).filter(id => docIdSet.has(id));
+        if (periodDocs.length > 0) {
+          nodeDocMap[n.id] = periodDocs;
+        }
+      });
+
+      // Group nodes by category
+      const catOrder = ['posture', 'automation', 'strategy', 'ux', 'team', 'teaching', 'code', 'personal', 'other'];
+      const catGroups = {};
+      graphData.nodes.forEach(n => {
+        if (!nodeDocMap[n.id]) return;
+        const cat = n.category || 'other';
+        if (!catGroups[cat]) catGroups[cat] = [];
+        catGroups[cat].push(n);
+      });
+
+      // Track which docs got categorized
+      const categorizedDocs = new Set();
+
+      let html = '';
+      catOrder.forEach(cat => {
+        const nodes = catGroups[cat];
+        if (!nodes || !nodes.length) return;
+
+        // Sort clusters by doc count in period
+        nodes.sort((a, b) => (nodeDocMap[b.id]?.length || 0) - (nodeDocMap[a.id]?.length || 0));
+
+        const totalDocs = nodes.reduce((sum, n) => sum + (nodeDocMap[n.id]?.length || 0), 0);
+
+        html += `<div class="report-category">
+          <div class="report-cat-header">
+            <div class="report-cat-dot" style="background:${catColors[cat]}"></div>
+            <div class="report-cat-name">${catLabels[cat] || cat}</div>
+            <div class="report-cat-count">${totalDocs} docs</div>
+          </div>`;
+
+        nodes.forEach(n => {
+          const periodDocIds = nodeDocMap[n.id] || [];
+          if (!periodDocIds.length) return;
+
+          html += `<div class="report-cluster">
+            <div class="report-cluster-name">${n.name}</div>`;
+
+          periodDocIds.forEach(docId => {
+            const doc = docMap[docId];
+            if (!doc) return;
+            categorizedDocs.add(docId);
+            const date = doc.created_at ? new Date(doc.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
+            const url = doc.source_url || '#';
+            html += `<div class="report-doc" onclick="window.open('${url}', '_blank')">
+              <div class="doc-title">${doc.title}</div>
+              <div class="doc-source">${doc.source}</div>
+              <div class="doc-date">${date}</div>
+            </div>`;
+          });
+
+          html += `</div>`;
+        });
+
+        html += `</div>`;
+      });
+
+      // Uncategorized docs
+      const uncategorized = docs.filter(d => !categorizedDocs.has(d.id));
+      if (uncategorized.length) {
+        html += `<div class="report-category">
+          <div class="report-cat-header">
+            <div class="report-cat-dot" style="background:#6b7280"></div>
+            <div class="report-cat-name">Uncategorized</div>
+            <div class="report-cat-count">${uncategorized.length} docs</div>
+          </div>
+          <div class="report-cluster">`;
+        uncategorized.forEach(doc => {
+          const date = doc.created_at ? new Date(doc.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
+          const url = doc.source_url || '#';
+          html += `<div class="report-doc" onclick="window.open('${url}', '_blank')">
+            <div class="doc-title">${doc.title}</div>
+            <div class="doc-source">${doc.source}</div>
+            <div class="doc-date">${date}</div>
+          </div>`;
+        });
+        html += `</div></div>`;
+      }
+
+      document.getElementById('reportContent').innerHTML = html;
     }
 
   </script>
