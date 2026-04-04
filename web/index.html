@@ -142,9 +142,38 @@
       display: none; box-shadow: 0 4px 20px rgba(0,0,0,0.4);
     }
     .tooltip .tt-count { color: #6366f1; font-weight: 600; }
+
+    /* Password gate */
+    #gate {
+      position: fixed; inset: 0; z-index: 100;
+      background: #0a0a0f; display: flex;
+      align-items: center; justify-content: center;
+      flex-direction: column; gap: 16px;
+    }
+    #gate h1 {
+      font-size: 32px; font-weight: 700;
+      background: linear-gradient(135deg, #a78bfa, #6366f1);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    #gate p { font-size: 13px; color: #444; }
+    #gate input {
+      width: 260px; padding: 10px 16px; border-radius: 12px;
+      border: 1px solid #1e1e2e; background: #111119; color: #ddd;
+      font-size: 14px; outline: none; text-align: center;
+    }
+    #gate input:focus { border-color: #6366f1; box-shadow: 0 0 0 2px rgba(99,102,241,0.15); }
+    #gate .error { color: #f87171; font-size: 12px; min-height: 18px; }
+    #gate.hidden { display: none; }
   </style>
 </head>
 <body>
+  <div id="gate">
+    <h1>LifeGraph</h1>
+    <p>Enter password to view</p>
+    <input type="password" id="gateInput" placeholder="Password" autofocus>
+    <div class="error" id="gateError"></div>
+  </div>
+
   <svg id="canvas"></svg>
 
   <div id="header">
@@ -180,6 +209,26 @@
 
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script>
+    // Password gate using SHA-256 hash comparison
+    const HASH = '1b1dc3f3b5599270eaef6fd2c6b1dcac6b5dd6919fb8c3605186466e922d3057';
+
+    async function sha256(str) {
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+      return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    document.getElementById('gateInput').addEventListener('keydown', async (e) => {
+      if (e.key !== 'Enter') return;
+      const hash = await sha256(e.target.value);
+      if (hash === HASH) {
+        document.getElementById('gate').classList.add('hidden');
+        init();
+      } else {
+        document.getElementById('gateError').textContent = 'Wrong password';
+        e.target.value = '';
+      }
+    });
+
     let graphData, simulation, svg, g, nodeEls, linkEls, labelEls, clusterLabels;
     let docMap = {};
 
@@ -559,7 +608,6 @@
     function dragging(e, d) { d.fx = e.x; d.fy = e.y; }
     function dragEnd(e, d) { if (!e.active) simulation.alphaTarget(0); d.fx = null; d.fy = null; }
 
-    init();
   </script>
 </body>
 </html>
