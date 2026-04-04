@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0a0a0f; color: #e0e0e0; padding: 16px;
+      font-size: 13px; line-height: 1.5;
+    }
+
+    h1 {
+      font-size: 20px; font-weight: 700;
+      background: linear-gradient(135deg, #a78bfa, #6366f1);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+    .subtitle { font-size: 11px; color: #444; margin-bottom: 20px; }
+
+    /* Settings */
+    .settings-box {
+      background: #111119; border: 1px solid #1e1e2e; border-radius: 12px;
+      padding: 16px; margin-bottom: 16px;
+    }
+    .settings-box label { font-size: 11px; color: #888; display: block; margin-bottom: 6px; }
+    .settings-box input[type="password"],
+    .settings-box input[type="text"] {
+      width: 100%; padding: 8px 12px; border-radius: 8px;
+      border: 1px solid #1e1e2e; background: #0a0a0f; color: #ddd;
+      font-size: 12px; outline: none; margin-bottom: 10px;
+    }
+    .settings-box input:focus { border-color: #6366f1; }
+
+    /* Buttons */
+    .btn {
+      display: inline-block; padding: 8px 16px; border-radius: 8px;
+      border: none; font-size: 12px; cursor: pointer;
+      font-family: inherit; transition: all 0.15s;
+    }
+    .btn-primary {
+      background: #6366f1; color: #fff;
+    }
+    .btn-primary:hover { background: #5558e6; }
+    .btn-ghost {
+      background: transparent; color: #888; border: 1px solid #1e1e2e;
+    }
+    .btn-ghost:hover { color: #ddd; border-color: #3a3a5a; }
+    .btn:disabled { opacity: 0.4; cursor: default; }
+
+    /* Sections */
+    .section-title {
+      font-size: 10px; color: #555; text-transform: uppercase;
+      letter-spacing: 1.2px; margin: 20px 0 10px; font-weight: 600;
+    }
+
+    /* Topics */
+    .topic-chip {
+      display: inline-block; padding: 4px 10px; margin: 3px 4px 3px 0;
+      border-radius: 12px; font-size: 11px;
+      border: 1px solid #2a2a3a; background: #16162a; color: #bbb;
+    }
+    .topic-chip .relevance {
+      color: #555; margin-left: 3px; font-size: 10px;
+    }
+
+    /* Doc list */
+    .doc-item {
+      padding: 10px 12px; margin-bottom: 6px;
+      background: #111119; border-radius: 10px; border: 1px solid #1e1e2e;
+      cursor: pointer; transition: all 0.15s; text-decoration: none;
+      display: block; color: inherit;
+    }
+    .doc-item:hover { background: #1e1e3a; border-color: #3a3a5a; }
+    .doc-title { font-size: 12px; color: #ddd; line-height: 1.4; }
+    .doc-meta { font-size: 10px; color: #555; margin-top: 3px; }
+    .doc-topics { font-size: 10px; color: #6366f1; margin-top: 3px; }
+
+    /* States */
+    .loading {
+      text-align: center; padding: 40px 0; color: #555;
+    }
+    .spinner {
+      width: 24px; height: 24px; border: 2px solid #1e1e2e;
+      border-top-color: #6366f1; border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 12px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .error { color: #f87171; font-size: 12px; margin: 10px 0; }
+    .empty { color: #555; font-size: 12px; font-style: italic; margin: 10px 0; }
+
+    /* Footer */
+    .footer {
+      margin-top: 24px; padding-top: 16px;
+      border-top: 1px solid #1e1e2e; text-align: center;
+    }
+    .footer a {
+      color: #6366f1; text-decoration: none; font-size: 12px;
+    }
+    .footer a:hover { text-decoration: underline; }
+
+    /* Actions bar */
+    .actions { display: flex; gap: 8px; margin-bottom: 16px; }
+  </style>
+</head>
+<body>
+  <h1>LifeGraph</h1>
+  <div class="subtitle" id="docTitle">Loading...</div>
+
+  <!-- Settings (shown when no API key) -->
+  <div id="settingsView" style="display:none">
+    <div class="settings-box">
+      <label>Anthropic API Key</label>
+      <input type="password" id="apiKeyInput" placeholder="sk-ant-...">
+      <div style="font-size:10px; color:#555; margin-bottom:10px">
+        Get a key at <a href="https://console.anthropic.com/" target="_blank" style="color:#6366f1">console.anthropic.com</a>
+      </div>
+      <button class="btn btn-primary" onclick="saveApiKey()">Save & Analyze</button>
+    </div>
+  </div>
+
+  <!-- Loading state -->
+  <div id="loadingView" style="display:none">
+    <div class="loading">
+      <div class="spinner"></div>
+      <div id="loadingText">Analyzing document...</div>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <div id="resultsView" style="display:none">
+    <div class="actions">
+      <button class="btn btn-ghost" onclick="analyze()">Re-analyze</button>
+      <button class="btn btn-ghost" onclick="showSettingsView()">Settings</button>
+    </div>
+
+    <div class="section-title">Topics in this document</div>
+    <div id="topicChips"></div>
+
+    <div class="section-title">Related documents</div>
+    <div id="relatedDocs"></div>
+
+    <div class="footer">
+      <a href="https://capmann.github.io/LifeGraph/" target="_blank">View full graph &rarr;</a>
+    </div>
+  </div>
+
+  <!-- Error -->
+  <div id="errorView" style="display:none">
+    <div class="error" id="errorText"></div>
+    <button class="btn btn-ghost" onclick="analyze()">Retry</button>
+    <button class="btn btn-ghost" onclick="showSettingsView()">Settings</button>
+  </div>
+
+  <script>
+    var CAT_COLORS = {
+      posture:   '#a78bfa',
+      automation:'#6366f1',
+      strategy:  '#3b82f6',
+      ux:        '#06b6d4',
+      team:      '#14b8a6',
+      teaching:  '#f59e0b',
+      personal:  '#f472b6',
+      code:      '#34d399',
+      other:     '#6b7280',
+    };
+
+    var CATEGORY_KEYWORDS = {
+      posture: ['Monitoring Posture', 'Posture.md', 'RED Metrics', 'Alert Quality'],
+      automation: ['Datadog-Managed', 'Monitor Generation', 'Threshold', 'MCP', 'Monitor Templates'],
+      strategy: ['OKR', 'DASH', 'Alerting Platform', 'Ops Manager', 'Customer Research', 'Customer Onboarding', 'Terraform'],
+      ux: ['UX', 'Side Panel', 'Synthetics', 'Monitor Search', 'Agent Observability'],
+      team: ['1:1', 'Workshop', 'CI/CD'],
+      teaching: ['Teaching', 'Education', 'Machine Learning', 'Hackathon'],
+      personal: ['Astrology', 'Personal', 'Career Exploration'],
+      code: ['Code Review'],
+    };
+
+    function getCategoryForTopic(name) {
+      var lower = name.toLowerCase();
+      for (var cat in CATEGORY_KEYWORDS) {
+        var kws = CATEGORY_KEYWORDS[cat];
+        for (var i = 0; i < kws.length; i++) {
+          if (lower.indexOf(kws[i].toLowerCase()) !== -1) return cat;
+        }
+      }
+      return 'other';
+    }
+
+    function showView(id) {
+      ['settingsView', 'loadingView', 'resultsView', 'errorView'].forEach(function(v) {
+        document.getElementById(v).style.display = v === id ? 'block' : 'none';
+      });
+    }
+
+    function showSettingsView() {
+      showView('settingsView');
+    }
+
+    function showError(msg) {
+      document.getElementById('errorText').textContent = msg;
+      showView('errorView');
+    }
+
+    function saveApiKey() {
+      var key = document.getElementById('apiKeyInput').value.trim();
+      if (!key) return;
+      google.script.run
+        .withSuccessHandler(function() { analyze(); })
+        .withFailureHandler(function(e) { showError(e.message); })
+        .setApiKey(key);
+    }
+
+    function analyze() {
+      showView('loadingView');
+      document.getElementById('loadingText').textContent = 'Reading document...';
+
+      google.script.run
+        .withSuccessHandler(function(doc) {
+          document.getElementById('docTitle').textContent = doc.title;
+          document.getElementById('loadingText').textContent = 'Extracting topics with Claude...';
+
+          google.script.run
+            .withSuccessHandler(function(topics) {
+              renderTopics(topics);
+              document.getElementById('loadingText').textContent = 'Finding related documents...';
+
+              google.script.run
+                .withSuccessHandler(function(docs) {
+                  renderRelatedDocs(docs);
+                  showView('resultsView');
+                })
+                .withFailureHandler(function(e) {
+                  // Still show topics even if related docs fail
+                  renderRelatedDocs([]);
+                  showView('resultsView');
+                })
+                .findRelatedDocs(topics);
+            })
+            .withFailureHandler(function(e) { showError(e.message); })
+            .extractTopics(doc.title, doc.body);
+        })
+        .withFailureHandler(function(e) { showError(e.message); })
+        .getDocumentText();
+    }
+
+    function renderTopics(topics) {
+      var html = '';
+      topics.sort(function(a, b) { return b.relevance - a.relevance; });
+      for (var i = 0; i < topics.length; i++) {
+        var t = topics[i];
+        var cat = getCategoryForTopic(t.topic);
+        var color = CAT_COLORS[cat] || CAT_COLORS.other;
+        html += '<span class="topic-chip" style="border-color:' + color + '44; color:' + color + '">'
+          + escapeHtml(t.topic)
+          + '<span class="relevance">' + Math.round(t.relevance * 100) + '%</span>'
+          + '</span>';
+      }
+      document.getElementById('topicChips').innerHTML = html || '<div class="empty">No topics found</div>';
+    }
+
+    function renderRelatedDocs(docs) {
+      if (!docs || !docs.length) {
+        document.getElementById('relatedDocs').innerHTML =
+          '<div class="empty">No related documents found in the graph</div>';
+        return;
+      }
+
+      var html = '';
+      for (var i = 0; i < docs.length; i++) {
+        var d = docs[i];
+        var date = d.created_at ? d.created_at.split('T')[0] : '';
+        var topicList = d.sharedTopics.slice(0, 3).join(', ');
+        html += '<a class="doc-item" href="' + escapeHtml(d.url) + '" target="_blank">'
+          + '<div class="doc-title">' + escapeHtml(d.title) + '</div>'
+          + '<div class="doc-meta">' + escapeHtml(d.source) + (date ? ' &middot; ' + date : '') + '</div>'
+          + '<div class="doc-topics">' + escapeHtml(topicList) + '</div>'
+          + '</a>';
+      }
+      document.getElementById('relatedDocs').innerHTML = html;
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    // Init: check for API key, then auto-analyze
+    google.script.run
+      .withSuccessHandler(function(key) {
+        if (key) {
+          analyze();
+        } else {
+          showView('settingsView');
+        }
+      })
+      .withFailureHandler(function() { showView('settingsView'); })
+      .getApiKey();
+  </script>
+</body>
+</html>
