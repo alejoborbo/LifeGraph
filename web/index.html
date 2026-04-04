@@ -993,20 +993,17 @@
         // Sort clusters by doc count in period
         nodes.sort((a, b) => (nodeDocMap[b.id]?.length || 0) - (nodeDocMap[a.id]?.length || 0));
 
-        const totalDocs = nodes.reduce((sum, n) => sum + (nodeDocMap[n.id]?.length || 0), 0);
+        // Deduplicate docs within this category: each doc shows only under its first (largest) cluster
+        const seenInCat = new Set();
 
-        html += `<div class="report-category">
-          <div class="report-cat-header">
-            <div class="report-cat-dot" style="background:${catColors[cat]}"></div>
-            <div class="report-cat-name">${catLabels[cat] || cat}</div>
-            <div class="report-cat-count">${totalDocs} docs</div>
-          </div>`;
-
+        const clusterHtmlParts = [];
         nodes.forEach(n => {
-          const periodDocIds = nodeDocMap[n.id] || [];
+          const periodDocIds = (nodeDocMap[n.id] || []).filter(id => !seenInCat.has(id));
           if (!periodDocIds.length) return;
 
-          html += `<div class="report-cluster">
+          periodDocIds.forEach(id => seenInCat.add(id));
+
+          let clusterHtml = `<div class="report-cluster">
             <div class="report-cluster-name">${n.name}</div>`;
 
           periodDocIds.forEach(docId => {
@@ -1015,16 +1012,26 @@
             categorizedDocs.add(docId);
             const date = doc.created_at ? new Date(doc.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
             const url = doc.source_url || '#';
-            html += `<div class="report-doc" onclick="window.open('${url}', '_blank')">
+            clusterHtml += `<div class="report-doc" onclick="window.open('${url}', '_blank')">
               <div class="doc-title">${doc.title}</div>
               <div class="doc-source">${doc.source}</div>
               <div class="doc-date">${date}</div>
             </div>`;
           });
 
-          html += `</div>`;
+          clusterHtml += `</div>`;
+          clusterHtmlParts.push(clusterHtml);
         });
 
+        if (!seenInCat.size) return;
+
+        html += `<div class="report-category">
+          <div class="report-cat-header">
+            <div class="report-cat-dot" style="background:${catColors[cat]}"></div>
+            <div class="report-cat-name">${catLabels[cat] || cat}</div>
+            <div class="report-cat-count">${seenInCat.size} docs</div>
+          </div>`;
+        html += clusterHtmlParts.join('');
         html += `</div>`;
       });
 
