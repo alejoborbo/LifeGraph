@@ -461,6 +461,13 @@ def build_clustered_graph(min_edge_weight: int = 2) -> dict:
         from collections import Counter as C
         role_counts = dict(C(roles))
         p["artifacts"] = role_counts
+
+        # Get linked external items (Jira tickets, etc.)
+        link_rows = conn.execute(
+            "SELECT source_type, source_id, title, status, priority, url FROM project_links WHERE project_id = ?",
+            (p["id"],)
+        ).fetchall()
+        p["links"] = [dict(lr) for lr in link_rows]
         projects.append(p)
 
     conn.close()

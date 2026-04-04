@@ -61,6 +61,23 @@ CREATE TABLE IF NOT EXISTS project_documents (
 )
 """
 
+CREATE_PROJECT_LINKS_TABLE = """
+CREATE TABLE IF NOT EXISTS project_links (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    project_id INTEGER NOT NULL REFERENCES projects(id),
+    url TEXT NOT NULL,
+    source_type TEXT NOT NULL,
+    source_id TEXT,
+    title TEXT,
+    status TEXT,
+    priority TEXT,
+    assignee TEXT,
+    created_at TEXT,
+    fetched_at TEXT NOT NULL,
+    UNIQUE(project_id, source_type, source_id)
+)
+"""
+
 
 def get_connection() -> sqlite3.Connection:
     conn = sqlite3.connect(str(DATABASE_PATH))
@@ -75,6 +92,7 @@ def init_db():
     conn.execute(CREATE_DOC_TOPICS_TABLE)
     conn.execute(CREATE_PROJECTS_TABLE)
     conn.execute(CREATE_PROJECT_DOCUMENTS_TABLE)
+    conn.execute(CREATE_PROJECT_LINKS_TABLE)
     conn.commit()
     conn.close()
 
@@ -276,3 +294,51 @@ def get_project_doc_ids(project_id: int) -> list[int]:
     ).fetchall()
     conn.close()
     return [r["doc_id"] for r in rows]
+
+
+# ── Project links (Jira, GitHub, etc.) ──────────────────
+
+
+def upsert_project_link(
+    project_id: int, url: str, source_type: str, source_id: str,
+    title: str, status: str = None, priority: str = None,
+    assignee: str = None, created_at: str = None,
+):
+    now = datetime.now(timezone.utc).isoformat()
+    conn = get_connection()
+    conn.execute(
+        """INSERT INTO project_links
+           (project_id, url, source_type, source_id, title, status, priority, assignee, created_at, fetched_at)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+           ON CONFLICT(project_id, source_type, source_id) DO UPDATE SET
+               title = excluded.title, status = excluded.status,
+               priority = excluded.priority, assignee = excluded.assignee,
+               fetched_at = excluded.fetched_at
+        """,
+        (project_id, url, source_type, source_id, title, status,
+         priority, assignee, created_at, now),
+    )
+    conn.commit()
+    conn.close()
+
+
+def get_project_links(project_id: int) -> list[dict]:
+    conn = get_connection()
+    rows = conn.execute(
+        "SELECT * FROM project_links WHERE project_id = ? ORDER BY created_at DESC",
+        (project_id,),
+    ).fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+
+def get_all_project_links() -> dict[int, list[dict]]:
+    """Return {project_id: [links]} for all projects."""
+    conn = get_connection()
+    rows = conn.execute("SELECT * FROM project_links ORDER BY created_at DESC").fetchall()
+    conn.close()
+    from collections import defaultdict
+    result = defaultdict(list)
+    for r in rows:
+        result[r["project_id"]].append(dict(r))
+    return dict(result)

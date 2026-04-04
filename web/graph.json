@@ -2892,7 +2892,8 @@
       ],
       "artifacts": {
         "reference": 10
-      }
+      },
+      "links": []
     },
     {
       "id": 15,
@@ -2957,7 +2958,25 @@
       ],
       "artifacts": {
         "reference": 45
-      }
+      },
+      "links": [
+        {
+          "source_type": "jira",
+          "source_id": "DAA-234",
+          "title": "Automatic Detection for Services",
+          "status": "In Progress",
+          "priority": "High",
+          "url": "https://datadoghq.atlassian.net/browse/DAA-234"
+        },
+        {
+          "source_type": "jira",
+          "source_id": "PL-2422",
+          "title": "Datadog-Managed Monitors",
+          "status": "Not started",
+          "priority": "Medium",
+          "url": "https://datadoghq.atlassian.net/browse/PL-2422"
+        }
+      ]
     },
     {
       "id": 19,
@@ -3004,7 +3023,17 @@
       ],
       "artifacts": {
         "reference": 27
-      }
+      },
+      "links": [
+        {
+          "source_type": "jira",
+          "source_id": "PL-2424",
+          "title": "AI-assisted features for monitors",
+          "status": "Not started",
+          "priority": "Medium",
+          "url": "https://datadoghq.atlassian.net/browse/PL-2424"
+        }
+      ]
     },
     {
       "id": 27,
@@ -3034,7 +3063,8 @@
       ],
       "artifacts": {
         "reference": 10
-      }
+      },
+      "links": []
     },
     {
       "id": 29,
@@ -3065,7 +3095,8 @@
       ],
       "artifacts": {
         "reference": 11
-      }
+      },
+      "links": []
     },
     {
       "id": 30,
@@ -3104,7 +3135,8 @@
       ],
       "artifacts": {
         "reference": 19
-      }
+      },
+      "links": []
     },
     {
       "id": 33,
@@ -3137,7 +3169,8 @@
       ],
       "artifacts": {
         "reference": 13
-      }
+      },
+      "links": []
     },
     {
       "id": 36,
@@ -3160,7 +3193,8 @@
       ],
       "artifacts": {
         "reference": 3
-      }
+      },
+      "links": []
     },
     {
       "id": 7,
@@ -3190,7 +3224,8 @@
       ],
       "artifacts": {
         "reference": 10
-      }
+      },
+      "links": []
     },
     {
       "id": 11,
@@ -3223,7 +3258,17 @@
       ],
       "artifacts": {
         "reference": 13
-      }
+      },
+      "links": [
+        {
+          "source_type": "jira",
+          "source_id": "PL-2421",
+          "title": "Monitor Onboarding",
+          "status": "Not started",
+          "priority": "Medium",
+          "url": "https://datadoghq.atlassian.net/browse/PL-2421"
+        }
+      ]
     },
     {
       "id": 24,
@@ -3292,7 +3337,17 @@
       ],
       "artifacts": {
         "reference": 49
-      }
+      },
+      "links": [
+        {
+          "source_type": "jira",
+          "source_id": "PL-2423",
+          "title": "Monitor Coverage Insights",
+          "status": "Not started",
+          "priority": "Medium",
+          "url": "https://datadoghq.atlassian.net/browse/PL-2423"
+        }
+      ]
     },
     {
       "id": 34,
@@ -3326,7 +3381,33 @@
       ],
       "artifacts": {
         "reference": 14
-      }
+      },
+      "links": [
+        {
+          "source_type": "jira",
+          "source_id": "FRMNTS-4552",
+          "title": "Autocomplete in Monitor Creation",
+          "status": "In Progress",
+          "priority": "Medium",
+          "url": "https://datadoghq.atlassian.net/browse/FRMNTS-4552"
+        },
+        {
+          "source_type": "jira",
+          "source_id": "PL-2425",
+          "title": "OTel x Monitors: Semantic Convergence",
+          "status": "Not started",
+          "priority": "Medium",
+          "url": "https://datadoghq.atlassian.net/browse/PL-2425"
+        },
+        {
+          "source_type": "jira",
+          "source_id": "PL-2790",
+          "title": "Autocomplete in Logs Monitors",
+          "status": "Not started",
+          "priority": "Medium",
+          "url": "https://datadoghq.atlassian.net/browse/PL-2790"
+        }
+      ]
     },
     {
       "id": 25,
@@ -3355,7 +3436,8 @@
       ],
       "artifacts": {
         "reference": 9
-      }
+      },
+      "links": []
     },
     {
       "id": 1,
@@ -3392,7 +3474,8 @@
       ],
       "artifacts": {
         "reference": 17
-      }
+      },
+      "links": []
     },
     {
       "id": 2,
@@ -3414,7 +3497,8 @@
       ],
       "artifacts": {
         "reference": 2
-      }
+      },
+      "links": []
     },
     {
       "id": 12,
@@ -3449,7 +3533,8 @@
       ],
       "artifacts": {
         "reference": 15
-      }
+      },
+      "links": []
     },
     {
       "id": 23,
@@ -3475,7 +3560,8 @@
       ],
       "artifacts": {
         "reference": 6
-      }
+      },
+      "links": []
     },
     {
       "id": 32,
@@ -3499,7 +3585,8 @@
       ],
       "artifacts": {
         "reference": 4
-      }
+      },
+      "links": []
     },
     {
       "id": 35,
@@ -3529,7 +3616,8 @@
       ],
       "artifacts": {
         "reference": 10
-      }
+      },
+      "links": []
     },
     {
       "id": 21,
@@ -3568,7 +3656,8 @@
       ],
       "artifacts": {
         "reference": 19
-      }
+      },
+      "links": []
     },
     {
       "id": 8,
@@ -3592,7 +3681,8 @@
       ],
       "artifacts": {
         "reference": 4
-      }
+      },
+      "links": []
     },
     {
       "id": 5,
@@ -3615,7 +3705,8 @@
       ],
       "artifacts": {
         "reference": 3
-      }
+      },
+      "links": []
     },
     {
       "id": 3,
@@ -3640,7 +3731,8 @@
       ],
       "artifacts": {
         "reference": 5
-      }
+      },
+      "links": []
     },
     {
       "id": 6,
@@ -3674,7 +3766,33 @@
       ],
       "artifacts": {
         "reference": 14
-      }
+      },
+      "links": [
+        {
+          "source_type": "jira",
+          "source_id": "FRMNTS-4492",
+          "title": "Noisy Monitor Detection",
+          "status": "In Progress",
+          "priority": "Medium",
+          "url": "https://datadoghq.atlassian.net/browse/FRMNTS-4492"
+        },
+        {
+          "source_type": "jira",
+          "source_id": "PL-2070",
+          "title": "Noisy Monitor Quality Page",
+          "status": "Not started",
+          "priority": "Medium",
+          "url": "https://datadoghq.atlassian.net/browse/PL-2070"
+        },
+        {
+          "source_type": "jira",
+          "source_id": "PL-2071",
+          "title": "Monitor Quality OOTB Dashboard",
+          "status": "Not started",
+          "priority": "Medium",
+          "url": "https://datadoghq.atlassian.net/browse/PL-2071"
+        }
+      ]
     },
     {
       "id": 18,
@@ -3698,7 +3816,8 @@
       ],
       "artifacts": {
         "reference": 4
-      }
+      },
+      "links": []
     },
     {
       "id": 22,
@@ -3722,7 +3841,8 @@
       ],
       "artifacts": {
         "reference": 4
-      }
+      },
+      "links": []
     },
     {
       "id": 28,
@@ -3747,7 +3867,8 @@
       ],
       "artifacts": {
         "reference": 5
-      }
+      },
+      "links": []
     },
     {
       "id": 10,
@@ -3768,7 +3889,8 @@
       ],
       "artifacts": {
         "reference": 1
-      }
+      },
+      "links": []
     },
     {
       "id": 9,
@@ -3790,7 +3912,8 @@
       ],
       "artifacts": {
         "reference": 2
-      }
+      },
+      "links": []
     },
     {
       "id": 14,
@@ -3813,7 +3936,8 @@
       ],
       "artifacts": {
         "reference": 3
-      }
+      },
+      "links": []
     },
     {
       "id": 16,
@@ -3837,7 +3961,8 @@
       ],
       "artifacts": {
         "reference": 4
-      }
+      },
+      "links": []
     },
     {
       "id": 4,
@@ -3859,7 +3984,8 @@
       ],
       "artifacts": {
         "reference": 2
-      }
+      },
+      "links": []
     },
     {
       "id": 26,
@@ -3880,7 +4006,8 @@
       ],
       "artifacts": {
         "reference": 1
-      }
+      },
+      "links": []
     },
     {
       "id": 31,
@@ -3902,7 +4029,8 @@
       ],
       "artifacts": {
         "reference": 2
-      }
+      },
+      "links": []
     },
     {
       "id": 20,
@@ -3923,7 +4051,8 @@
       ],
       "artifacts": {
         "reference": 1
-      }
+      },
+      "links": []
     },
     {
       "id": 17,
@@ -3944,7 +4073,8 @@
       ],
       "artifacts": {
         "reference": 1
-      }
+      },
+      "links": []
     }
   ]
 }

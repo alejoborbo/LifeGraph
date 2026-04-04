@@ -1352,6 +1352,7 @@
             </div>
             <div class="pc-stats">
               <span>${p.doc_count} docs</span>
+              ${(p.links||[]).length ? `<span style="color:#60a5fa">${(p.links||[]).length} tickets</span>` : ''}
             </div>
             <div class="pc-dates">
               ${startDate ? 'Since ' + startDate : ''}${lastDate ? ' · Last: ' + lastDate : ''}
@@ -1376,15 +1377,36 @@
         ` · <span class="pc-status ps-${project.status}" style="display:inline-block">${project.status}</span>` +
         ` · ${project.doc_count} documents`;
 
+      // Jira tickets
+      const links = project.links || [];
+      let ticketHtml = '';
+      if (links.length) {
+        ticketHtml = links.map(l => {
+          const statusColor = l.status === 'Done' ? '#4ade80' : l.status === 'In Progress' ? '#60a5fa' : '#888';
+          return `<li onclick="window.open('${l.url}', '_blank')">
+            <div class="doc-title" style="display:flex;align-items:center;gap:8px">
+              <span style="color:${statusColor};font-size:10px;font-weight:600;padding:2px 8px;border-radius:8px;background:${statusColor}15;white-space:nowrap">${l.status || 'To Do'}</span>
+              ${l.source_id} — ${l.title}
+            </div>
+            <div class="doc-meta">${l.source_type}${l.priority ? ' · ' + l.priority : ''}</div>
+          </li>`;
+        }).join('');
+      }
+
       // Documents sorted by date
       const docs = (project.doc_ids || []).map(id => docMap[id]).filter(Boolean)
         .sort((a, b) => (b.created_at || '').localeCompare(a.created_at || ''));
-      document.getElementById('docList').innerHTML = docs.map(d => `
+      const docsHtml = docs.map(d => `
         <li onclick="window.open('${d.source_url || '#'}', '_blank')">
           <div class="doc-title">${d.title}</div>
           <div class="doc-meta">${d.source}${d.created_at ? ' · ' + d.created_at.split('T')[0] : ''}</div>
         </li>
       `).join('');
+
+      document.getElementById('docList').innerHTML =
+        (ticketHtml ? '<div class="section-title" style="margin:-4px 0 8px;font-size:11px;color:#60a5fa">Jira Tickets</div>' + ticketHtml : '') +
+        (ticketHtml && docsHtml ? '<div class="section-title" style="margin:16px 0 8px">Documents</div>' : '') +
+        docsHtml;
 
       // Related projects: those that share docs
       const sharedProjects = new Map();
