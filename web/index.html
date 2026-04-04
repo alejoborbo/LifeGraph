@@ -294,6 +294,21 @@
     </div>
   </div>
 
+  <div id="timelineControls" style="display:none; position:fixed; top:60px; left:50%; transform:translateX(-50%); z-index:6; display:flex; gap:10px; align-items:center;">
+    <select id="timelineRange" onchange="applyTimelinePreset()" style="padding:7px 12px; border-radius:12px; border:1px solid #1e1e2e; background:#111119; color:#ddd; font-size:12px; font-family:inherit; outline:none;">
+      <option value="30">Last 30 days</option>
+      <option value="60">Last 60 days</option>
+      <option value="90" selected>Last 90 days</option>
+      <option value="180">Last 6 months</option>
+      <option value="365">Last year</option>
+      <option value="0">All time</option>
+    </select>
+    <span style="color:#555; font-size:11px;">from</span>
+    <input type="date" id="tlFrom" onchange="onTlDateChange()" style="padding:7px 12px; border-radius:12px; border:1px solid #1e1e2e; background:#111119; color:#ddd; font-size:12px; font-family:inherit; outline:none;">
+    <span style="color:#555; font-size:11px;">to</span>
+    <input type="date" id="tlTo" onchange="onTlDateChange()" style="padding:7px 12px; border-radius:12px; border:1px solid #1e1e2e; background:#111119; color:#ddd; font-size:12px; font-family:inherit; outline:none;">
+  </div>
+
   <div id="legend"></div>
   <div id="stats"></div>
 
@@ -753,6 +768,7 @@
       // Hide legend in non-graph modes
       document.getElementById('legend').style.display = view === 'graph' ? 'flex' : 'none';
       document.getElementById('stats').style.display = view === 'report' ? 'none' : 'block';
+      document.getElementById('timelineControls').style.display = view === 'timeline' ? 'flex' : 'none';
 
       // Show/hide canvas vs report
       document.getElementById('canvas').style.display = view === 'report' ? 'none' : 'block';
@@ -778,28 +794,63 @@
       closeSidebar();
     }
 
+    let tlStart = null, tlEnd = null;
+
+    function applyTimelinePreset() {
+      const val = parseInt(document.getElementById('timelineRange').value);
+      tlEnd = new Date();
+      if (val === 0) {
+        const allDates = graphData.documents.map(d => d.created_at ? new Date(d.created_at) : null).filter(Boolean);
+        tlStart = d3.min(allDates) || new Date('2020-01-01');
+      } else {
+        tlStart = new Date();
+        tlStart.setDate(tlStart.getDate() - val);
+      }
+      document.getElementById('tlFrom').value = toLocalDateStr(tlStart);
+      document.getElementById('tlTo').value = toLocalDateStr(tlEnd);
+      renderTimeline();
+    }
+
+    function onTlDateChange() {
+      const from = document.getElementById('tlFrom').value;
+      const to = document.getElementById('tlTo').value;
+      if (!from || !to) return;
+      tlStart = new Date(from);
+      tlEnd = new Date(to);
+      renderTimeline();
+    }
+
     function renderTimeline() {
       g.selectAll('*').remove();
 
-      const nodes = graphData.nodes;
+      // Initialize date range on first call
+      if (!tlStart) applyTimelinePreset();
+
       const margin = { top: 40, right: 40, bottom: 50, left: 240 };
       const w = width - margin.left - margin.right;
       const h = height - margin.top - margin.bottom;
 
-      // Sort nodes: by category order, then by doc_count within category
-      const catOrder = ['posture', 'automation', 'strategy', 'ux', 'team', 'teaching', 'code', 'personal', 'other'];
-      const sorted = [...nodes].sort((a, b) => {
-        const ca = catOrder.indexOf(a.category), cb = catOrder.indexOf(b.category);
-        if (ca !== cb) return ca - cb;
-        return b.doc_count - a.doc_count;
+      // Filter docs to date range
+      const filteredDocIds = new Set();
+      graphData.documents.forEach(d => {
+        if (!d.created_at) return;
+        const date = new Date(d.created_at);
+        if (date >= tlStart && date <= tlEnd) filteredDocIds.add(d.id);
       });
 
-      // Time scale
-      const allDates = graphData.documents
-        .map(d => d.created_at ? new Date(d.created_at) : null)
-        .filter(Boolean);
+      // Only show nodes that have docs in range
+      const catOrder = ['posture', 'automation', 'strategy', 'ux', 'team', 'teaching', 'code', 'personal', 'other'];
+      const sorted = graphData.nodes
+        .filter(n => (n.doc_ids || []).some(id => filteredDocIds.has(id)))
+        .sort((a, b) => {
+          const ca = catOrder.indexOf(a.category), cb = catOrder.indexOf(b.category);
+          if (ca !== cb) return ca - cb;
+          return b.doc_count - a.doc_count;
+        });
+
+      // Time scale based on selected range
       const xScale = d3.scaleTime()
-        .domain([d3.min(allDates), d3.max(allDates)])
+        .domain([tlStart, tlEnd])
         .range([margin.left, width - margin.right]);
 
       // Y scale: one band per topic
@@ -878,10 +929,11 @@
       const nodeIndexMap = {};
       sorted.forEach((node, i) => nodeIndexMap[node.id] = i);
 
-      // Draw dots: one per (doc, topic) pair
+      // Draw dots: one per (doc, topic) pair, filtered to date range
       const dots = [];
       sorted.forEach((node, i) => {
         (node.doc_ids || []).forEach(docId => {
+          if (!filteredDocIds.has(docId)) return;
           const doc = docMap[docId];
           if (!doc || !doc.created_at) return;
           dots.push({ node, nodeIndex: i, doc, date: new Date(doc.created_at) });
