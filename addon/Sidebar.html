@@ -18,35 +18,16 @@
     }
     .subtitle { font-size: 11px; color: #444; margin-bottom: 20px; }
 
-    /* Settings */
-    .settings-box {
-      background: #111119; border: 1px solid #1e1e2e; border-radius: 12px;
-      padding: 16px; margin-bottom: 16px;
-    }
-    .settings-box label { font-size: 11px; color: #888; display: block; margin-bottom: 6px; }
-    .settings-box input[type="password"],
-    .settings-box input[type="text"] {
-      width: 100%; padding: 8px 12px; border-radius: 8px;
-      border: 1px solid #1e1e2e; background: #0a0a0f; color: #ddd;
-      font-size: 12px; outline: none; margin-bottom: 10px;
-    }
-    .settings-box input:focus { border-color: #6366f1; }
-
     /* Buttons */
     .btn {
       display: inline-block; padding: 8px 16px; border-radius: 8px;
       border: none; font-size: 12px; cursor: pointer;
       font-family: inherit; transition: all 0.15s;
     }
-    .btn-primary {
-      background: #6366f1; color: #fff;
-    }
-    .btn-primary:hover { background: #5558e6; }
     .btn-ghost {
       background: transparent; color: #888; border: 1px solid #1e1e2e;
     }
     .btn-ghost:hover { color: #ddd; border-color: #3a3a5a; }
-    .btn:disabled { opacity: 0.4; cursor: default; }
 
     /* Sections */
     .section-title {
@@ -60,7 +41,7 @@
       border-radius: 12px; font-size: 11px;
       border: 1px solid #2a2a3a; background: #16162a; color: #bbb;
     }
-    .topic-chip .relevance {
+    .topic-chip .count {
       color: #555; margin-left: 3px; font-size: 10px;
     }
 
@@ -77,9 +58,7 @@
     .doc-topics { font-size: 10px; color: #6366f1; margin-top: 3px; }
 
     /* States */
-    .loading {
-      text-align: center; padding: 40px 0; color: #555;
-    }
+    .loading { text-align: center; padding: 40px 0; color: #555; }
     .spinner {
       width: 24px; height: 24px; border: 2px solid #1e1e2e;
       border-top-color: #6366f1; border-radius: 50%;
@@ -90,6 +69,10 @@
 
     .error { color: #f87171; font-size: 12px; margin: 10px 0; }
     .empty { color: #555; font-size: 12px; font-style: italic; margin: 10px 0; }
+    .not-found {
+      text-align: center; padding: 30px 0; color: #555;
+    }
+    .not-found p { margin-bottom: 8px; }
 
     /* Footer */
     .footer {
@@ -101,42 +84,39 @@
     }
     .footer a:hover { text-decoration: underline; }
 
-    /* Actions bar */
-    .actions { display: flex; gap: 8px; margin-bottom: 16px; }
+    .actions { margin-bottom: 16px; }
   </style>
 </head>
 <body>
   <h1>LifeGraph</h1>
   <div class="subtitle" id="docTitle">Loading...</div>
 
-  <!-- Settings (shown when no API key) -->
-  <div id="settingsView" style="display:none">
-    <div class="settings-box">
-      <label>Anthropic API Key</label>
-      <input type="password" id="apiKeyInput" placeholder="sk-ant-...">
-      <div style="font-size:10px; color:#555; margin-bottom:10px">
-        Get a key at <a href="https://console.anthropic.com/" target="_blank" style="color:#6366f1">console.anthropic.com</a>
-      </div>
-      <button class="btn btn-primary" onclick="saveApiKey()">Save & Analyze</button>
+  <!-- Loading state -->
+  <div id="loadingView">
+    <div class="loading">
+      <div class="spinner"></div>
+      <div>Looking up document in graph...</div>
     </div>
   </div>
 
-  <!-- Loading state -->
-  <div id="loadingView" style="display:none">
-    <div class="loading">
-      <div class="spinner"></div>
-      <div id="loadingText">Analyzing document...</div>
+  <!-- Not found -->
+  <div id="notFoundView" style="display:none">
+    <div class="not-found">
+      <p>This document isn't in the knowledge graph yet.</p>
+      <p style="font-size:11px">Run <code style="color:#6366f1">lifegraph sync</code> and <code style="color:#6366f1">lifegraph extract</code> to add it.</p>
+    </div>
+    <div class="footer">
+      <a href="https://capmann.github.io/LifeGraph/" target="_blank">View full graph &rarr;</a>
     </div>
   </div>
 
   <!-- Results -->
   <div id="resultsView" style="display:none">
     <div class="actions">
-      <button class="btn btn-ghost" onclick="analyze()">Re-analyze</button>
-      <button class="btn btn-ghost" onclick="showSettingsView()">Settings</button>
+      <button class="btn btn-ghost" onclick="analyze()">Refresh</button>
     </div>
 
-    <div class="section-title">Topics in this document</div>
+    <div class="section-title">Topics</div>
     <div id="topicChips"></div>
 
     <div class="section-title">Related documents</div>
@@ -151,7 +131,6 @@
   <div id="errorView" style="display:none">
     <div class="error" id="errorText"></div>
     <button class="btn btn-ghost" onclick="analyze()">Retry</button>
-    <button class="btn btn-ghost" onclick="showSettingsView()">Settings</button>
   </div>
 
   <script>
@@ -167,36 +146,10 @@
       other:     '#6b7280',
     };
 
-    var CATEGORY_KEYWORDS = {
-      posture: ['Monitoring Posture', 'Posture.md', 'RED Metrics', 'Alert Quality'],
-      automation: ['Datadog-Managed', 'Monitor Generation', 'Threshold', 'MCP', 'Monitor Templates'],
-      strategy: ['OKR', 'DASH', 'Alerting Platform', 'Ops Manager', 'Customer Research', 'Customer Onboarding', 'Terraform'],
-      ux: ['UX', 'Side Panel', 'Synthetics', 'Monitor Search', 'Agent Observability'],
-      team: ['1:1', 'Workshop', 'CI/CD'],
-      teaching: ['Teaching', 'Education', 'Machine Learning', 'Hackathon'],
-      personal: ['Astrology', 'Personal', 'Career Exploration'],
-      code: ['Code Review'],
-    };
-
-    function getCategoryForTopic(name) {
-      var lower = name.toLowerCase();
-      for (var cat in CATEGORY_KEYWORDS) {
-        var kws = CATEGORY_KEYWORDS[cat];
-        for (var i = 0; i < kws.length; i++) {
-          if (lower.indexOf(kws[i].toLowerCase()) !== -1) return cat;
-        }
-      }
-      return 'other';
-    }
-
     function showView(id) {
-      ['settingsView', 'loadingView', 'resultsView', 'errorView'].forEach(function(v) {
+      ['loadingView', 'resultsView', 'notFoundView', 'errorView'].forEach(function(v) {
         document.getElementById(v).style.display = v === id ? 'block' : 'none';
       });
-    }
-
-    function showSettingsView() {
-      showView('settingsView');
     }
 
     function showError(msg) {
@@ -204,43 +157,25 @@
       showView('errorView');
     }
 
-    function saveApiKey() {
-      var key = document.getElementById('apiKeyInput').value.trim();
-      if (!key) return;
-      google.script.run
-        .withSuccessHandler(function() { analyze(); })
-        .withFailureHandler(function(e) { showError(e.message); })
-        .setApiKey(key);
-    }
-
     function analyze() {
       showView('loadingView');
-      document.getElementById('loadingText').textContent = 'Reading document...';
 
       google.script.run
         .withSuccessHandler(function(doc) {
           document.getElementById('docTitle').textContent = doc.title;
-          document.getElementById('loadingText').textContent = 'Extracting topics with Claude...';
 
           google.script.run
-            .withSuccessHandler(function(topics) {
-              renderTopics(topics);
-              document.getElementById('loadingText').textContent = 'Finding related documents...';
-
-              google.script.run
-                .withSuccessHandler(function(docs) {
-                  renderRelatedDocs(docs);
-                  showView('resultsView');
-                })
-                .withFailureHandler(function(e) {
-                  // Still show topics even if related docs fail
-                  renderRelatedDocs([]);
-                  showView('resultsView');
-                })
-                .findRelatedDocs(topics);
+            .withSuccessHandler(function(result) {
+              if (!result.topics.length) {
+                showView('notFoundView');
+                return;
+              }
+              renderTopics(result.topics);
+              renderRelatedDocs(result.relatedDocs);
+              showView('resultsView');
             })
             .withFailureHandler(function(e) { showError(e.message); })
-            .extractTopics(doc.title, doc.body);
+            .lookupDocument(doc.title);
         })
         .withFailureHandler(function(e) { showError(e.message); })
         .getDocumentText();
@@ -248,23 +183,21 @@
 
     function renderTopics(topics) {
       var html = '';
-      topics.sort(function(a, b) { return b.relevance - a.relevance; });
       for (var i = 0; i < topics.length; i++) {
         var t = topics[i];
-        var cat = getCategoryForTopic(t.topic);
-        var color = CAT_COLORS[cat] || CAT_COLORS.other;
+        var color = CAT_COLORS[t.category] || CAT_COLORS.other;
         html += '<span class="topic-chip" style="border-color:' + color + '44; color:' + color + '">'
-          + escapeHtml(t.topic)
-          + '<span class="relevance">' + Math.round(t.relevance * 100) + '%</span>'
+          + escapeHtml(t.name)
+          + '<span class="count">' + t.docCount + ' docs</span>'
           + '</span>';
       }
-      document.getElementById('topicChips').innerHTML = html || '<div class="empty">No topics found</div>';
+      document.getElementById('topicChips').innerHTML = html;
     }
 
     function renderRelatedDocs(docs) {
       if (!docs || !docs.length) {
         document.getElementById('relatedDocs').innerHTML =
-          '<div class="empty">No related documents found in the graph</div>';
+          '<div class="empty">No related documents found</div>';
         return;
       }
 
@@ -287,17 +220,8 @@
       return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
 
-    // Init: check for API key, then auto-analyze
-    google.script.run
-      .withSuccessHandler(function(key) {
-        if (key) {
-          analyze();
-        } else {
-          showView('settingsView');
-        }
-      })
-      .withFailureHandler(function() { showView('settingsView'); })
-      .getApiKey();
+    // Auto-analyze on load
+    analyze();
   </script>
 </body>
 </html>

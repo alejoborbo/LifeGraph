@@ -1,13 +1,12 @@
 /**
  * LifeGraph Google Docs Add-on
- * Shows extracted topics and related documents in a sidebar.
+ * Shows topics and related documents from the knowledge graph.
  */
 
 function onOpen(e) {
   DocumentApp.getUi()
     .createAddonMenu()
     .addItem('Show sidebar', 'showSidebar')
-    .addItem('Settings', 'showSettings')
     .addToUi();
 }
 
@@ -21,12 +20,6 @@ function showSidebar() {
   DocumentApp.getUi().showSidebar(html);
 }
 
-function showSettings() {
-  var html = HtmlService.createHtmlOutputFromFile('Sidebar')
-    .setTitle('LifeGraph');
-  DocumentApp.getUi().showSidebar(html);
-}
-
 function getDocumentText() {
   var doc = DocumentApp.getActiveDocument();
   return {
@@ -34,13 +27,4 @@ function getDocumentText() {
     body: doc.getBody().getText(),
     url: doc.getUrl()
   };
-}
-
-function getApiKey() {
-  return PropertiesService.getUserProperties().getProperty('ANTHROPIC_API_KEY') || '';
-}
-
-function setApiKey(key) {
-  PropertiesService.getUserProperties().setProperty('ANTHROPIC_API_KEY', key.trim());
-  return true;
 }
