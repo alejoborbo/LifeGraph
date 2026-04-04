@@ -76,16 +76,20 @@
     #search .results div:hover { background: #1e1e3a; }
     #search .results div:last-child { border: none; }
 
-    /* Overview panel */
-    #overview-toggle {
+    /* View toggle buttons */
+    .view-toggles {
       position: fixed; top: 20px; right: 24px; z-index: 6;
+      display: flex; gap: 8px;
+    }
+    .view-btn {
       background: #111119; border: 1px solid #1e1e2e; color: #888;
       padding: 8px 16px; border-radius: 20px; font-size: 12px;
       cursor: pointer; transition: all 0.15s; font-family: inherit;
     }
-    #overview-toggle:hover { color: #fff; border-color: #6366f1; }
-    #overview-toggle.active { color: #6366f1; border-color: #6366f1; background: #12122a; }
+    .view-btn:hover { color: #fff; border-color: #6366f1; }
+    .view-btn.active { color: #6366f1; border-color: #6366f1; background: #12122a; }
 
+    /* Overview panel */
     #overview {
       position: fixed; top: 60px; right: 24px; z-index: 5;
       width: 320px; max-height: calc(100vh - 100px);
@@ -186,7 +190,11 @@
     <div class="results" id="searchResults"></div>
   </div>
 
-  <button id="overview-toggle" onclick="toggleOverview()">Overview</button>
+  <div class="view-toggles">
+    <button class="view-btn active" id="graphBtn" onclick="switchView('graph')">Graph</button>
+    <button class="view-btn" id="timelineBtn" onclick="switchView('timeline')">Timeline</button>
+    <button class="view-btn" id="overview-toggle" onclick="toggleOverview()">Overview</button>
+  </div>
   <div id="overview">
     <h3>Work areas</h3>
     <div id="overviewContent"></div>
@@ -231,6 +239,7 @@
 
     let graphData, simulation, svg, g, nodeEls, linkEls, labelEls, clusterLabels;
     let docMap = {};
+    let currentView = 'graph';
 
     const width = window.innerWidth;
     const height = window.innerHeight;
@@ -607,6 +616,173 @@
     function dragStart(e, d) { if (!e.active) simulation.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; }
     function dragging(e, d) { d.fx = e.x; d.fy = e.y; }
     function dragEnd(e, d) { if (!e.active) simulation.alphaTarget(0); d.fx = null; d.fy = null; }
+
+    // ── Timeline View ──────────────────────────────────────────
+
+    function switchView(view) {
+      if (view === currentView) return;
+      currentView = view;
+
+      document.getElementById('graphBtn').classList.toggle('active', view === 'graph');
+      document.getElementById('timelineBtn').classList.toggle('active', view === 'timeline');
+
+      // Hide legend in timeline mode
+      document.getElementById('legend').style.display = view === 'graph' ? 'flex' : 'none';
+
+      // Reset zoom
+      svg.call(d3.zoom().scaleExtent([0.3, 4]).on('zoom', e => g.attr('transform', e.transform))
+        .transform, d3.zoomIdentity);
+
+      if (view === 'graph') {
+        if (simulation) simulation.stop();
+        render();
+      } else {
+        if (simulation) simulation.stop();
+        renderTimeline();
+      }
+
+      closeSidebar();
+    }
+
+    function renderTimeline() {
+      g.selectAll('*').remove();
+
+      const nodes = graphData.nodes;
+      const margin = { top: 40, right: 40, bottom: 50, left: 240 };
+      const w = width - margin.left - margin.right;
+      const h = height - margin.top - margin.bottom;
+
+      // Sort nodes: by category order, then by doc_count within category
+      const catOrder = ['posture', 'automation', 'strategy', 'ux', 'team', 'teaching', 'code', 'personal', 'other'];
+      const sorted = [...nodes].sort((a, b) => {
+        const ca = catOrder.indexOf(a.category), cb = catOrder.indexOf(b.category);
+        if (ca !== cb) return ca - cb;
+        return b.doc_count - a.doc_count;
+      });
+
+      // Time scale
+      const allDates = graphData.documents
+        .map(d => d.created_at ? new Date(d.created_at) : null)
+        .filter(Boolean);
+      const xScale = d3.scaleTime()
+        .domain([d3.min(allDates), d3.max(allDates)])
+        .range([margin.left, width - margin.right]);
+
+      // Y scale: one band per topic
+      const rowHeight = Math.min(28, h / sorted.length);
+      const totalHeight = rowHeight * sorted.length;
+      const yStart = margin.top + Math.max(0, (h - totalHeight) / 2);
+
+      const tg = g.append('g');
+
+      // Draw category headers + swim lanes
+      let lastCat = null;
+      sorted.forEach((node, i) => {
+        const y = yStart + i * rowHeight;
+
+        // Category header
+        if (node.category !== lastCat) {
+          lastCat = node.category;
+          // Category separator line
+          if (i > 0) {
+            tg.append('line')
+              .attr('x1', margin.left - 10).attr('x2', width - margin.right)
+              .attr('y1', y - 2).attr('y2', y - 2)
+              .attr('stroke', catColors[node.category] || '#333')
+              .attr('stroke-opacity', 0.15);
+          }
+        }
+
+        // Alternating row shading
+        tg.append('rect')
+          .attr('x', margin.left - 10)
+          .attr('y', y)
+          .attr('width', w + 20)
+          .attr('height', rowHeight)
+          .attr('fill', i % 2 === 0 ? 'rgba(255,255,255,0.015)' : 'transparent');
+
+        // Topic label on the left
+        tg.append('text')
+          .text(node.name)
+          .attr('x', margin.left - 16)
+          .attr('y', y + rowHeight / 2)
+          .attr('text-anchor', 'end')
+          .attr('dominant-baseline', 'central')
+          .attr('font-size', Math.min(11, rowHeight * 0.45))
+          .attr('fill', catColors[node.category] || '#888')
+          .attr('fill-opacity', node.doc_count >= 5 ? 0.9 : 0.5)
+          .attr('font-weight', node.doc_count >= 10 ? 600 : 400)
+          .style('cursor', 'pointer')
+          .on('click', () => openSidebar(node));
+      });
+
+      // X axis
+      const xAxis = d3.axisBottom(xScale)
+        .ticks(d3.timeMonth.every(1))
+        .tickFormat(d3.timeFormat('%b %Y'));
+
+      tg.append('g')
+        .attr('transform', `translate(0, ${yStart + totalHeight + 10})`)
+        .call(xAxis)
+        .selectAll('text')
+          .attr('fill', '#555')
+          .attr('font-size', 10)
+          .attr('transform', 'rotate(-30)')
+          .attr('text-anchor', 'end');
+      tg.selectAll('.domain, .tick line').attr('stroke', '#1e1e2e');
+
+      // Month grid lines
+      const ticks = xScale.ticks(d3.timeMonth.every(1));
+      ticks.forEach(t => {
+        tg.append('line')
+          .attr('x1', xScale(t)).attr('x2', xScale(t))
+          .attr('y1', yStart - 5).attr('y2', yStart + totalHeight)
+          .attr('stroke', '#1e1e2e').attr('stroke-opacity', 0.5);
+      });
+
+      // Build a map: nodeIndex -> node for fast lookup
+      const nodeIndexMap = {};
+      sorted.forEach((node, i) => nodeIndexMap[node.id] = i);
+
+      // Draw dots: one per (doc, topic) pair
+      const dots = [];
+      sorted.forEach((node, i) => {
+        (node.doc_ids || []).forEach(docId => {
+          const doc = docMap[docId];
+          if (!doc || !doc.created_at) return;
+          dots.push({ node, nodeIndex: i, doc, date: new Date(doc.created_at) });
+        });
+      });
+
+      tg.selectAll('circle.dot')
+        .data(dots)
+        .join('circle')
+        .attr('class', 'dot')
+        .attr('cx', d => xScale(d.date))
+        .attr('cy', d => yStart + d.nodeIndex * rowHeight + rowHeight / 2)
+        .attr('r', 4)
+        .attr('fill', d => catColors[d.node.category] || '#555')
+        .attr('fill-opacity', 0.7)
+        .attr('stroke', d => catColors[d.node.category] || '#555')
+        .attr('stroke-width', 1)
+        .attr('stroke-opacity', 0.3)
+        .style('cursor', 'pointer')
+        .on('mouseover', (event, d) => {
+          const tooltip = document.getElementById('tooltip');
+          tooltip.style.display = 'block';
+          tooltip.style.left = (event.clientX + 14) + 'px';
+          tooltip.style.top = (event.clientY - 10) + 'px';
+          tooltip.innerHTML = `<strong>${d.doc.title}</strong><br>
+            <span style="color:#555">${d.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
+            <span class="tt-count">${d.node.name}</span>`;
+          d3.select(event.target).attr('r', 6).attr('fill-opacity', 1);
+        })
+        .on('mouseout', (event) => {
+          document.getElementById('tooltip').style.display = 'none';
+          d3.select(event.target).attr('r', 4).attr('fill-opacity', 0.7);
+        })
+        .on('click', (event, d) => openSidebar(d.node));
+    }
 
   </script>
 </body>
