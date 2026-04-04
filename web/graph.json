@@ -1,0 +1,2866 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "name": "Monitoring Posture & Coverage",
+      "doc_count": 49,
+      "doc_ids": [
+        1,
+        6,
+        9,
+        11,
+        13,
+        14,
+        16,
+        17,
+        24,
+        52,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        67,
+        69,
+        72,
+        75,
+        77,
+        81,
+        86,
+        96,
+        100,
+        102,
+        104,
+        105,
+        108,
+        110,
+        115,
+        116,
+        118,
+        120,
+        122,
+        124,
+        131,
+        132,
+        135,
+        136,
+        138,
+        151,
+        157,
+        160,
+        161
+      ],
+      "category": "posture"
+    },
+    {
+      "id": 2,
+      "name": "Datadog-Managed Monitors",
+      "doc_count": 45,
+      "doc_ids": [
+        1,
+        2,
+        6,
+        7,
+        8,
+        9,
+        11,
+        12,
+        13,
+        15,
+        16,
+        17,
+        24,
+        39,
+        51,
+        52,
+        55,
+        56,
+        57,
+        60,
+        61,
+        62,
+        66,
+        69,
+        70,
+        71,
+        73,
+        75,
+        82,
+        84,
+        89,
+        100,
+        101,
+        108,
+        111,
+        112,
+        115,
+        116,
+        119,
+        123,
+        131,
+        138,
+        139,
+        151,
+        160
+      ],
+      "category": "automation"
+    },
+    {
+      "id": 3,
+      "name": "MCP & AI Tooling",
+      "doc_count": 27,
+      "doc_ids": [
+        1,
+        6,
+        7,
+        8,
+        14,
+        16,
+        24,
+        39,
+        52,
+        53,
+        55,
+        60,
+        63,
+        64,
+        67,
+        92,
+        102,
+        105,
+        108,
+        126,
+        134,
+        152,
+        154,
+        156,
+        157,
+        158,
+        161
+      ],
+      "category": "automation"
+    },
+    {
+      "id": 4,
+      "name": "RED Metrics & Baseline Signals",
+      "doc_count": 19,
+      "doc_ids": [
+        1,
+        6,
+        7,
+        12,
+        13,
+        14,
+        17,
+        59,
+        61,
+        62,
+        65,
+        67,
+        71,
+        104,
+        117,
+        151,
+        154,
+        160,
+        163
+      ],
+      "category": "posture"
+    },
+    {
+      "id": 5,
+      "name": "Monitor Generation & LLM",
+      "doc_count": 19,
+      "doc_ids": [
+        17,
+        24,
+        39,
+        56,
+        63,
+        64,
+        76,
+        79,
+        94,
+        95,
+        102,
+        105,
+        125,
+        126,
+        130,
+        140,
+        152,
+        157,
+        158
+      ],
+      "category": "automation"
+    },
+    {
+      "id": 6,
+      "name": "1:1 & Team Meetings",
+      "doc_count": 17,
+      "doc_ids": [
+        8,
+        17,
+        39,
+        57,
+        60,
+        69,
+        79,
+        84,
+        109,
+        112,
+        113,
+        114,
+        116,
+        119,
+        123,
+        139,
+        142
+      ],
+      "category": "team"
+    },
+    {
+      "id": 7,
+      "name": "Customer Research & Design Partners",
+      "doc_count": 15,
+      "doc_ids": [
+        2,
+        11,
+        39,
+        57,
+        58,
+        61,
+        62,
+        65,
+        66,
+        71,
+        77,
+        82,
+        96,
+        97,
+        107
+      ],
+      "category": "strategy"
+    },
+    {
+      "id": 8,
+      "name": "Threshold & Configuration",
+      "doc_count": 14,
+      "doc_ids": [
+        1,
+        13,
+        17,
+        24,
+        52,
+        55,
+        57,
+        63,
+        64,
+        76,
+        88,
+        94,
+        105,
+        114
+      ],
+      "category": "automation"
+    },
+    {
+      "id": 9,
+      "name": "Alert Quality & Noise",
+      "doc_count": 14,
+      "doc_ids": [
+        24,
+        55,
+        56,
+        61,
+        62,
+        72,
+        86,
+        97,
+        98,
+        101,
+        106,
+        111,
+        135,
+        136
+      ],
+      "category": "posture"
+    },
+    {
+      "id": 10,
+      "name": "Customer Onboarding & Rollout",
+      "doc_count": 13,
+      "doc_ids": [
+        1,
+        12,
+        15,
+        82,
+        89,
+        94,
+        95,
+        107,
+        115,
+        131,
+        139,
+        160,
+        161
+      ],
+      "category": "strategy"
+    },
+    {
+      "id": 11,
+      "name": "Terraform & Governance",
+      "doc_count": 13,
+      "doc_ids": [
+        2,
+        7,
+        11,
+        17,
+        60,
+        66,
+        67,
+        70,
+        79,
+        92,
+        128,
+        155,
+        161
+      ],
+      "category": "strategy"
+    },
+    {
+      "id": 12,
+      "name": "Posture.md & Living Runbook",
+      "doc_count": 11,
+      "doc_ids": [
+        6,
+        7,
+        9,
+        11,
+        13,
+        15,
+        17,
+        67,
+        124,
+        135,
+        136
+      ],
+      "category": "posture"
+    },
+    {
+      "id": 13,
+      "name": "Alerting Platform & Roadmap",
+      "doc_count": 10,
+      "doc_ids": [
+        1,
+        8,
+        17,
+        24,
+        39,
+        60,
+        76,
+        120,
+        134,
+        156
+      ],
+      "category": "strategy"
+    },
+    {
+      "id": 14,
+      "name": "Ops Manager & Cross-Team",
+      "doc_count": 10,
+      "doc_ids": [
+        2,
+        6,
+        7,
+        8,
+        13,
+        51,
+        52,
+        56,
+        106,
+        124
+      ],
+      "category": "strategy"
+    },
+    {
+      "id": 15,
+      "name": "UX & Side Panel Design",
+      "doc_count": 10,
+      "doc_ids": [
+        2,
+        15,
+        69,
+        77,
+        79,
+        93,
+        104,
+        117,
+        118,
+        151
+      ],
+      "category": "ux"
+    },
+    {
+      "id": 16,
+      "name": "DASH Conference",
+      "doc_count": 10,
+      "doc_ids": [
+        2,
+        7,
+        8,
+        13,
+        15,
+        69,
+        70,
+        122,
+        135,
+        136
+      ],
+      "category": "strategy"
+    },
+    {
+      "id": 17,
+      "name": "OKRs, Planning & Strategy",
+      "doc_count": 9,
+      "doc_ids": [
+        2,
+        6,
+        8,
+        13,
+        17,
+        52,
+        118,
+        120,
+        124
+      ],
+      "category": "strategy"
+    },
+    {
+      "id": 18,
+      "name": "Monitor Templates",
+      "doc_count": 6,
+      "doc_ids": [
+        11,
+        70,
+        75,
+        83,
+        100,
+        107
+      ],
+      "category": "automation"
+    },
+    {
+      "id": 19,
+      "name": "AI Teaching & Education",
+      "doc_count": 5,
+      "doc_ids": [
+        53,
+        87,
+        91,
+        133,
+        141
+      ],
+      "category": "teaching"
+    },
+    {
+      "id": 20,
+      "name": "Personal & Life",
+      "doc_count": 5,
+      "doc_ids": [
+        74,
+        78,
+        85,
+        90,
+        121
+      ],
+      "category": "personal"
+    },
+    {
+      "id": 21,
+      "name": "Synthetics & Feature Monitoring",
+      "doc_count": 4,
+      "doc_ids": [
+        11,
+        65,
+        100,
+        103
+      ],
+      "category": "ux"
+    },
+    {
+      "id": 22,
+      "name": "Astrology & Charts",
+      "doc_count": 4,
+      "doc_ids": [
+        40,
+        50,
+        68,
+        80
+      ],
+      "category": "personal"
+    },
+    {
+      "id": 23,
+      "name": "Hackathons",
+      "doc_count": 4,
+      "doc_ids": [
+        58,
+        137,
+        140,
+        154
+      ],
+      "category": "teaching"
+    },
+    {
+      "id": 24,
+      "name": "Monitor Search & Metrics",
+      "doc_count": 4,
+      "doc_ids": [
+        62,
+        64,
+        86,
+        99
+      ],
+      "category": "ux"
+    },
+    {
+      "id": 25,
+      "name": "Engineering Culture",
+      "doc_count": 4,
+      "doc_ids": [
+        154,
+        159,
+        162,
+        165
+      ],
+      "category": "team"
+    },
+    {
+      "id": 26,
+      "name": "Workshops & SRE Engagement",
+      "doc_count": 3,
+      "doc_ids": [
+        7,
+        110,
+        125
+      ],
+      "category": "team"
+    },
+    {
+      "id": 27,
+      "name": "Agent Observability",
+      "doc_count": 3,
+      "doc_ids": [
+        51,
+        63,
+        127
+      ],
+      "category": "ux"
+    },
+    {
+      "id": 28,
+      "name": "Datadog AI Products",
+      "doc_count": 3,
+      "doc_ids": [
+        156,
+        159,
+        166
+      ],
+      "category": "teaching"
+    },
+    {
+      "id": 29,
+      "name": "AI Code Review System",
+      "doc_count": 2,
+      "doc_ids": [
+        10,
+        67
+      ],
+      "category": "code"
+    },
+    {
+      "id": 30,
+      "name": "CI/CD & Deployment Monitoring",
+      "doc_count": 2,
+      "doc_ids": [
+        113,
+        154
+      ],
+      "category": "team"
+    },
+    {
+      "id": 31,
+      "name": "Sensitive Data Scanner",
+      "doc_count": 2,
+      "doc_ids": [
+        153,
+        156
+      ],
+      "category": "ux"
+    },
+    {
+      "id": 32,
+      "name": "APM & Tracing",
+      "doc_count": 2,
+      "doc_ids": [
+        164,
+        165
+      ],
+      "category": "code"
+    },
+    {
+      "id": 33,
+      "name": "Career Exploration",
+      "doc_count": 1,
+      "doc_ids": [
+        87
+      ],
+      "category": "personal"
+    },
+    {
+      "id": 34,
+      "name": "Machine Learning Education",
+      "doc_count": 1,
+      "doc_ids": [
+        141
+      ],
+      "category": "teaching"
+    },
+    {
+      "id": 35,
+      "name": "OpenTelemetry",
+      "doc_count": 1,
+      "doc_ids": [
+        163
+      ],
+      "category": "code"
+    },
+    {
+      "id": 36,
+      "name": "Event Platform & Streaming",
+      "doc_count": 1,
+      "doc_ids": [
+        166
+      ],
+      "category": "code"
+    }
+  ],
+  "edges": [
+    {
+      "source": 1,
+      "target": 2,
+      "weight": 24,
+      "doc_ids": [
+        1,
+        6,
+        9,
+        11,
+        13,
+        16,
+        17,
+        24,
+        52,
+        56,
+        57,
+        60,
+        61,
+        62,
+        69,
+        75,
+        100,
+        108,
+        115,
+        116,
+        131,
+        138,
+        151,
+        160
+      ]
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "weight": 15,
+      "doc_ids": [
+        1,
+        6,
+        14,
+        16,
+        24,
+        52,
+        60,
+        63,
+        64,
+        67,
+        102,
+        105,
+        108,
+        157,
+        161
+      ]
+    },
+    {
+      "source": 1,
+      "target": 4,
+      "weight": 13,
+      "doc_ids": [
+        1,
+        6,
+        13,
+        14,
+        17,
+        59,
+        61,
+        62,
+        65,
+        67,
+        104,
+        151,
+        160
+      ]
+    },
+    {
+      "source": 1,
+      "target": 8,
+      "weight": 9,
+      "doc_ids": [
+        1,
+        13,
+        17,
+        24,
+        52,
+        57,
+        63,
+        64,
+        105
+      ]
+    },
+    {
+      "source": 1,
+      "target": 10,
+      "weight": 5,
+      "doc_ids": [
+        1,
+        115,
+        131,
+        160,
+        161
+      ]
+    },
+    {
+      "source": 1,
+      "target": 13,
+      "weight": 5,
+      "doc_ids": [
+        1,
+        17,
+        24,
+        60,
+        120
+      ]
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "weight": 11,
+      "doc_ids": [
+        1,
+        6,
+        7,
+        8,
+        16,
+        24,
+        39,
+        52,
+        55,
+        60,
+        108
+      ]
+    },
+    {
+      "source": 2,
+      "target": 4,
+      "weight": 11,
+      "doc_ids": [
+        1,
+        6,
+        7,
+        12,
+        13,
+        17,
+        61,
+        62,
+        71,
+        151,
+        160
+      ]
+    },
+    {
+      "source": 2,
+      "target": 8,
+      "weight": 7,
+      "doc_ids": [
+        1,
+        13,
+        17,
+        24,
+        52,
+        55,
+        57
+      ]
+    },
+    {
+      "source": 2,
+      "target": 10,
+      "weight": 9,
+      "doc_ids": [
+        1,
+        12,
+        15,
+        82,
+        89,
+        115,
+        131,
+        139,
+        160
+      ]
+    },
+    {
+      "source": 2,
+      "target": 13,
+      "weight": 6,
+      "doc_ids": [
+        1,
+        8,
+        17,
+        24,
+        39,
+        60
+      ]
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "weight": 6,
+      "doc_ids": [
+        1,
+        6,
+        7,
+        14,
+        67,
+        154
+      ]
+    },
+    {
+      "source": 3,
+      "target": 8,
+      "weight": 7,
+      "doc_ids": [
+        1,
+        24,
+        52,
+        55,
+        63,
+        64,
+        105
+      ]
+    },
+    {
+      "source": 3,
+      "target": 10,
+      "weight": 2,
+      "doc_ids": [
+        1,
+        161
+      ]
+    },
+    {
+      "source": 3,
+      "target": 13,
+      "weight": 7,
+      "doc_ids": [
+        1,
+        8,
+        24,
+        39,
+        60,
+        134,
+        156
+      ]
+    },
+    {
+      "source": 4,
+      "target": 8,
+      "weight": 3,
+      "doc_ids": [
+        1,
+        13,
+        17
+      ]
+    },
+    {
+      "source": 4,
+      "target": 10,
+      "weight": 3,
+      "doc_ids": [
+        1,
+        12,
+        160
+      ]
+    },
+    {
+      "source": 4,
+      "target": 13,
+      "weight": 2,
+      "doc_ids": [
+        1,
+        17
+      ]
+    },
+    {
+      "source": 8,
+      "target": 10,
+      "weight": 2,
+      "doc_ids": [
+        1,
+        94
+      ]
+    },
+    {
+      "source": 8,
+      "target": 13,
+      "weight": 4,
+      "doc_ids": [
+        1,
+        17,
+        24,
+        76
+      ]
+    },
+    {
+      "source": 1,
+      "target": 12,
+      "weight": 9,
+      "doc_ids": [
+        6,
+        9,
+        11,
+        13,
+        17,
+        67,
+        124,
+        135,
+        136
+      ]
+    },
+    {
+      "source": 1,
+      "target": 14,
+      "weight": 5,
+      "doc_ids": [
+        6,
+        13,
+        52,
+        56,
+        124
+      ]
+    },
+    {
+      "source": 1,
+      "target": 17,
+      "weight": 7,
+      "doc_ids": [
+        6,
+        13,
+        17,
+        52,
+        118,
+        120,
+        124
+      ]
+    },
+    {
+      "source": 2,
+      "target": 12,
+      "weight": 7,
+      "doc_ids": [
+        6,
+        7,
+        9,
+        11,
+        13,
+        15,
+        17
+      ]
+    },
+    {
+      "source": 2,
+      "target": 14,
+      "weight": 8,
+      "doc_ids": [
+        2,
+        6,
+        7,
+        8,
+        13,
+        51,
+        52,
+        56
+      ]
+    },
+    {
+      "source": 2,
+      "target": 17,
+      "weight": 6,
+      "doc_ids": [
+        2,
+        6,
+        8,
+        13,
+        17,
+        52
+      ]
+    },
+    {
+      "source": 3,
+      "target": 12,
+      "weight": 3,
+      "doc_ids": [
+        6,
+        7,
+        67
+      ]
+    },
+    {
+      "source": 3,
+      "target": 14,
+      "weight": 4,
+      "doc_ids": [
+        6,
+        7,
+        8,
+        52
+      ]
+    },
+    {
+      "source": 3,
+      "target": 17,
+      "weight": 3,
+      "doc_ids": [
+        6,
+        8,
+        52
+      ]
+    },
+    {
+      "source": 4,
+      "target": 12,
+      "weight": 5,
+      "doc_ids": [
+        6,
+        7,
+        13,
+        17,
+        67
+      ]
+    },
+    {
+      "source": 4,
+      "target": 14,
+      "weight": 3,
+      "doc_ids": [
+        6,
+        7,
+        13
+      ]
+    },
+    {
+      "source": 4,
+      "target": 17,
+      "weight": 3,
+      "doc_ids": [
+        6,
+        13,
+        17
+      ]
+    },
+    {
+      "source": 12,
+      "target": 14,
+      "weight": 4,
+      "doc_ids": [
+        6,
+        7,
+        13,
+        124
+      ]
+    },
+    {
+      "source": 12,
+      "target": 17,
+      "weight": 4,
+      "doc_ids": [
+        6,
+        13,
+        17,
+        124
+      ]
+    },
+    {
+      "source": 14,
+      "target": 17,
+      "weight": 6,
+      "doc_ids": [
+        2,
+        6,
+        8,
+        13,
+        52,
+        124
+      ]
+    },
+    {
+      "source": 1,
+      "target": 7,
+      "weight": 8,
+      "doc_ids": [
+        11,
+        57,
+        58,
+        61,
+        62,
+        65,
+        77,
+        96
+      ]
+    },
+    {
+      "source": 1,
+      "target": 11,
+      "weight": 5,
+      "doc_ids": [
+        11,
+        17,
+        60,
+        67,
+        161
+      ]
+    },
+    {
+      "source": 1,
+      "target": 18,
+      "weight": 3,
+      "doc_ids": [
+        11,
+        75,
+        100
+      ]
+    },
+    {
+      "source": 1,
+      "target": 21,
+      "weight": 3,
+      "doc_ids": [
+        11,
+        65,
+        100
+      ]
+    },
+    {
+      "source": 2,
+      "target": 7,
+      "weight": 9,
+      "doc_ids": [
+        2,
+        11,
+        39,
+        57,
+        61,
+        62,
+        66,
+        71,
+        82
+      ]
+    },
+    {
+      "source": 2,
+      "target": 11,
+      "weight": 7,
+      "doc_ids": [
+        2,
+        7,
+        11,
+        17,
+        60,
+        66,
+        70
+      ]
+    },
+    {
+      "source": 2,
+      "target": 18,
+      "weight": 4,
+      "doc_ids": [
+        11,
+        70,
+        75,
+        100
+      ]
+    },
+    {
+      "source": 2,
+      "target": 21,
+      "weight": 2,
+      "doc_ids": [
+        11,
+        100
+      ]
+    },
+    {
+      "source": 7,
+      "target": 11,
+      "weight": 3,
+      "doc_ids": [
+        2,
+        11,
+        66
+      ]
+    },
+    {
+      "source": 7,
+      "target": 18,
+      "weight": 2,
+      "doc_ids": [
+        11,
+        107
+      ]
+    },
+    {
+      "source": 7,
+      "target": 21,
+      "weight": 2,
+      "doc_ids": [
+        11,
+        65
+      ]
+    },
+    {
+      "source": 11,
+      "target": 12,
+      "weight": 4,
+      "doc_ids": [
+        7,
+        11,
+        17,
+        67
+      ]
+    },
+    {
+      "source": 11,
+      "target": 18,
+      "weight": 2,
+      "doc_ids": [
+        11,
+        70
+      ]
+    },
+    {
+      "source": 18,
+      "target": 21,
+      "weight": 2,
+      "doc_ids": [
+        11,
+        100
+      ]
+    },
+    {
+      "source": 1,
+      "target": 16,
+      "weight": 5,
+      "doc_ids": [
+        13,
+        69,
+        122,
+        135,
+        136
+      ]
+    },
+    {
+      "source": 2,
+      "target": 16,
+      "weight": 7,
+      "doc_ids": [
+        2,
+        7,
+        8,
+        13,
+        15,
+        69,
+        70
+      ]
+    },
+    {
+      "source": 4,
+      "target": 16,
+      "weight": 2,
+      "doc_ids": [
+        7,
+        13
+      ]
+    },
+    {
+      "source": 8,
+      "target": 12,
+      "weight": 2,
+      "doc_ids": [
+        13,
+        17
+      ]
+    },
+    {
+      "source": 8,
+      "target": 14,
+      "weight": 2,
+      "doc_ids": [
+        13,
+        52
+      ]
+    },
+    {
+      "source": 8,
+      "target": 17,
+      "weight": 3,
+      "doc_ids": [
+        13,
+        17,
+        52
+      ]
+    },
+    {
+      "source": 12,
+      "target": 16,
+      "weight": 5,
+      "doc_ids": [
+        7,
+        13,
+        15,
+        135,
+        136
+      ]
+    },
+    {
+      "source": 14,
+      "target": 16,
+      "weight": 4,
+      "doc_ids": [
+        2,
+        7,
+        8,
+        13
+      ]
+    },
+    {
+      "source": 16,
+      "target": 17,
+      "weight": 3,
+      "doc_ids": [
+        2,
+        8,
+        13
+      ]
+    },
+    {
+      "source": 1,
+      "target": 5,
+      "weight": 8,
+      "doc_ids": [
+        17,
+        24,
+        56,
+        63,
+        64,
+        102,
+        105,
+        157
+      ]
+    },
+    {
+      "source": 1,
+      "target": 6,
+      "weight": 5,
+      "doc_ids": [
+        17,
+        57,
+        60,
+        69,
+        116
+      ]
+    },
+    {
+      "source": 2,
+      "target": 5,
+      "weight": 4,
+      "doc_ids": [
+        17,
+        24,
+        39,
+        56
+      ]
+    },
+    {
+      "source": 2,
+      "target": 6,
+      "weight": 12,
+      "doc_ids": [
+        8,
+        17,
+        39,
+        57,
+        60,
+        69,
+        84,
+        112,
+        116,
+        119,
+        123,
+        139
+      ]
+    },
+    {
+      "source": 4,
+      "target": 11,
+      "weight": 3,
+      "doc_ids": [
+        7,
+        17,
+        67
+      ]
+    },
+    {
+      "source": 5,
+      "target": 6,
+      "weight": 3,
+      "doc_ids": [
+        17,
+        39,
+        79
+      ]
+    },
+    {
+      "source": 5,
+      "target": 8,
+      "weight": 7,
+      "doc_ids": [
+        17,
+        24,
+        63,
+        64,
+        76,
+        94,
+        105
+      ]
+    },
+    {
+      "source": 5,
+      "target": 11,
+      "weight": 2,
+      "doc_ids": [
+        17,
+        79
+      ]
+    },
+    {
+      "source": 5,
+      "target": 13,
+      "weight": 4,
+      "doc_ids": [
+        17,
+        24,
+        39,
+        76
+      ]
+    },
+    {
+      "source": 6,
+      "target": 8,
+      "weight": 3,
+      "doc_ids": [
+        17,
+        57,
+        114
+      ]
+    },
+    {
+      "source": 6,
+      "target": 11,
+      "weight": 3,
+      "doc_ids": [
+        17,
+        60,
+        79
+      ]
+    },
+    {
+      "source": 6,
+      "target": 13,
+      "weight": 4,
+      "doc_ids": [
+        8,
+        17,
+        39,
+        60
+      ]
+    },
+    {
+      "source": 6,
+      "target": 17,
+      "weight": 2,
+      "doc_ids": [
+        8,
+        17
+      ]
+    },
+    {
+      "source": 11,
+      "target": 13,
+      "weight": 2,
+      "doc_ids": [
+        17,
+        60
+      ]
+    },
+    {
+      "source": 11,
+      "target": 17,
+      "weight": 2,
+      "doc_ids": [
+        2,
+        17
+      ]
+    },
+    {
+      "source": 13,
+      "target": 17,
+      "weight": 3,
+      "doc_ids": [
+        8,
+        17,
+        120
+      ]
+    },
+    {
+      "source": 1,
+      "target": 9,
+      "weight": 8,
+      "doc_ids": [
+        24,
+        56,
+        61,
+        62,
+        72,
+        86,
+        135,
+        136
+      ]
+    },
+    {
+      "source": 2,
+      "target": 9,
+      "weight": 7,
+      "doc_ids": [
+        24,
+        55,
+        56,
+        61,
+        62,
+        101,
+        111
+      ]
+    },
+    {
+      "source": 3,
+      "target": 5,
+      "weight": 10,
+      "doc_ids": [
+        24,
+        39,
+        63,
+        64,
+        102,
+        105,
+        126,
+        152,
+        157,
+        158
+      ]
+    },
+    {
+      "source": 3,
+      "target": 9,
+      "weight": 2,
+      "doc_ids": [
+        24,
+        55
+      ]
+    },
+    {
+      "source": 5,
+      "target": 9,
+      "weight": 2,
+      "doc_ids": [
+        24,
+        56
+      ]
+    },
+    {
+      "source": 8,
+      "target": 9,
+      "weight": 2,
+      "doc_ids": [
+        24,
+        55
+      ]
+    },
+    {
+      "source": 9,
+      "target": 14,
+      "weight": 2,
+      "doc_ids": [
+        56,
+        106
+      ]
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "weight": 2,
+      "doc_ids": [
+        39,
+        57
+      ]
+    },
+    {
+      "source": 3,
+      "target": 6,
+      "weight": 3,
+      "doc_ids": [
+        8,
+        39,
+        60
+      ]
+    },
+    {
+      "source": 3,
+      "target": 11,
+      "weight": 5,
+      "doc_ids": [
+        7,
+        60,
+        67,
+        92,
+        161
+      ]
+    },
+    {
+      "source": 4,
+      "target": 7,
+      "weight": 4,
+      "doc_ids": [
+        61,
+        62,
+        65,
+        71
+      ]
+    },
+    {
+      "source": 4,
+      "target": 9,
+      "weight": 2,
+      "doc_ids": [
+        61,
+        62
+      ]
+    },
+    {
+      "source": 7,
+      "target": 9,
+      "weight": 3,
+      "doc_ids": [
+        61,
+        62,
+        97
+      ]
+    },
+    {
+      "source": 1,
+      "target": 24,
+      "weight": 3,
+      "doc_ids": [
+        62,
+        64,
+        86
+      ]
+    },
+    {
+      "source": 9,
+      "target": 24,
+      "weight": 2,
+      "doc_ids": [
+        62,
+        86
+      ]
+    },
+    {
+      "source": 1,
+      "target": 15,
+      "weight": 5,
+      "doc_ids": [
+        69,
+        77,
+        104,
+        118,
+        151
+      ]
+    },
+    {
+      "source": 2,
+      "target": 15,
+      "weight": 4,
+      "doc_ids": [
+        2,
+        15,
+        69,
+        151
+      ]
+    },
+    {
+      "source": 6,
+      "target": 15,
+      "weight": 2,
+      "doc_ids": [
+        69,
+        79
+      ]
+    },
+    {
+      "source": 6,
+      "target": 16,
+      "weight": 2,
+      "doc_ids": [
+        8,
+        69
+      ]
+    },
+    {
+      "source": 15,
+      "target": 16,
+      "weight": 3,
+      "doc_ids": [
+        2,
+        15,
+        69
+      ]
+    },
+    {
+      "source": 7,
+      "target": 15,
+      "weight": 2,
+      "doc_ids": [
+        2,
+        77
+      ]
+    },
+    {
+      "source": 4,
+      "target": 15,
+      "weight": 3,
+      "doc_ids": [
+        104,
+        117,
+        151
+      ]
+    },
+    {
+      "source": 15,
+      "target": 17,
+      "weight": 2,
+      "doc_ids": [
+        2,
+        118
+      ]
+    },
+    {
+      "source": 9,
+      "target": 12,
+      "weight": 2,
+      "doc_ids": [
+        135,
+        136
+      ]
+    },
+    {
+      "source": 9,
+      "target": 16,
+      "weight": 2,
+      "doc_ids": [
+        135,
+        136
+      ]
+    },
+    {
+      "source": 11,
+      "target": 14,
+      "weight": 2,
+      "doc_ids": [
+        2,
+        7
+      ]
+    },
+    {
+      "source": 11,
+      "target": 15,
+      "weight": 2,
+      "doc_ids": [
+        2,
+        79
+      ]
+    },
+    {
+      "source": 11,
+      "target": 16,
+      "weight": 3,
+      "doc_ids": [
+        2,
+        7,
+        70
+      ]
+    },
+    {
+      "source": 3,
+      "target": 16,
+      "weight": 2,
+      "doc_ids": [
+        7,
+        8
+      ]
+    },
+    {
+      "source": 7,
+      "target": 10,
+      "weight": 2,
+      "doc_ids": [
+        82,
+        107
+      ]
+    },
+    {
+      "source": 5,
+      "target": 10,
+      "weight": 2,
+      "doc_ids": [
+        94,
+        95
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "id": 1,
+      "title": "Datadog-Managed Monitors",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1G4fiOnINogCkJCQBiHdjLr2zyD1jnq4F5BVZQZXL3Fc/edit?usp=drivesdk",
+      "created_at": "2026-04-03T14:16:26.776Z",
+      "snippet": "\ufeffProblem statement & Open Questions\r Datadog-Managed Monitors[a][b] (Bits Monitors)\r \r \r Author: Capucine Marteau\r Last Updated: Dec 15, 2025\r Status: Approved\r Team: Monitor Posture\r Docs: Define and"
+    },
+    {
+      "id": 2,
+      "title": "Automatic Detection sync - 2026/03/24 18:00 CET - Notes by Gemini",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1VOoVK6ZwNmaXOIxo0j4i-ZRg4MCs2gnOAgNcskq8dM8/edit?usp=drivesdk",
+      "created_at": "2026-03-24T17:39:00.488Z",
+      "snippet": "\ufeff\ud83d\udcdd Notes\r Mar 24, 2026\r Automatic Detection sync\r Invited Capucine Marteau Erik Petersen Nick Adams Carol Yao Samantha Scaglione Alejandro Borbolla Angira Shirahatti\r Attachments Automatic Detection s"
+    },
+    {
+      "id": 6,
+      "title": "OKR Pitch",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1tlUfP3WpXi2lMa3henmYkBCOU3cPU7ZVG-emz4RgPfw/edit?usp=drivesdk",
+      "created_at": "2026-04-02T14:16:05.616Z",
+      "snippet": "OKR Pitch  OKR Q2 2026  So O1 is about automatic detection that customers can rely on to find problems early and broadly. Today, users have the responsibility to decide what to monitor, how to configu"
+    },
+    {
+      "id": 7,
+      "title": "Reconciling the AI detection initiatives",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1OLvVKFfM3FDd8qeMDr2AUd-8_AuV2ZaRj1hjwQzwVEY/edit?usp=drivesdk",
+      "created_at": "2026-04-03T18:37:44.558Z",
+      "snippet": "Reconciling the AI detection initiatives  Author:  Last updated:   Ops Manager and Alerting are working on overlapping areas of automated monitoring. We need a clear collaboration model to deliver a s"
+    },
+    {
+      "id": 8,
+      "title": "Notes - Omri / Capucine",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1ZVkgpd6N1mODx_-V33fbRbZnUAJZmWP1EL3S0E-taog/edit?usp=drivesdk",
+      "created_at": "2026-03-31T13:38:25.801Z",
+      "snippet": "Mar 31, 2026 | Omri / Capucine\r Attendees: Capucine Marteau Omri Sass\r \r Notes\r * Worried about the Detection OKRs\r * Steven = manager for Alerting\r * Simone asked for internal mobility\r * Whether sta"
+    },
+    {
+      "id": 9,
+      "title": "Posture.md and Posture Agent",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/18L3YkEPyvPjMHHdxuvPDrhJR8XK7M7r7_9IkZL8sZcE/edit?usp=drivesdk",
+      "created_at": "2026-03-31T12:12:21.452Z",
+      "snippet": "Posture.md and Posture Agent: Enforcing and improving monitoring posture at scale  Author: Capucine Marteau Last updated: Mar 25, 2026 Status: Ready for Review Related doc: Reconciling the AI detectio"
+    },
+    {
+      "id": 10,
+      "title": "Rethinking the code review system",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1SLxY-k715UugbBty-Q27mUSZQJyIRIG2r2ijFPHKbas/edit?usp=drivesdk",
+      "created_at": "2026-03-27T10:17:47.359Z",
+      "snippet": "Rethinking the code review system  Context AI has removed the coding bottleneck. Now the bottleneck is: review, alignment and trust. Human-in-the-loop is not optional. It must scale. The challenge is"
+    },
+    {
+      "id": 11,
+      "title": "Research on Monitoring Posture",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1sDxq0aXNlM-RFNE5dfJa4I_37HBZPvMPqca_Td_xXxs/edit?usp=drivesdk",
+      "created_at": "2026-03-26T19:54:17.010Z",
+      "snippet": "Customer Feedback - Research on Monitoring Posture Raw notes Sanofi Pierre | Sanofi | Platform team | 4 equipes 3 ans \u2013 recrut\u00e9 pour monter la plateforme Monter une \u00e9quipe sur compliance et securite \u2013"
+    },
+    {
+      "id": 12,
+      "title": "[Feature Announcement][Monitors] Side Panel",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/13t6laY8Npt9nVBIivw3_LP-MqT2XrDC5XypDKfEX1y4/edit?usp=drivesdk",
+      "created_at": "2026-03-26T16:05:40.620Z",
+      "snippet": "[Feature Announcement][Monitors] Automatic Monitors: zero setup, instant coverage  Hi everyone, The Alerting, Onboarding and APM teams are excited to announce that new orgs now start with instant moni"
+    },
+    {
+      "id": 13,
+      "title": "Notes - Automatic Detection sync",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1V7rQN9J-esBWyp95TfG2NCqLwiBwqKHOHgxr0S0dimc/edit?usp=drivesdk",
+      "created_at": "2026-03-24T23:02:06.753Z",
+      "snippet": "Mar 24, 2026 | Automatic Detection sync Attendees: Capucine Marteau Erik Petersen Nick Adams Carol Yao Samantha Scaglione Alejandro Borbolla Angira Shirahatti Notes * Quick updates from each team:"
+    },
+    {
+      "id": 14,
+      "title": "Monitoring Posture Skill",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1t07hDQOmgKmFf53d4i0Q1GsyR1xPUiQsrFl7l1MZ4F0/edit?usp=drivesdk",
+      "created_at": "2026-03-23T13:27:46.368Z",
+      "snippet": "Monitoring Posture Skill --- name: monitoring-posture description: Assess monitoring coverage and monitor quality across teams and services. metadata:   tools:     - get_coverage ---  # Monitoring Pos"
+    },
+    {
+      "id": 15,
+      "title": "Suggested Demo Flow",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1H-MNDReOaoNezRmO8KDYu65Hll7BMD1JibB9pzE8o5Y/edit?usp=drivesdk",
+      "created_at": "2026-03-19T23:03:48.647Z",
+      "snippet": "Suggested Demo Flow 1. Start with the pain (30s) Open the Overview page on a team that has no Bits monitors yet. Let the customer see the gaps.  2. Trigger the magic \u2014 Onboarding flow (2-3 min) Create"
+    },
+    {
+      "id": 16,
+      "title": "Bits Monitors: Automation with Deterministic Quality",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/19FcxlVjrSwJotB3HN_4ZBM57lekBuA0uxJ9TuIzO3Kg/edit?usp=drivesdk",
+      "created_at": "2026-03-18T19:36:30.093Z",
+      "snippet": "Bits Monitors: Automation with Deterministic Quality The Problem Customers struggle to reach and sustain a strong monitoring posture. Designing high-quality detection at scale requires time and expert"
+    },
+    {
+      "id": 17,
+      "title": "Capucine/Phillip",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1ZB3GKqZc10Dj774GPPLSqnJNt_HgakLrKayciOKwNu4/edit?usp=drivesdk",
+      "created_at": "2026-03-18T16:28:14.350Z",
+      "snippet": "Mar 18, 2026 | Capucine / Phillip Alerting vision: DETECT \u2192 TRIAGE \u2192 ACTION Collab with ops manager: * Data Science task force on thresholds * build a common UX * Living Runbook Owned by us: * platfor"
+    },
+    {
+      "id": 24,
+      "title": "Alerting Platform \u2013 AI roadmap",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1XOE2KkBjCOYMvefa9EEid-JPLY9FWbgBvWlTbaUa2LA/edit?usp=drivesdk",
+      "created_at": "2026-03-04T19:42:12.692Z",
+      "snippet": "\ufeff2026 - AI roadmap for Alerting\r Alerting Platform \u2013 2026 AI roadmap\r \r \r ________________\r \r \r \r \r Author: Capucine Marteau for alerting-platform@datadoghq.com\r Last updated: Feb 10, 2026\r Eng owners"
+    },
+    {
+      "id": 39,
+      "title": "Pierre / Capucine 1:1",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1jfE2edWuDinC6qu4w0bpUb7qYFEqiA_m0BN5D_F1Qm4/edit?usp=drivesdk",
+      "created_at": "2026-01-06T10:06:51.565Z",
+      "snippet": "\ufeff[ template ]\r \ud83e\ude91 Stepping back\r Pierre CariouCapucine Marteauto fill this in prior to our meeting.\r All other topics - longer term objectives, recurring challenges, career development, etc.\r * \ud83c\udfc3 Run"
+    },
+    {
+      "id": 40,
+      "title": "Charts",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1W_J0IvO9L0M_9D8SFA1p6aPaRL6rKyXMPTR4jXh6Mcs/edit?usp=drivesdk",
+      "created_at": "2026-01-11T15:28:36.610Z",
+      "snippet": "\ufeffDamien\r Damien\r \ud83c\udf1f What Is the North Node?\r * The North Node represents your soul\u2019s evolutionary path \u2014 what you're here to learn and embody in this life.\r \r * It often feels unfamiliar, uncomfortable"
+    },
+    {
+      "id": 50,
+      "title": "Lisa Astro Chart",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1vTrghGLQ2eq7EscoEoiG0mn6v0Z4DC-Seec6HlDBZck/edit?usp=drivesdk",
+      "created_at": "2026-03-14T14:29:26.575Z",
+      "snippet": "Lisa Astro Chart Venus in Virgo in the first house Traits principaux: * Presence attractive * Attitude diplomatique et plaisante * Sens esth\u00e9tique * Les relations forment son sens de l'identit\u00e9  Moon"
+    },
+    {
+      "id": 51,
+      "title": "Nick / Capucine - 2026/03/11 15:02 CET - Notes by Gemini",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/11NzJ5ASUZxQp2G8LVeh6wEs7OIPuQJev3J6WVeT1HrQ/edit?usp=drivesdk",
+      "created_at": "2026-03-11T14:31:51.654Z",
+      "snippet": "Nick / Capucine - 2026/03/11 15:02 CET - Notes by Gemini Summary Managed monitors and Ops Manager project status review included core design challenges and technical implementation models for monitor"
+    },
+    {
+      "id": 52,
+      "title": "Automatic Detection sync - 2026/03/10 18:00 CET - Notes by Gemini",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1XcVmLOPPqiBGQdhuxtxQ9gkEYXmsIJXsgX8D06QAEhs/edit?usp=drivesdk",
+      "created_at": "2026-03-10T17:29:48.503Z",
+      "snippet": "Automatic Detection sync - 2026/03/10 18:00 CET - Notes by Gemini Summary Team updates covered new personnel and a Managed Monitor API presentation, leading to discussion on Q2 collaboration areas for"
+    },
+    {
+      "id": 53,
+      "title": "Intro: qui suis-je, pourquoi je parle d\u2019IA, pourquoi je donne des cours",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1dy2D4mUmeJgZW45x9pk0jmqutFb6rp7wmtlhv01B724/edit?usp=drivesdk",
+      "created_at": "2026-03-07T19:21:45.399Z",
+      "snippet": "Intro: qui suis-je, pourquoi je parle d\u2019IA, pourquoi je donne des cours  Ice breaker: Question d'ouverture Vous avez 100 points d'investissement intellectuel pour cet apr\u00e8s-midi.  5 cartes: A. Challen"
+    },
+    {
+      "id": 55,
+      "title": "Threshold Recommendations",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/16z_aIny98cyKpQ-6YLWWGn0MToOSVSN-LxuPdqu4Zyg/edit?usp=drivesdk",
+      "created_at": "2026-02-27T14:51:35.051Z",
+      "snippet": "Threshold Recommendations \u2014 Product Spec 1. Problem Statement Today, customers expect Datadog to act as the expert, using their data and product knowledge to guide configuration decisions. Threshold c"
+    },
+    {
+      "id": 56,
+      "title": "Automatic Detection sync - 2026/02/24 18:01 CET - Notes by Gemini",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1hhycqwKRwMW_eJYghk71jdUgyh0J9gnD9JElG3TN4cw/edit?usp=drivesdk",
+      "created_at": "2026-02-24T17:30:38.908Z",
+      "snippet": "Automatic Detection sync - 2026/02/24 18:01 CET - Notes by Gemini Summary Team shared work on coverage controller and creating monitors from coverage gaps without surfacing gaps to customers. Carol di"
+    },
+    {
+      "id": 57,
+      "title": "Feb 19, 2026 | Maxime / Capucine",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1K1xtKr-FCgZ-UJvQ-Y1dpZad9kXiMt_hM5OA8L3TstU/edit?usp=drivesdk",
+      "created_at": "2026-02-19T17:26:40.967Z",
+      "snippet": "Feb 19, 2026 | Maxime / Capucine Attendees: Capucine Marteau Maxime Agostini  Notes * Maxime is asking Claude to provide a good posture to 10 DD teams and see gaps with current monitoring * Capucine i"
+    },
+    {
+      "id": 58,
+      "title": "Hackathon Ideas",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1z8zLadHYx0BBTaI48syqHQ16Ke88h-ORqAUFfZvlflE/edit?usp=drivesdk",
+      "created_at": "2026-02-17T14:18:58.081Z",
+      "snippet": "Hackathon Ideas  Idea: Customer Monitoring Posture Auto-Report Input: Org, Industry, Revenue Tier Generates: Monitoring maturity score, Coverage gaps, Hygiene issues, Business risk framing, Estimated"
+    },
+    {
+      "id": 59,
+      "title": "Define and compute coverage",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1qZWzbyf1eA_ZPw5dvgRYj1v3AC7xCeFrtpk60Zo0MWE/edit?usp=drivesdk",
+      "created_at": "2026-02-16T15:26:27.061Z",
+      "snippet": "Define and compute coverage (Product specs) Author: Capucine Marteau Eng owner: Alejandro Borbolla Status: Approved  Context: Our goal is to make Monitoring Posture visible, measurable, and fixable. C"
+    },
+    {
+      "id": 60,
+      "title": "Brag doc",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1P4pHqFWEGJ0VPPWC0zpqoaRZuYnvtinnC7xZc0squMg/edit?usp=drivesdk",
+      "created_at": "2026-02-14T18:38:29.122Z",
+      "snippet": "Brag Document  Features shipped: * Monitor Empty State * Template variables in Recommended Monitors * GRACE migration * Export to Terraform * Recommended Monitors in Creation Form * Noisy Monitors in"
+    },
+    {
+      "id": 61,
+      "title": "MBC __ Datadog \u2013 Monitoring Best Practices",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1BJqojcgUq2pE02rOFI2fhpfbzIo_lC5_RXEorivfa1s/edit?usp=drivesdk",
+      "created_at": "2026-02-13T19:53:40.935Z",
+      "snippet": "Monitoring Posture Recommendations for Shahid (MBC) Goal: Reduce missed incidents without creating alert fatigue. Separate signals: ALERT (Action required, pages) vs INFO (Awareness, non-paging).  Pla"
+    },
+    {
+      "id": 62,
+      "title": "MBC <> Datadog \u2013 Monitoring Best Practices",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1SFMhdQKd8fbQyKKYiXI329uhB6pxw1db4VQnq9SKhVc/edit?usp=drivesdk",
+      "created_at": "2026-02-13T17:48:48.470Z",
+      "snippet": "Monitoring Posture Recommendations for Shahid (MBC) Goal: Reduce missed incidents without creating alert fatigue. Separate signals: ALERT (Action required) vs INFO (Awareness).  Plan: 1. Monitor Start"
+    },
+    {
+      "id": 63,
+      "title": "Building an MCP server for Alerting & Graphing",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1UBublqHxEAbhXuXxbRV1FpSV-Y3fg_p3Okm_scGhar8/edit?usp=drivesdk",
+      "created_at": "2026-02-10T14:52:17.968Z",
+      "snippet": "Building an MCP server for Alerting & Graphing Author: Capucine Marteau  Why: Enable AI-powered features that help users create better monitors, reduce noise, and understand alerting posture. LLMs nee"
+    },
+    {
+      "id": 64,
+      "title": "MCP Alerting Toolset Testing Instructions",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1DSHKiLK39MozYBoqsZxK4M9XU5d3qO7jE9GCq3gggOU/edit?usp=drivesdk",
+      "created_at": "2026-01-30T15:41:52.238Z",
+      "snippet": "MCP Alerting Toolset Testing Instructions New alerting tools enabled as part of preview of Remote Datadog MCP Server.  Searching & retrieving monitors: * search_datadog_monitors, search_datadog_slos,"
+    },
+    {
+      "id": 65,
+      "title": "Coverage Deep Dive \u2013 Liberty Mutual",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1SdurWlROhJWlNER7a6PZ3JztLas4UQCrDhbzMB2T2uY/edit?usp=drivesdk",
+      "created_at": "2026-01-28T17:27:14.789Z",
+      "snippet": "Coverage Deep Dive \u2013 Liberty Mutual Liberty Mutual is a large-scale, long-time Datadog customer with tens of thousands of monitors.  Monitoring context: ~42K monitors including 11K Integration, 10K AP"
+    },
+    {
+      "id": 66,
+      "title": "Interview questions for Toyota",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1ACfPQeEt2RfmmVc5KO1iw8l7SUwXeYFzfVc0vcX62Mk/edit?usp=drivesdk",
+      "created_at": "2026-01-26T19:53:46.166Z",
+      "snippet": "Interview questions for Toyota Structured interview guide for validating Datadog-Managed Monitors with Toyota.  Sections: 1. Context & current workflow: How Toyota creates, reviews, maintains monitors"
+    },
+    {
+      "id": 67,
+      "title": "Product Spec: get_posture API",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1iJ1NGnDyx_jmJ5r3iPnsLMYcQNwXj797Mp4SveIzIn4/edit?usp=drivesdk",
+      "created_at": "2026-01-26T13:56:15.701Z",
+      "snippet": "Product Spec: get_posture API Owner: Capucine Marteau Status: Reviewable  get_posture is a new API endpoint (internal MCP, later public) that evaluates the monitoring posture of a given resource, retu"
+    },
+    {
+      "id": 68,
+      "title": "Chart Magali",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1u_Ptj5m6tXBkf5pFRTrRkmCgM5PldrQLDcsH4BRbQ2w/edit?usp=drivesdk",
+      "created_at": "2026-01-25T17:55:06.438Z",
+      "snippet": "Chart Magali Astro chart analysis.  Noeud nord en Verseau en Maison 1: Trajectoire de vie - \u00eatre toi-m\u00eame sans permission. Transition de vivre pour les autres \u00e0 vivre en tant que soi authentique.  V\u00e9n"
+    },
+    {
+      "id": 69,
+      "title": "Meeting notes | Capucine / Khang",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1JltBhKbwDtzYKA7_1BKtiC9312qggmc6ySUAkBj9VM4/edit?usp=drivesdk",
+      "created_at": "2026-01-15T14:24:39.481Z",
+      "snippet": "Meeting notes | Capucine / Khang Jan 15, 2026: Executive Dashboard (e-commerce) link monitors, DASH talk on Posture + Detection, Blog post on Monitoring Posture  Nov 6, 2025: Automatic Monitors for ex"
+    },
+    {
+      "id": 70,
+      "title": "DASH submission",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1CGIjlm8SR1HDYp3zgwrSvzYVkPIsKbOKOsROlmaMGk4/edit?usp=drivesdk",
+      "created_at": "2026-01-15T14:19:24.618Z",
+      "snippet": "DASH submission Governance \u2192 Monitor & Dashboard Management  * How to start with the right collection of monitors & dashboard? Automatic monitors, DD-managed monitors, Monitor templates, RED metrics *"
+    },
+    {
+      "id": 71,
+      "title": "To clarify on DD-managed monitors:",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1048Gv2fkFJEKq3J6nPW-oQcByCNGc-IzdBh_D333PPQ/edit?usp=drivesdk",
+      "created_at": "2026-01-12T18:27:56.450Z",
+      "snippet": "To clarify on DD-managed monitors: Q1 goal: ship first iteration to design partners, focused on auto-creation of RED monitors from coverage gaps, with UI visibility and managed properties (overridabil"
+    },
+    {
+      "id": 72,
+      "title": "Monitoring Posture blog post",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1puBhUfl9J2oHzmuI3Z_w68KcleR125p_XUFnRCQl4iI/edit?usp=drivesdk",
+      "created_at": "2026-01-09T14:40:34.729Z",
+      "snippet": "Monitoring Posture blog post: from reactive alerts to confident coverage  Why monitoring posture matters: Early detection, low noise, continuous confidence.  Coverage: seeing the whole picture * Basel"
+    },
+    {
+      "id": 73,
+      "title": "Automatic Monitors \u2014 Next Steps",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1ibaZcemvtzsuKpOEcZb60MzQOw6BtqleSKgXINwjWH4/edit?usp=drivesdk",
+      "created_at": "2026-01-07T03:18:33.766Z",
+      "snippet": "Automatic Monitors \u2014 Next Steps Author: Capucine Marteau  Vision: Zero-setup, Datadog-managed monitoring coverage for all customers.  1. Automatic Monitors become Datadog-managed monitors (Q1-Q2) * Up"
+    },
+    {
+      "id": 74,
+      "title": "Site Mont Kailash",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1k1REoRw8vtUxONnFk77il17fh6sw3HNkjDYe2yv7Sxg/edit?usp=drivesdk",
+      "created_at": "2025-12-29T19:29:14.691Z",
+      "snippet": "Site Mont Kailash https://montkailash-bien-etre.fr/  Maintenance Checklist (WordPress): 1. Connexion & sauvegarde (UpdraftPlus) 2. Mises \u00e0 jour: WordPress core, th\u00e8me, plugins 3. S\u00e9curit\u00e9: plugin Word"
+    },
+    {
+      "id": 75,
+      "title": "Coverage and quality KPIs",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1ewZ1LbX2t2wL87_RkctFIdWdnRDmgVZJb5_-lT_ErJ8/edit?usp=drivesdk",
+      "created_at": "2025-12-19T14:44:59.766Z",
+      "snippet": "KPIs for Monitor Posture initiatives  Monitor Templates: * 77% orgs creating monitors from templates * 60% of monitors created from templates (vs. 3% last year) * Time spent: 600s (templates) vs. 670s"
+    },
+    {
+      "id": 76,
+      "title": "Monitor Generation Roadmap & Milestones",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1ZZDW_yJzkgGiPfu7LNgjGgm-beoX2xY_ZAgCA6TYc08/edit?usp=drivesdk",
+      "created_at": "2025-12-17T17:29:16.210Z",
+      "snippet": "Monitor Generation Roadmap & Milestones Author: Capucine Marteau  Vision: Enable Datadog to generate high-quality monitors automatically or with minimal user input, by predicting all key attributes: q"
+    },
+    {
+      "id": 77,
+      "title": "Prototype proposal for Monitor Posture",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/16ySpLqUDRycelKb1L2XnJFaptCfWaXCgtA4ib7q5WoM/edit?usp=drivesdk",
+      "created_at": "2025-12-14T22:45:41.705Z",
+      "snippet": "Prototype proposal: Monitoring Posture Overview Author: Capucine Marteau Status: Approved  Purpose: Validate how customers understand and interact with monitoring posture \u2014 coverage, quality, recommen"
+    },
+    {
+      "id": 78,
+      "title": "Cadeaux de No\u00ebl",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1O5wlK_OvmPZ_xxlZXkpKUnCnNPWEmCwPLHJZzZpOKog/edit?usp=drivesdk",
+      "created_at": "2025-12-12T20:48:36.118Z",
+      "snippet": "Cadeaux de No\u00ebl  Pour ma famille:  * Ampoules Philips Hue * Ustensiles de cuisine: Couteaux de cuisine, Spatule, Louche, Fouet, Cuilleres en bois, Couverts \u00e0 salade, Eplucheur, Planche \u00e0 d\u00e9couper, Epi"
+    },
+    {
+      "id": 79,
+      "title": "Notes - Capucine / Cole 1:1",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1IghFaV4WJqk9No01cXeEhHoL2Lr7RNEfWQ8HP8qrwW4/edit?usp=drivesdk",
+      "created_at": "2025-12-12T15:20:47.945Z",
+      "snippet": "Dec 12, 2025 | Capucine / Cole 1:1 Attendees: Capucine Marteau Cole Murphy  Notes * Generate message * Cmd+i * TF: Cole will wrap up research next week * Cole will own Dashboards, focused more on Grap"
+    },
+    {
+      "id": 80,
+      "title": "Chart Alejandro",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1xAdH_Cz0nuag7Z4JSN1501sBnWbmPfmL0Uhe5dFvi4Y/edit?usp=drivesdk",
+      "created_at": "2025-12-11T22:44:02.003Z",
+      "snippet": "Chart Alejandro  Core Themes of the Chart 1. Intellectual Growth and Communication * Key Placements: Mercury, Jupiter, Saturn in Gemini (8th and 7th Houses) * Heavily focused on intellectual curiosity"
+    },
+    {
+      "id": 81,
+      "title": "Measuring Monitoring Posture",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1_JGaLWqbRaSn87dcuZIVX95zf3-DsLwWtr5jPiwlHj8/edit?usp=drivesdk",
+      "created_at": "2025-12-08T17:04:37.333Z",
+      "snippet": "Measuring Monitoring Posture  This document outlines our approach to measuring and improving monitoring posture at Datadog, meaning supporting customers in setting no more no less than the right monit"
+    },
+    {
+      "id": 82,
+      "title": "Autonotifications for Trial Orgs",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1Dw7fyxf0o2BHn-MAGW7zFNqMBUJz-C1b3Ne54UBpStA/edit?usp=drivesdk",
+      "created_at": "2025-12-05T11:06:14.419Z",
+      "snippet": "Autonotifications for Trial Orgs  Context * In Q2, we released automatic monitors for trial orgs: every new org starts with a standard set of monitors. * Currently, customers must set up notifications"
+    },
+    {
+      "id": 83,
+      "title": "Writing monitor templates",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/114nRZI9oCRvTN0J_PHpQb1Y3DIDquybIdCG25sQiKpw/edit?usp=drivesdk",
+      "created_at": "2025-12-05T10:32:22.814Z",
+      "snippet": "Writing monitor templates Author \u2014 Maxime Matheron Simone Tafaro Yao Ding  A monitor template is essentially made of the definition of a Datadog monitor and some additional metadata. The extra metadat"
+    },
+    {
+      "id": 84,
+      "title": "Notes - Brainstorm: Datadog Managed Monitors",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1fmKeaqRFlBZokXkyPARkxc_hALhNqb3p4Dgf9tdGUE0/edit?usp=drivesdk",
+      "created_at": "2025-12-03T16:29:45.595Z",
+      "snippet": "Dec 3, 2025 | Brainstorm: Datadog Managed Monitors Attendees: Alejandro Borbolla Capucine Marteau Carol Yao Darnell Shumpert Martin Esguerra Phillip Baker Scott Xue Vahe Karamyan Myriam Anki  Notes *"
+    },
+    {
+      "id": 85,
+      "title": "Grand maman,",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1OuwiFjEBzPRAkE2izfCWTUIYRdLuptdo5xM1nFMOInI/edit?usp=drivesdk",
+      "created_at": "2025-12-02T12:32:52.231Z",
+      "snippet": "Grand maman,  Un petit mot, comme d'habitude, pour te dire encore que je t'aime.  Depuis que tu es partie, j'accueille le deuil en moi, et j'apprends \u00e0 le conna\u00eetre. Je pensais que le deuil, c'\u00e9tait l"
+    },
+    {
+      "id": 86,
+      "title": "Nov 21, 2025 | Requirements for Monitor Datasets",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1dSTtEPe8Ld2v6NsmGf8_uatbdP0k8MkjzlkUc-hCS6A/edit?usp=drivesdk",
+      "created_at": "2025-12-01T17:56:48.223Z",
+      "snippet": "Nov 24, 2025 | Follow up of requirements for training datasets Attendees: Assaf Muller Zach Garcia Phillip Baker Alejandro Borbolla Martin Esguerra Capucine Marteau  Split to three projects: 1) Sort u"
+    },
+    {
+      "id": 87,
+      "title": "Mistral",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/10fIfM_Mm1PGxWkECcnVPdHuC1hH4XifLfzVMpXQfyKc/edit?usp=drivesdk",
+      "created_at": "2025-12-01T14:51:36.446Z",
+      "snippet": "Mistral  Poste: Product Manager, AI Observability Suite @ Mistral AI (Paris) Define and execute the strategy for Mistral's observability platform, enabling enterprises to monitor, analyze, and optimiz"
+    },
+    {
+      "id": 88,
+      "title": "Facilitate monitor configuration with proactive suggestions",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1g52y_HjKhPInImrF3-TbvaZTaVKS3rDGj6WIo_0QK80/edit?usp=drivesdk",
+      "created_at": "2025-11-28T10:09:24.870Z",
+      "snippet": "Facilitate monitor configuration with proactive suggestions  Author: Capucine Marteau Engineering owner: Enrique Cruz Last updated: Aug 19, 2024 Status: Completed  Context Users typically spend ~13min"
+    },
+    {
+      "id": 89,
+      "title": "Designing the E2E experience for automated monitor creation during onboarding",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1kwhF7-WnQxT789RcBAL7fg3uD-lfvNRv4Wdt2jHVA9I/edit?usp=drivesdk",
+      "created_at": "2025-11-28T10:07:06.811Z",
+      "snippet": "Designing the E2E experience for automated monitor creation during onboarding  Author: Capucine Marteau Last updated: Nov 20, 2024 Status: Completed  Two pieces: 1. Automated monitor creation during o"
+    },
+    {
+      "id": 90,
+      "title": "Id\u00e9es Chill et Cosy pour l\u2019hiver",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1RPd4Yn_9RR16FlOB-_jGwZDsTyWBDp8-B1DGVKzqcQg/edit?usp=drivesdk",
+      "created_at": "2025-11-23T13:41:13.978Z",
+      "snippet": "Id\u00e9es Chill et Cosy pour l'hiver  Les bains du Marais Caliceo - espace spa aquatique Tea time au Dali Tea time au Ritz Tea time au Prince de Galles"
+    },
+    {
+      "id": 91,
+      "title": "Cours IA Bsc",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1zZ0Hauiap8JTRUFtvPQ1u3cV3z4zpabjFWhIAjOxfAI/edit?usp=drivesdk",
+      "created_at": "2025-11-23T12:44:36.925Z",
+      "snippet": "Cours IA Bsc  Objectifs p\u00e9dagogiques: Comprendre le r\u00f4le du PM en IA, structurer un probl\u00e8me, design thinking/discovery/framing, pont entre technique (IA), business et UX.  Planning (9h-17h): 9h00 - I"
+    },
+    {
+      "id": 92,
+      "title": "Notes - Alerting MCP ",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1Vq_C_a1-kWspqx7UyOmZl2Y1MbqCQKFjGwqTIGq0g2o/edit?usp=drivesdk",
+      "created_at": "2025-11-21T17:00:37.806Z",
+      "snippet": "Nov 21, 2025 | Alerting MCP Attendees: Alejandro Borbolla Capucine Marteau Phillip Baker Till Pieper Will Osborne  Notes * A lot of usage for DD MCP and interest for monitor creation * Concerns on per"
+    },
+    {
+      "id": 93,
+      "title": "VQA monitor message editor",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1gUUeSYock-FfJrkQuIFg5TNfIQK4sptwZf8L0DYqXkw/edit?usp=drivesdk",
+      "created_at": "2025-11-20T09:59:40.563Z",
+      "snippet": "[content not yet fetched]"
+    },
+    {
+      "id": 94,
+      "title": "[Dogfood Announcement][Monitors] Auto-generated message: start with context, not a blank page ",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1VsoOkgZfjjL8gHoABdvOLVqUVjwp5IkOCPIM2RL03ns/edit?usp=drivesdk",
+      "created_at": "2025-11-17T09:37:18.913Z",
+      "snippet": "[Dogfood Announcement][Monitors] Auto-generated message: start with context, not a blank page  The Alerting team announces that Datadog now writes the first draft of your alert message, saving setup t"
+    },
+    {
+      "id": 95,
+      "title": "Proposition for monitor generation preview",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1egh9EAysUBuscXHopPp9nTtfECgM19-Snh_jTMNWwqs/edit?usp=drivesdk",
+      "created_at": "2025-11-13T21:07:24.716Z",
+      "snippet": "Proposition for monitor generation preview  Goal: validate usefulness and accuracy, collect early feedback.  Customers selection: * Mix of orgs with many monitors (experienced) and fewer monitors (sim"
+    },
+    {
+      "id": 96,
+      "title": "List of customers for calls on Posture",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1tB45iqREU4O91zlM9WCVKkAxHEkLw7qf3BTcTiZVEIo/edit?usp=drivesdk",
+      "created_at": "2025-11-13T20:23:05.300Z",
+      "snippet": "List of customers for calls on Posture  Customers already talking to: Kingfisher (enterprise migration from Dynatrace to DD, built tf module for APM monitors, too noisy)  Interested customers: Gusto,"
+    },
+    {
+      "id": 97,
+      "title": "Prep Kingfisher\u2019s meeting",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1v9RHix8BSW1nnFo5b53BTpbDPEGsKDFOV-lQGPsG1tw/edit?usp=drivesdk",
+      "created_at": "2025-11-13T16:11:40.119Z",
+      "snippet": "Prep Kingfisher's meeting  Context: Kingfisher ($2.6M ARR enterprise migration from Dynatrace to Datadog, led by RapDev) experiencing major noise and false positives from APM-based anomaly monitors be"
+    },
+    {
+      "id": 98,
+      "title": "Product Spec: Monitor Importance Ranking",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1wANpst5_KXR2tJ93l1n_G5Iz10RrLKLyprLQGSb9emg/edit?usp=drivesdk",
+      "created_at": "2025-11-12T18:46:27.782Z",
+      "snippet": "Product Spec: Monitor Importance Ranking  Owner: Capucine Marteau Status: Completed Last updated: Jul 7, 2025  Tl;dr: Build a Monitor Importance Rank scoring system to surface most relevant monitors a"
+    },
+    {
+      "id": 99,
+      "title": "Nov 10, 2025 | Monitors/SLOs - Related Metrics Requirements",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1QF41qBs4I2zupN4VMFBz9yOYEE9hUmZfKAv9_xKHfpo/edit?usp=drivesdk",
+      "created_at": "2025-11-10T16:08:49.368Z",
+      "snippet": "Nov 10, 2025 | Monitors/SLOs - Related Metrics Requirements Attendees: Capucine Marteau Racheal Ou Alejandro Borbolla  Notes: * Custom metrics = accidental success, customers not getting value * Initi"
+    },
+    {
+      "id": 100,
+      "title": "Notes - Alan / Capucine: Integration monitors OOTB",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1CdmQFzak1RBfv_PSJFTwriik4BSKwJCoPqlf4drRHF0/edit?usp=drivesdk",
+      "created_at": "2025-11-10T15:31:55.964Z",
+      "snippet": "Nov 10, 2025 | Alan / Capucine: Integration monitors OOTB Attendees: Alan Zhao Capucine Marteau  Notes: * Direction for Monitors: already installing baseline monitors for trial users, expanding to exi"
+    },
+    {
+      "id": 101,
+      "title": "Nov 10, 2025 | Align on monitor importance ranking next steps",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1pXCVXT0zCKk9K4mOatnaV5HBABion63lZA3_bWhLijY/edit?usp=drivesdk",
+      "created_at": "2025-11-10T14:31:01.372Z",
+      "snippet": "Nov 10, 2025 | Align on monitor importance ranking next steps Attendees: Capucine Marteau Assaf Muller Zach Garcia Phillip Baker  Notes: * Eng research on technical feasibility of per-user recency * B"
+    },
+    {
+      "id": 102,
+      "title": "Working Doc: AI updates",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1oQfPSgYMF8eghw08nVepypTFoPb7PTGhtXWtzajEZfk/edit?usp=drivesdk",
+      "created_at": "2025-11-07T12:31:24.553Z",
+      "snippet": "Working Doc: AI Initiatives updates  Highlights: * Delivered Alerting MCP in prod, integrated with Datadog MCP; first tool enables monitor validation * Built core team (Monitor Posture) with 1 SWE and"
+    },
+    {
+      "id": 103,
+      "title": "Notes - OOTB Monitors and SLOs x AI created tests for Feature Coverage ",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1TqWqLeedkStcr10bgcd38OetGAE8S8FPqiBiFKckapA/edit?usp=drivesdk",
+      "created_at": "2025-11-06T10:22:26.038Z",
+      "snippet": "Nov 5, 2025 | OOTB Monitors and SLOs x AI created tests for Feature Coverage Attendees: Capucine Marteau Yasmine El Hafdi Younes Berradia  Agenda: * Side panel with Synthetics + OOTB recos * How to re"
+    },
+    {
+      "id": 104,
+      "title": "Thoughts on the side panel design",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1PHq7nqk3eKk3C4sUs9g6z1_hAvQun4IPGBzeXkk0EMg/edit?usp=drivesdk",
+      "created_at": "2025-11-05T20:14:19.573Z",
+      "snippet": "Thoughts on the side panel design  Make the panel feel like an intelligent guide to understanding service state \u2014 what's being watched, what's missing, and what actions to take.  Sections: * Baseline"
+    },
+    {
+      "id": 105,
+      "title": "Notes - Monitor Posture team sync",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1jHOkTZjesJYRZ_wb92QxV_UFxFD7kZfNcfGZ64t7In0/edit?usp=drivesdk",
+      "created_at": "2025-11-03T10:18:53.592Z",
+      "snippet": "Notes - Monitor Posture team sync  Multiple meetings from Mar 2025 to Oct 2025 covering LLM squad progress.  Key themes across meetings: * MCP server development: monitor validation tools, generate-mo"
+    },
+    {
+      "id": 106,
+      "title": "Notes - Sync on Monitor Relevance",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1fn0arBp1Q44Tz8iEoP-wmuSgJgZ0FacXQ-5jfhzr0x0/edit?usp=drivesdk",
+      "created_at": "2025-10-30T11:19:41.368Z",
+      "snippet": "Oct 29, 2025 | Sync on Monitor Relevance Attendees: Amine Erraqabi Assaf Muller Capucine Marteau Zach Garcia  Notes: * Applied AI team working at monitor event/alert level vs Alerting org at monitor l"
+    },
+    {
+      "id": 107,
+      "title": "User-Defined Templates \u2013 Rollout Plan",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1eLonX5kZQH9htDl4o3fw3gs5IIMJdNKtGJp9Hls-oLg/edit?usp=drivesdk",
+      "created_at": "2025-10-29T13:53:29.076Z",
+      "snippet": "User-Defined Templates - Rollout Plan  Preview Goal: Validate users can create, reuse, and manage user-defined templates for monitor setup consistency.  Preview Customers: Liberty, GM, Raymond James,"
+    },
+    {
+      "id": 108,
+      "title": "AI in Monitoring Posture",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1slzjkN2TqW4QOLfgAfuxuE31zvBJzwjOgDspxAON2yw/edit?usp=drivesdk",
+      "created_at": "2025-10-28T08:57:36.466Z",
+      "snippet": "AI in Monitoring Posture  TL;DR: Building toward a future where Datadog manages most monitors for every customer, automatically creating, tuning, and maintaining strong monitoring posture.  New orgs a"
+    },
+    {
+      "id": 109,
+      "title": "Notes - Paul / Capucine",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/11NQS9JJm0khKWkCVCk5o0ptNW0aQB6oSTKQZqf11KYE/edit?usp=drivesdk",
+      "created_at": "2025-10-23T19:59:49.467Z",
+      "snippet": "Notes - Paul / Capucine  Oct 23, 2025 * Improvement area: more structured weekly meetings with line items, prioritization * Owners in each area/workstreams * Tracking and guiding people along the pict"
+    },
+    {
+      "id": 110,
+      "title": "1-Hour workshop: Posture for SREs",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1LZHMcMlUYNmPrrUQQOTrYBbkQD4HeMzCfg_Pot9d7_8/edit?usp=drivesdk",
+      "created_at": "2025-10-23T18:57:53.398Z",
+      "snippet": "1-Hour Workshop: Posture for SREs  Objective: Understand why monitoring posture matters for SREs, what problems it should solve, and how it should manifest in Datadog.  Agenda: * 0-10 min: Framing the"
+    },
+    {
+      "id": 111,
+      "title": "Untitled document",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/14K4r8RFpe9vBJGqINeLjcp_Z8y-oB8jc4YQb0Po_jMs/edit?usp=drivesdk",
+      "created_at": "2025-10-21T23:01:07.851Z",
+      "snippet": "Automatic Monitors clarification:  We're not expecting users to page on raw metrics, but to gain instant visibility into their systems as a first step.  Mid-term vision: Datadog automatically generate"
+    },
+    {
+      "id": 112,
+      "title": "Retro Carol",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1PttxAVO-36ZyY_uYFbBdm5PkVf1eFLl3Bl_royW3Btk/edit?usp=drivesdk",
+      "created_at": "2025-10-21T18:29:14.181Z",
+      "snippet": "Retro Carol   What went well:   * On AMC: we went from idea to execution without big feedback, and it's huge, so congrats on that, we should be proud of ourselves. Feedback sessions were super well-or"
+    },
+    {
+      "id": 113,
+      "title": "Untitled document",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/15OownYzVUiT24-mRpr7BqxHu36lQn1zxrDa695DBdNs/edit?usp=drivesdk",
+      "created_at": "2025-10-16T13:03:20.105Z",
+      "snippet": "Oct 16, 2025 | Capucine / Guillaume Attendees: Capucine Marteau Guillaume Turbat   Notes * CI/CD - Visibility * Vrai probleme: incidents en prod a cause des deployments * Tout le monde de pouvoir fair"
+    },
+    {
+      "id": 114,
+      "title": "Notes - Enrique / Capucine weekly ",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/18N63eJqpU0_bLWM30skX0f3sy5Fhjqh3gBKXzk7m0z8/edit?usp=drivesdk",
+      "created_at": "2025-10-15T13:32:10.715Z",
+      "snippet": "Oct 15, 2025 |  Enrique / Capucine 1:1 (re-scheduled) Attendees: Capucine Marteau Enrique Cruz   Notes *  Action items *  May 28, 2025 | Enrique / Capucine weekly Agenda: * Metrics recommendations - u"
+    },
+    {
+      "id": 115,
+      "title": "[Feature Announcement][Monitors] Get instant baseline coverage from Day 1 with Automatic Monitors",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/10NvLSn5HPEd8vNd0RyNPemsvgm3KyX0tKBNSvpyfEfE/edit?usp=drivesdk",
+      "created_at": "2025-10-13T14:01:33.560Z",
+      "snippet": "[Feature Announcement][Monitors] Automatic Monitors: zero setup, instant coverage - This email is INTERNAL. Use the Release Note section at the bottom to share externally. - Hi everyone, The Alerting,"
+    },
+    {
+      "id": 116,
+      "title": "Meetings/workshops in NYC",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/19f2FeAFkhFDEuN-qf2DuSK3rS2WnQCfyCiycWnNm0Pw/edit?usp=drivesdk",
+      "created_at": "2025-10-09T17:23:08.744Z",
+      "snippet": "Meetings/workshops in NYC   See here: Alerting Team Meetup NYC/Paris - Oct 2025   Workshops/Brainstorm sessions with the Monitor Posture team:   * Monitoring Coverage - APIs & UI * UX for SREs to unde"
+    },
+    {
+      "id": 117,
+      "title": "Notes - Host Monitoring - Monitors & Dashboards Packs ",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1GO1OhAtIrTLDKu6xm8DxLPFV2QnB6138mf1T8_5FF3Q/edit?usp=drivesdk",
+      "created_at": "2025-10-08T15:49:53.863Z",
+      "snippet": "Oct 8, 2025 | Host Monitoring sync - Part 2 Attendees: Capucine Marteau Aswin Thiyagarajan Cole Murphy Carol Yao Khang Truong   Notes * Goal: make the monitors list more useful in the panel * Topics t"
+    },
+    {
+      "id": 118,
+      "title": "Should the Health Component and Coverage for SREs be part of the same bulk of work?",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1ZOuR2yznZ0ndqktvPa79q1dKPM40qyD-9xQG3rEr8ig/edit?usp=drivesdk",
+      "created_at": "2025-10-07T19:03:43.678Z",
+      "snippet": "Should the Health Component and Coverage for SREs be part of the same bulk of work?   Decision: No - Prioritizing health component in Q4 and downgrading coverage per team to a brief in Q4. Recommendat"
+    },
+    {
+      "id": 119,
+      "title": "Notes - Automatic Monitor Creation - Weekly touchpoint",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1MEF-cKzk9p7_LVSPgQQSO9CJLVfefvyWzs4WfxaebHM/edit?usp=drivesdk",
+      "created_at": "2025-10-06T15:08:56.447Z",
+      "snippet": "\ufeffOct 6, 2025 | Automatic Monitor Creation - Weekly touchpoint\r Attendees: Capucine Marteau Jasmine Zhang Zach Garcia Carol Yao Carl Martensen Scott Xue Phillip Baker Brian Connor Nick Jagodzinski Harr"
+    },
+    {
+      "id": 120,
+      "title": "PosturexAI \u2014 OKR update (Q3 \u2192 Q4)",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1yG4BfWDislpS32jpe__FZVGa9TDb_N0-EdbR72wrKm4/edit?usp=drivesdk",
+      "created_at": "2025-10-01T06:20:09.530Z",
+      "snippet": "1. Post tl;dr on our vision for coverage to:    1. Jerem    2. Phillip    3. Ai-squad 2. Post everything on Q3 and Q4 on:    1. AI-squad    2. Monitoring-design    3. Alerting-platform backroom?   Hey"
+    },
+    {
+      "id": 121,
+      "title": "Attestation d'h\u00e9bergement",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1hD4TlgH1TuU_lNi_1wJWGsFtQBT6geqkg5zFqHdUW5E/edit?usp=drivesdk",
+      "created_at": "2025-09-29T11:53:22.869Z",
+      "snippet": "Je, soussignee Capucine Marteau, residant au 46 rue du General Foy 75008 Paris, certifie que j'heberge depuis plus d'un an Hermann Obodji a mon domicile.   Pour faire valoir ce que de droit.   Capucin"
+    },
+    {
+      "id": 122,
+      "title": "Ideas for Datadog Paris Summit",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1Hp4oB8gxOAdP6cjgqitREFGlfcPfvTc--fPvo30AjJ0/edit?usp=drivesdk",
+      "created_at": "2025-09-26T11:48:31.076Z",
+      "snippet": "Tab 1 Ideas for Datadog Paris Summit   400-500 personnes   Talk about Monitoring Posture: * Managing your Posture:    * Getting basic coverage OOTB with Automatic Monitors    * Build better monitors f"
+    },
+    {
+      "id": 123,
+      "title": "AMC Monitor Expiration",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1fvAFhRKiRajK9aq6oJGN5lTnCepN53dYCU_Ep-srTSE/edit?usp=drivesdk",
+      "created_at": "2025-09-25T21:21:25.908Z",
+      "snippet": "AMC Monitor Expiration - Discussion  Problem Our AMC feature automatically installs monitors when customers install agents or integrations. While this helps with onboarding and coverage, it may create"
+    },
+    {
+      "id": 124,
+      "title": "Notes - Alignement on Posture x AI vision and deliverables",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1HXPzC9Jlwl9lkz4LHqsd95aZEJ_w6r0xNcMV9sKDQgk/edit?usp=drivesdk",
+      "created_at": "2025-09-20T16:27:04.154Z",
+      "snippet": "Sep 16, 2025 | Alignement on Posture x AI vision and deliverables Attendees: Alejandro Borbolla Assaf Muller Capucine Marteau Cole Murphy Paul Fallon Phillip Baker Scott Xue  Proposition for Q4 OKRs P"
+    },
+    {
+      "id": 125,
+      "title": "Dashboard to Monitor with LLM",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1koRpK1A6SP5Y_BVAC8UcniWb6DoPLVAqtirsgF94-YM/edit?usp=drivesdk",
+      "created_at": "2025-09-05T13:28:30.887Z",
+      "snippet": "Workshop summary - Dashboard to Monitor with LLM  Week of workshop: August 11th-14th Participants: Cole Murphy, Myriam Anki, Capucine Marteau, Alejandro Borbolla, Brian Connor Goal: Enable users to ge"
+    },
+    {
+      "id": 126,
+      "title": "Milestone doc: LLM-generated monitors",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/14iXZ3LpyuuQLmDk-hkpS7VburC7ZS4RQW9BZZVVg6tM/edit?usp=drivesdk",
+      "created_at": "2025-09-04T14:37:55.357Z",
+      "snippet": "Milestone Doc for Q3: LLM-Generated Monitors from a Dashboard Widget  Author: Capucine Marteau Last updated: Aug 5, 2025 Related specs: Building an MCP server for Alerting & Graphing Doc on Posture in"
+    },
+    {
+      "id": 127,
+      "title": "Notes - Secret meeting",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1eaDf0YQAV7ZYQ8UDRRm9mAwcSgfu6jS00hYs980z_N8/edit?usp=drivesdk",
+      "created_at": "2025-09-04T12:05:28.529Z",
+      "snippet": "Sep 4, 2025 | Secret meeting Attendees: Alejandro Borbolla Capucine Marteau Damien Mehala   Notes * A2A Observability + Orchestration - Agent Ops - Agent Management and Observability    * https://sneh"
+    },
+    {
+      "id": 128,
+      "title": "Make restriction_policies work with Terraform",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1ExYbOVHKO_lSujeDjjQam7Up4aL6jBmYMF0zD1Vp568/edit?usp=drivesdk",
+      "created_at": "2025-09-02T15:20:53.939Z",
+      "snippet": "Make restriction_policies work better with Terraform  Context The new GRACE experience, allowing users to restrict permissions by teams and users in addition to roles, is now implemented for monitors"
+    },
+    {
+      "id": 130,
+      "title": "Validation and Evaluation plan for LLM-generated title and message",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1V0vvs-oAKsLXEgdxBcT_gPB-2DJqGBNTxblXq_NMsiU/edit?usp=drivesdk",
+      "created_at": "2025-08-27T12:45:44.277Z",
+      "snippet": "Validation and Evaluation plan for LLM-generated title and message  Author: Capucine Marteau Last updated: Jul 31, 2025 Status: Reviewable  Objective Ensure that LLM-generated messages are: * Accurate"
+    },
+    {
+      "id": 131,
+      "title": "Product Rollout - Automatic Monitor Creation",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1aqB068-FcB1J8BePPceewkDVh8vhE0K3BL36Zr6k72g/edit?usp=drivesdk",
+      "created_at": "2025-08-11T12:09:57.551Z",
+      "snippet": "Product Rollout - Automatic Monitor Creation  Summary * Feature Name: Automatic Monitor Creation * Objective: All trial orgs have basic coverage for their hosts, services and top 5 integrations in the"
+    },
+    {
+      "id": 132,
+      "title": "Alignment on Posture initiatives",
+      "source": "google-docs",
+      "source_url": "https://docs.google.com/document/d/1I-5y0pbnPqzTwlpr1rlBvTcHEntyxoUnFx1DePuV-ZU/edit?usp=drivesdk",
+      "created_at": "2025-08-08T20:45:53.541Z",
+      "snippet": "Alignment on Posture initiatives  Author: Capucine Marteau Last updated: Aug 5, 2025  What is Posture and why is it important? We call monitoring posture the coverage (do I have the right monitors) &"
+    },
+    {
+      "id": 133,
+      "title": "Mise en oeuvre responsable de l\u2019IA dans un contexte business",
+      "source": "google-slides",
+      "source_url": "https://docs.google.com/presentation/d/1eQYYwCpMZOd7LvBT--D0E4aV_fBWvnCvtM0RoiEER0Q/edit?usp=drivesdk",
+      "created_at": "2026-03-10T23:21:24.204Z",
+      "snippet": "Successful Data-Driven Company: Roadmaps and Data Value Creation in Action Capucine Marteau - ESSEC Executive Education - July, 2025  Intro: ESSEC 2018 - Accenture Business Analytics Chair. Amazon - B"
+    },
+    {
+      "id": 134,
+      "title": "Alerting & SLOs Automation Roadmap",
+      "source": "google-slides",
+      "source_url": "https://docs.google.com/presentation/d/1EwWfr8LevRl6e56_qHUbwL32HmjH5sLyd4dXPFUecHo/edit?usp=drivesdk",
+      "created_at": "2026-02-27T12:49:31.880Z",
+      "snippet": "Alerting Platform Roadmap - February 2026  Alerting Vision Detect issues as early as possible Provide responders with actionable material Ideally, Datadog solves the problem before it wakes you up  20"
+    },
+    {
+      "id": 135,
+      "title": "Copy of Paris Summit 2025 Main Deck",
+      "source": "google-slides",
+      "source_url": "https://docs.google.com/presentation/d/1KVPn2nnuaG8Yk479yy9JLssVNuGALLthmfRrvNiHYGM/edit?usp=drivesdk",
+      "created_at": "2025-09-28T16:36:37.318Z",
+      "snippet": "Copy of Paris Summit 2025 Main Deck - Capucine Marteau, Product Manager, Datadog Monitoring Posture: passer des alertes reactives a une couverture proactive et fiable  Le Dilemme du Monitoring: Peur d"
+    },
+    {
+      "id": 136,
+      "title": "Monitoring Posture: passer des alertes r\u00e9actives \u00e0 une couverture proactive et fiable",
+      "source": "google-slides",
+      "source_url": "https://docs.google.com/presentation/d/1uxLB95J4HVztxh81huT_JI1bd_kNJmdmlYmEXkUzdpA/edit?usp=drivesdk",
+      "created_at": "2025-09-28T16:29:24.203Z",
+      "snippet": "Monitoring Posture: passer des alertes reactives a une couverture proactive et fiable Capucine Marteau, Product Manager, Datadog  Le Dilemme du Monitoring: Peur de rater une alerte critique (FOMO) vs."
+    },
+    {
+      "id": 137,
+      "title": "Team2-LLPCB-Presentation",
+      "source": "google-slides",
+      "source_url": "https://docs.google.com/presentation/d/10O3t5PJ_qJjrduZrnbTjUnNYhaEEeQdoLfrH-cqDYRE/edit?usp=drivesdk",
+      "created_at": "2025-09-25T20:21:52.434Z",
+      "snippet": "17/11/2024 - Enhancing critical thinking with AI - Detecting fallacious arguments and promoting reliable information Pierina Camarena, Louis Jurdant, Leon Nyametso, Capucine Marteau - Clarity.AI  GCPU"
+    },
+    {
+      "id": 138,
+      "title": "Monitoring Posture Roadmap",
+      "source": "google-slides",
+      "source_url": "https://docs.google.com/presentation/d/1LghWZL1hIQgF-S1h2WjTi_qb5W43WrPE8tq-SHsFkPQ/edit?usp=drivesdk",
+      "created_at": "2025-03-25T15:34:41.613Z",
+      "snippet": "Monitoring Posture Roadmap - March 2025  What is Monitoring Posture? Have the right set of monitors Be able to manage them at scale From onboarding to ongoing posture (as new teams onboard, env evolve"
+    },
+    {
+      "id": 139,
+      "title": "Kickoff Automatic Monitor Creation",
+      "source": "google-slides",
+      "source_url": "https://docs.google.com/presentation/d/1f5QwDkEJyvWO9VNR1BRpU0R46T6BcPTG3BJSy4VjglA/edit?usp=drivesdk",
+      "created_at": "2025-02-03T20:05:55.168Z",
+      "snippet": "Kickoff Automatic Monitor Creation - Automatic Monitor Creation At Onboarding - Kickoff meeting Feb 3rd 2025  In the product priorities shared by our CPO, onboarding is a big one. We are in the Onboar"
+    },
+    {
+      "id": 140,
+      "title": "Hackathon 2024",
+      "source": "google-slides",
+      "source_url": "https://docs.google.com/presentation/d/1Pkq7j3bn1BwqF-XpOzi5QZTWHzYq_ueUmNiCzcuXYj4/edit?usp=drivesdk",
+      "created_at": "2024-12-04T14:49:18.542Z",
+      "snippet": "Hackathon December 2024 Capucine Marteau, Alejandro Borbolla and Myriam Anki LLM-based monitor features - Understand and interact with monitors in a more intuitive way  Users struggle to create good m"
+    },
+    {
+      "id": 141,
+      "title": "ESSEC Presentation - Clustering",
+      "source": "google-slides",
+      "source_url": "https://docs.google.com/presentation/d/1CEQm5YCgfhtNqeMI8f24LV4EiQ8l4RJVeZZE9-_bYEg/edit?usp=drivesdk",
+      "created_at": "2024-11-28T09:32:56.650Z",
+      "snippet": "ESSEC Presentation - Clustering  Agenda: From classification to clustering, Introduction to clustering, Practice!  Recap of classification: Classification relies on labeled data to predict outcomes. E"
+    },
+    {
+      "id": 142,
+      "title": "Product Managers  for the digital world",
+      "source": "google-slides",
+      "source_url": "https://docs.google.com/presentation/d/1VB4LMTD5rP9lMIvv5vuWLpuaFKpuYNGBaChZqyLPYw4/edit?usp=drivesdk",
+      "created_at": "2024-09-08T11:38:02.603Z",
+      "snippet": "[content not yet fetched]"
+    },
+    {
+      "id": 151,
+      "title": "Datadog-Managed Monitors (Preview): Self-Improving Detection with Zero Setup",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/AP/pages/6467977545",
+      "created_at": "2026-03-26T17:49:22.436Z",
+      "snippet": "Problem Today, customers are responsible for defining, configuring, and maintaining their monitors. This creates a high operational burden: Teams must decide what to monitor and how to configure it Ba"
+    },
+    {
+      "id": 152,
+      "title": "MCP Integration",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/AP/pages/5965447676/MCP+Integration",
+      "created_at": "2025-12-18T11:09:49.786Z",
+      "snippet": "Overview Status: WIP Service: SDP Slack: #monitor-posture  What it does Alerting's integration with the MCP (Model Context Protocol) service allows agentic AI products to call out to Alerting APIs as"
+    },
+    {
+      "id": 153,
+      "title": "Rules Documentation - Sensitive Data Scanner",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/GTMSEH/pages/2949383224/Rules+Documentation",
+      "created_at": "2023-04-17T09:33:15.700Z",
+      "snippet": "Scanning rules library Sensitive Data Scanner includes 250+ out-of-the-box (OOTB) rules organized across 4 categories, plus AI/ML-powered rules that go beyond regex matching. Rules are continuously ma"
+    },
+    {
+      "id": 154,
+      "title": "Hack-a-dog ideas",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/AP/pages/2762998651/Hack-a-dog+ideas",
+      "created_at": "2022-12-23T08:53:15.226Z",
+      "snippet": "Hackathon project ideas for an upcoming hack-a-dog session: - Tool to diff values between DC and release - CI job to check datacenter-config for misspelled k8s cluster names - Koutris SLI system: a se"
+    },
+    {
+      "id": 155,
+      "title": "Enable restriction_policy terraform resource for monitor",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/AAA/pages/3786637577",
+      "created_at": "2024-06-07T23:02:42.519Z",
+      "snippet": "The restriction_policy resource for the Monitor resource type is currently in private beta. With the roll out of GRACE (Granular Access Control for Everyone), customers who want parity between the UI"
+    },
+    {
+      "id": 156,
+      "title": "AI Features and Roadmap",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/GTMSEH/pages/5156044936/AI+Features+and+Roadmap",
+      "created_at": "2025-06-01T15:32:50.801Z",
+      "snippet": "GA Products: 1. Event Management (AIOps) - Deduplication, pattern correlations, intelligent correlations 2. Watchdog - Proactive anomaly detection, baseline behavior computation, root cause analysis 3"
+    },
+    {
+      "id": 157,
+      "title": "Alerting AI Squad",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/AP/pages/5094278215/Alerting+AI+Squad",
+      "created_at": "2025-05-14T12:02:25.759Z",
+      "snippet": "All content has been migrated to Monitor Posture, managed by the newly formed Monitor Posture team.  Elevator pitch: We're building an MCP (Model Context Protocol) server for Alerting to enable smarte"
+    },
+    {
+      "id": 158,
+      "title": "[MOPU] Evaluation and Validation",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/AP/pages/5386142136/MOPU+Evaluation+Validation",
+      "created_at": "2025-08-11T08:59:15.293Z",
+      "snippet": "Key outcomes: - Evaluate accuracy of outputs generated by implemented tools - Assess impact of changes to context and prompt structure - Validate generated-output at runtime  Problem Statement: The Ag"
+    },
+    {
+      "id": 159,
+      "title": "Linux Conference - Open source GenAI",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/~63dac55b1b13d42998e196c9/pages/5457969775",
+      "created_at": "2025-09-01T10:10:09.233Z",
+      "snippet": "AI Showdown: Open Source tools for LLM face-offs Who Let the Bots Out? A Guide to Evaluating AI Agents  Conference presentation notes from Linux Conference on open source GenAI topics."
+    },
+    {
+      "id": 160,
+      "title": "Automatic Monitor Creation",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/~63dac55b1b13d42998e196c9/pages/5131667888/Automatic+Monitor+Creation",
+      "created_at": "2025-05-25T18:33:35.925Z",
+      "snippet": "WHY - What problem are we solving? During trials, customers struggle to know which monitors to create, set them up correctly and quickly, and understand whether their coverage is good enough. Competit"
+    },
+    {
+      "id": 161,
+      "title": "Capucine Marteau - Overview",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/~63dac55b1b13d42998e196c9/overview",
+      "created_at": "2023-02-06T14:56:11.073Z",
+      "snippet": "I am Capucine, Product Manager in the Alerting team. My focus is Monitoring Posture - how do we help customers be well-covered with monitors. I am highly data-driven and passionate about improving use"
+    },
+    {
+      "id": 162,
+      "title": "SSH Key Setup",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/EOEX/pages/396755025/SSH+Key+Setup",
+      "created_at": "2020-06-10T22:20:45.295Z",
+      "snippet": "SSH Key Setup guide for engineering onboarding at Datadog. Steps: Create SSH key with ed25519, add to ssh-agent, add public key to GitHub, enable SSO for GitHub, configure git to use SSH, setup SSH-ba"
+    },
+    {
+      "id": 163,
+      "title": "Q2/2025 OpenTelemetry OKR July 02nd",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/APM/pages/5265817923",
+      "created_at": "2025-07-02T12:44:53.795Z",
+      "snippet": "Q2/2025 OpenTelemetry OKR Status Update  Theme 1: Semantic Convergence OKR 1: OTel-native Container monitoring compatible with in-app experiences - Preview of K8s dashboard compatibility with OTel, 11"
+    },
+    {
+      "id": 164,
+      "title": "Invalid telemetry payload investigation",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/~71202052cd050b50594fa798ed696dce3fe4bd/pages/4728750092",
+      "created_at": "2025-02-13T14:13:21.138Z",
+      "snippet": "TL;DR: Ensure your tracer generates valid telemetry payloads and set alerts on invalid payloads. Use JSON Schema in test suites. Run JSON Schema validator in debug mode at runtime.  The investigation:"
+    },
+    {
+      "id": 165,
+      "title": "Damien Mehala - Promotion Addendum",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/~71202052cd050b50594fa798ed696dce3fe4bd/pages/5350850794/Addendum",
+      "created_at": "2025-07-30T08:04:17.944Z",
+      "snippet": "Promotion proposal addendum for Damien Mehala from Software Engineer 2 to Senior Software Engineer.  Key achievements: 1. Leading RUM Auto-Injection to completion: Feature now used by 64+ customers, k"
+    },
+    {
+      "id": 166,
+      "title": "[Product] Spring 2023 - Event Platform Updates",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/~504006737/pages/2991260931",
+      "created_at": "2023-05-10T14:01:11.419Z",
+      "snippet": "Event Platform Spring 2023 Newsletter:  1. Event Store (Husky) is Everywhere - All EvP products powered by Event Store. Storage costs savings up to $36 million. Cheaper storage, independently scalable"
+    }
+  ]
+}
