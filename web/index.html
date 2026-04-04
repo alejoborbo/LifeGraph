@@ -98,6 +98,23 @@
     .view-btn:hover { color: #fff; border-color: #6366f1; }
     .view-btn.active { color: #6366f1; border-color: #6366f1; background: #12122a; }
 
+    /* Category filters */
+    #catFilters {
+      position: fixed; top: 56px; right: 24px; z-index: 6;
+      display: flex; flex-wrap: wrap; gap: 6px; max-width: 420px;
+      justify-content: flex-end;
+    }
+    .cat-filter {
+      display: flex; align-items: center; gap: 5px;
+      padding: 4px 10px; border-radius: 12px; font-size: 11px;
+      cursor: pointer; transition: all 0.15s; font-family: inherit;
+      border: 1px solid #1e1e2e; background: #111119; color: #999;
+      user-select: none;
+    }
+    .cat-filter:hover { border-color: #3a3a5a; }
+    .cat-filter.hidden { opacity: 0.3; text-decoration: line-through; }
+    .cat-filter .cf-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
     /* Overview panel */
     #overview {
       position: fixed; top: 60px; right: 24px; z-index: 5;
@@ -264,6 +281,7 @@
     <button class="view-btn" id="reportBtn" onclick="switchView('report')">Report</button>
     <button class="view-btn" id="overview-toggle" onclick="toggleOverview()">Overview</button>
   </div>
+  <div id="catFilters"></div>
   <div id="overview">
     <h3>Work areas</h3>
     <div id="overviewContent"></div>
@@ -349,6 +367,7 @@
     let graphData, simulation, svg, g, nodeEls, linkEls, labelEls, clusterLabels;
     let docMap = {};
     let currentView = 'graph';
+    const hiddenCategories = new Set();
 
     const width = window.innerWidth;
     const height = window.innerHeight;
@@ -396,6 +415,7 @@
       graphData.documents.forEach(d => docMap[d.id] = d);
 
       document.getElementById('headerSub').textContent = `Knowledge graph of ${graphData.documents.length} documents`;
+      updateDocCount();
       document.getElementById('stats').textContent =
         `${graphData.nodes.length} topics / ${graphData.edges.length} connections / ${graphData.documents.length} documents`;
 
@@ -415,13 +435,61 @@
       render();
       buildLegend();
       buildOverview();
+      buildCatFilters();
       setupSearch();
+    }
+
+    function buildCatFilters() {
+      const cats = [...new Set(graphData.nodes.map(n => n.category))];
+      const order = ['posture','automation','strategy','ux','team','teaching','code','personal','other'];
+      cats.sort((a,b) => order.indexOf(a) - order.indexOf(b));
+      document.getElementById('catFilters').innerHTML = cats.map(c =>
+        `<div class="cat-filter" id="cf-${c}" onclick="toggleCatFilter('${c}')">
+          <div class="cf-dot" style="background:${catColors[c]}"></div>${catLabels[c] || c}
+        </div>`
+      ).join('');
+    }
+
+    function toggleCatFilter(cat) {
+      if (hiddenCategories.has(cat)) {
+        hiddenCategories.delete(cat);
+      } else {
+        hiddenCategories.add(cat);
+      }
+      document.getElementById('cf-' + cat).classList.toggle('hidden', hiddenCategories.has(cat));
+      refreshCurrentView();
+    }
+
+    function refreshCurrentView() {
+      updateDocCount();
+      if (currentView === 'graph') { if (simulation) simulation.stop(); render(); }
+      else if (currentView === 'timeline') { renderTimeline(); }
+      else if (currentView === 'report') { updateReport(); }
+    }
+
+    function isNodeVisible(n) { return !hiddenCategories.has(n.category); }
+    function isDocVisible(docId) {
+      return graphData.nodes.some(n => (n.doc_ids || []).includes(docId) && isNodeVisible(n));
+    }
+
+    function updateDocCount() {
+      if (!graphData) return;
+      const visNodes = graphData.nodes.filter(isNodeVisible);
+      const visDocIds = new Set();
+      visNodes.forEach(n => (n.doc_ids || []).forEach(id => visDocIds.add(id)));
+      document.getElementById('stats').textContent =
+        `${visNodes.length} topics / ${graphData.edges.length} connections / ${visDocIds.size} documents`;
     }
 
     function render() {
       g.selectAll('*').remove();
-      const nodes = graphData.nodes;
-      const edges = graphData.edges;
+      const nodes = graphData.nodes.filter(isNodeVisible);
+      const visibleIds = new Set(nodes.map(n => n.id));
+      const edges = graphData.edges.filter(e => {
+        const s = typeof e.source === 'object' ? e.source.id : e.source;
+        const t = typeof e.target === 'object' ? e.target.id : e.target;
+        return visibleIds.has(s) && visibleIds.has(t);
+      });
 
       const sizeScale = d3.scaleSqrt()
         .domain([d3.min(nodes, n => n.doc_count), d3.max(nodes, n => n.doc_count)])
@@ -838,10 +906,10 @@
         if (date >= tlStart && date <= tlEnd) filteredDocIds.add(d.id);
       });
 
-      // Only show nodes that have docs in range
+      // Only show nodes that have docs in range and are in visible categories
       const catOrder = ['posture', 'automation', 'strategy', 'ux', 'team', 'teaching', 'code', 'personal', 'other'];
       const sorted = graphData.nodes
-        .filter(n => (n.doc_ids || []).some(id => filteredDocIds.has(id)))
+        .filter(n => isNodeVisible(n) && (n.doc_ids || []).some(id => filteredDocIds.has(id)))
         .sort((a, b) => {
           const ca = catOrder.indexOf(a.category), cb = catOrder.indexOf(b.category);
           if (ca !== cb) return ca - cb;
@@ -1027,11 +1095,12 @@
         }
       });
 
-      // Group nodes by category
+      // Group nodes by category (respecting filters)
       const catOrder = ['posture', 'automation', 'strategy', 'ux', 'team', 'teaching', 'code', 'personal', 'other'];
       const catGroups = {};
       graphData.nodes.forEach(n => {
         if (!nodeDocMap[n.id]) return;
+        if (!isNodeVisible(n)) return;
         const cat = n.category || 'other';
         if (!catGroups[cat]) catGroups[cat] = [];
         catGroups[cat].push(n);
