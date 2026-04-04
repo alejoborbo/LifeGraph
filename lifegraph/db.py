@@ -78,6 +78,31 @@ CREATE TABLE IF NOT EXISTS project_links (
 )
 """
 
+CREATE_FTS_TABLE = """
+CREATE VIRTUAL TABLE IF NOT EXISTS documents_fts USING fts5(
+    title, raw_text, source,
+    content='documents',
+    content_rowid='id'
+)
+"""
+
+CREATE_FTS_TRIGGERS = [
+    """CREATE TRIGGER IF NOT EXISTS documents_ai AFTER INSERT ON documents BEGIN
+        INSERT INTO documents_fts(rowid, title, raw_text, source)
+        VALUES (new.id, new.title, new.raw_text, new.source);
+    END""",
+    """CREATE TRIGGER IF NOT EXISTS documents_ad AFTER DELETE ON documents BEGIN
+        INSERT INTO documents_fts(documents_fts, rowid, title, raw_text, source)
+        VALUES('delete', old.id, old.title, old.raw_text, old.source);
+    END""",
+    """CREATE TRIGGER IF NOT EXISTS documents_au AFTER UPDATE ON documents BEGIN
+        INSERT INTO documents_fts(documents_fts, rowid, title, raw_text, source)
+        VALUES('delete', old.id, old.title, old.raw_text, old.source);
+        INSERT INTO documents_fts(rowid, title, raw_text, source)
+        VALUES (new.id, new.title, new.raw_text, new.source);
+    END""",
+]
+
 
 def get_connection() -> sqlite3.Connection:
     conn = sqlite3.connect(str(DATABASE_PATH))
@@ -93,8 +118,24 @@ def init_db():
     conn.execute(CREATE_PROJECTS_TABLE)
     conn.execute(CREATE_PROJECT_DOCUMENTS_TABLE)
     conn.execute(CREATE_PROJECT_LINKS_TABLE)
+    # FTS5
+    try:
+        conn.execute(CREATE_FTS_TABLE)
+        for trigger in CREATE_FTS_TRIGGERS:
+            conn.execute(trigger)
+    except Exception:
+        pass  # FTS5 not available — search will fall back to LIKE
+    # Migrations
+    _migrate_projects_phase(conn)
     conn.commit()
     conn.close()
+
+
+def _migrate_projects_phase(conn):
+    """Add phase column to projects if missing."""
+    cols = [row[1] for row in conn.execute("PRAGMA table_info(projects)").fetchall()]
+    if "phase" not in cols:
+        conn.execute("ALTER TABLE projects ADD COLUMN phase TEXT DEFAULT 'Planning'")
 
 
 def upsert_document(doc: Document):
@@ -342,3 +383,141 @@ def get_all_project_links() -> dict[int, list[dict]]:
     for r in rows:
         result[r["project_id"]].append(dict(r))
     return dict(result)
+
+
+# ── Full-text search ──────────────────────────────────────
+
+
+def rebuild_fts():
+    """Rebuild the FTS5 index from the documents table."""
+    conn = get_connection()
+    conn.execute("INSERT INTO documents_fts(documents_fts) VALUES('rebuild')")
+    conn.commit()
+    conn.close()
+
+
+def _has_fts() -> bool:
+    """Check if FTS5 table exists."""
+    conn = get_connection()
+    row = conn.execute(
+        "SELECT 1 FROM sqlite_master WHERE type='table' AND name='documents_fts'"
+    ).fetchone()
+    conn.close()
+    return row is not None
+
+
+def search_documents(
+    query: str,
+    source: str = None,
+    project_id: int = None,
+    limit: int = 20,
+) -> list[dict]:
+    """Full-text search across documents. Falls back to LIKE if FTS5 unavailable."""
+    conn = get_connection()
+
+    if _has_fts():
+        # FTS5 search with BM25 ranking
+        sql = """
+            SELECT d.id, d.title, d.source, d.source_url, d.created_at,
+                   snippet(documents_fts, 1, '**', '**', '...', 32) as snippet,
+                   bm25(documents_fts) as rank
+            FROM documents_fts
+            JOIN documents d ON d.id = documents_fts.rowid
+        """
+        params = []
+        wheres = ["documents_fts MATCH ?"]
+        params.append(query)
+
+        if source:
+            wheres.append("d.source = ?")
+            params.append(source)
+        if project_id:
+            wheres.append("d.id IN (SELECT doc_id FROM project_documents WHERE project_id = ?)")
+            params.append(project_id)
+
+        sql += " WHERE " + " AND ".join(wheres)
+        sql += " ORDER BY rank LIMIT ?"
+        params.append(limit)
+    else:
+        # Fallback: LIKE search
+        sql = """
+            SELECT d.id, d.title, d.source, d.source_url, d.created_at,
+                   SUBSTR(d.raw_text, 1, 200) as snippet
+            FROM documents d
+        """
+        params = []
+        wheres = ["(d.title LIKE ? OR d.raw_text LIKE ?)"]
+        like = f"%{query}%"
+        params.extend([like, like])
+
+        if source:
+            wheres.append("d.source = ?")
+            params.append(source)
+        if project_id:
+            wheres.append("d.id IN (SELECT doc_id FROM project_documents WHERE project_id = ?)")
+            params.append(project_id)
+
+        sql += " WHERE " + " AND ".join(wheres)
+        sql += " ORDER BY d.created_at DESC LIMIT ?"
+        params.append(limit)
+
+    rows = conn.execute(sql, params).fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+
+def search_project_links(query: str, source_type: str = None) -> list[dict]:
+    """Search project links (Jira/GitHub) by title."""
+    conn = get_connection()
+    sql = """
+        SELECT pl.*, p.name as project_name
+        FROM project_links pl
+        JOIN projects p ON p.id = pl.project_id
+        WHERE pl.title LIKE ?
+    """
+    params = [f"%{query}%"]
+    if source_type:
+        sql += " AND pl.source_type LIKE ?"
+        params.append(f"%{source_type}%")
+    sql += " ORDER BY pl.created_at DESC LIMIT 20"
+    rows = conn.execute(sql, params).fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+
+def search_projects(query: str = None, status: str = None) -> list[dict]:
+    """Search projects by name or filter by status."""
+    conn = get_connection()
+    sql = """
+        SELECT p.*, COUNT(pd.doc_id) as doc_count
+        FROM projects p
+        LEFT JOIN project_documents pd ON p.id = pd.project_id
+    """
+    wheres = []
+    params = []
+    if query:
+        wheres.append("p.name LIKE ?")
+        params.append(f"%{query}%")
+    if status:
+        wheres.append("p.status = ?")
+        params.append(status)
+    if wheres:
+        sql += " WHERE " + " AND ".join(wheres)
+    sql += " GROUP BY p.id ORDER BY p.name"
+    rows = conn.execute(sql, params).fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+
+# ── Phase / heuristics ────────────────────────────────────
+
+
+def update_project_phase(project_id: int, phase: str):
+    now = datetime.now(timezone.utc).isoformat()
+    conn = get_connection()
+    conn.execute(
+        "UPDATE projects SET phase = ?, updated_at = ? WHERE id = ?",
+        (phase, now, project_id),
+    )
+    conn.commit()
+    conn.close()

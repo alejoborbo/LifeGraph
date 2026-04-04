@@ -30,3 +30,14 @@ CONFLUENCE_URL = os.getenv("CONFLUENCE_URL", "")
 CONFLUENCE_EMAIL = os.getenv("CONFLUENCE_EMAIL", "")
 CONFLUENCE_API_TOKEN = os.getenv("CONFLUENCE_API_TOKEN", "")
 CONFLUENCE_SPACE_KEY = os.getenv("CONFLUENCE_SPACE_KEY", "")
+
+# GitHub
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN", "")
+GITHUB_REPOS = os.getenv("GITHUB_REPOS", "")  # comma-separated "owner/repo"
+import json as _json
+GITHUB_REPO_PROJECT_MAP = _json.loads(os.getenv("GITHUB_REPO_PROJECT_MAP", "{}"))
+
+# Slack
+SLACK_TOKEN = os.getenv("SLACK_TOKEN", "")  # xoxb-... or xoxp-...
+SLACK_CHANNELS = os.getenv("SLACK_CHANNELS", "")  # comma-separated channel names or IDs
+SLACK_WORKSPACE_URL = os.getenv("SLACK_WORKSPACE_URL", "")  # e.g. https://datadog.slack.com

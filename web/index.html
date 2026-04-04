@@ -84,6 +84,16 @@
       font-size: 11px; color: #555; margin-top: 2px;
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
+    #search .filter-chips {
+      display: flex; gap: 4px; margin-top: 6px; justify-content: center;
+    }
+    #search .filter-chip {
+      font-size: 10px; padding: 3px 10px; border-radius: 10px;
+      border: 1px solid #1e1e2e; background: #111119; color: #666;
+      cursor: pointer; transition: all 0.15s; font-family: inherit;
+    }
+    #search .filter-chip:hover { color: #ddd; border-color: #3a3a5a; }
+    #search .filter-chip.active { color: #a78bfa; border-color: #6366f1; background: #12122a; }
 
     /* View toggle buttons */
     .view-toggles {
@@ -279,6 +289,13 @@
     .ps-blocked { background: #3a2a1a; color: #fbbf24; }
     .ps-idea { background: #1e1e2e; color: #888; }
     .ps-abandoned { background: #2a1a1a; color: #888; }
+    .pc-phase {
+      font-size: 10px; padding: 3px 10px; border-radius: 10px; font-weight: 500;
+      white-space: nowrap;
+    }
+    .pp-planning { background: #1e1e3a; color: #a78bfa; }
+    .pp-building { background: #1a2a3a; color: #60a5fa; }
+    .pp-shipped { background: #1a3a2a; color: #4ade80; }
     .project-card .pc-stats {
       display: flex; gap: 16px; font-size: 12px; color: #666; margin-bottom: 8px;
     }
@@ -330,7 +347,15 @@
   </div>
 
   <div id="search">
-    <input type="text" placeholder="Search topics and documents..." id="searchInput">
+    <input type="text" placeholder="Search topics, docs, projects... (jira: github: status:)" id="searchInput">
+    <div class="filter-chips">
+      <button class="filter-chip active" data-source="all" onclick="setSearchFilter(this)">All</button>
+      <button class="filter-chip" data-source="google_docs" onclick="setSearchFilter(this)">Google Docs</button>
+      <button class="filter-chip" data-source="confluence" onclick="setSearchFilter(this)">Confluence</button>
+      <button class="filter-chip" data-source="jira" onclick="setSearchFilter(this)">Jira</button>
+      <button class="filter-chip" data-source="slack" onclick="setSearchFilter(this)">Slack</button>
+      <button class="filter-chip" data-source="github" onclick="setSearchFilter(this)">GitHub</button>
+    </div>
     <div class="results" id="searchResults"></div>
   </div>
 
@@ -367,6 +392,11 @@
         <input type="date" id="reportFrom" onchange="onDateInputChange()">
         <span style="color:#555; font-size:12px;">to</span>
         <input type="date" id="reportTo" onchange="onDateInputChange()">
+        <div style="display:flex; gap:4px; margin-left:12px;">
+          <button class="view-btn active" id="reportModeTopics" onclick="setReportMode('topics')">By Topic</button>
+          <button class="view-btn" id="reportModeUpdate" onclick="setReportMode('update')">Summary</button>
+        </div>
+        <button id="copySummaryBtn" onclick="copySummary()" style="display:none; margin-left:8px; padding:7px 14px; border-radius:12px; border:1px solid #1e1e2e; background:#111119; color:#a78bfa; font-size:11px; cursor:pointer; font-family:inherit; transition:all 0.15s;">Copy as Markdown</button>
       </div>
       <div id="reportContent"></div>
     </div>
@@ -390,6 +420,12 @@
           <option value="shipped">Shipped</option>
           <option value="blocked">Blocked</option>
           <option value="idea">Idea</option>
+        </select>
+        <select id="projectsPhase" onchange="renderProjects()">
+          <option value="all">All phases</option>
+          <option value="Planning">Planning</option>
+          <option value="Building">Building</option>
+          <option value="Shipped">Shipped</option>
         </select>
       </div>
       <div id="projectsContent"></div>
@@ -860,23 +896,110 @@
       }, 4000);
     }
 
+    let searchSourceFilter = 'all';
+
+    function setSearchFilter(btn) {
+      document.querySelectorAll('#search .filter-chip').forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      searchSourceFilter = btn.dataset.source;
+      // Re-trigger search
+      document.getElementById('searchInput').dispatchEvent(new Event('input'));
+    }
+
     function setupSearch() {
       const input = document.getElementById('searchInput');
       const results = document.getElementById('searchResults');
       input.addEventListener('input', () => {
-        const q = input.value.toLowerCase();
+        let q = input.value.toLowerCase().trim();
         if (q.length < 2) { results.classList.remove('visible'); return; }
+
+        const sf = searchSourceFilter;
+
+        // Handle status: prefix — show matching projects
+        if (q.startsWith('status:')) {
+          const status = q.split(':')[1].trim();
+          const projMatches = (graphData.projects || [])
+            .filter(p => p.status.toLowerCase().includes(status))
+            .slice(0, 8);
+          if (!projMatches.length) { results.classList.remove('visible'); return; }
+          let html = '<div class="result-section">Projects by status</div>';
+          html += projMatches.map(p =>
+            `<div class="result-item" onclick="openProjectSidebar(${p.id})">
+              <span class="pc-status ps-${p.status}" style="display:inline-block;margin-right:6px">${p.status}</span>
+              ${p.name} <span style="color:#555">(${p.doc_count} docs)</span>
+            </div>`
+          ).join('');
+          results.innerHTML = html;
+          results.classList.add('visible');
+          return;
+        }
+
+        // Handle jira: / github: prefix — search project links
+        let linkPrefix = null;
+        for (const pfx of ['jira:', 'github:']) {
+          if (q.startsWith(pfx)) {
+            linkPrefix = pfx.replace(':', '');
+            q = q.slice(pfx.length).trim();
+            break;
+          }
+        }
+
+        if (linkPrefix) {
+          const linkMatches = [];
+          (graphData.projects || []).forEach(p => {
+            (p.links || []).forEach(l => {
+              if (!l.source_type.includes(linkPrefix)) return;
+              if (q && !l.title.toLowerCase().includes(q) && !(l.source_id || '').toLowerCase().includes(q)) return;
+              linkMatches.push({...l, projectName: p.name, projectId: p.id});
+            });
+          });
+          if (!linkMatches.length) { results.classList.remove('visible'); return; }
+          let html = `<div class="result-section">${linkPrefix === 'jira' ? 'Jira Tickets' : 'GitHub Items'}</div>`;
+          html += linkMatches.slice(0, 8).map(l => {
+            const statusColor = l.status === 'Done' || l.status === 'Merged' ? '#4ade80' : l.status === 'In Progress' || l.status === 'Open' ? '#60a5fa' : '#888';
+            return `<div class="result-item" onclick="window.open('${l.url}', '_blank')">
+              <span style="color:${statusColor};font-size:10px;font-weight:600">${l.status || '?'}</span>
+              ${l.source_id} — ${l.title}
+              <div class="result-snippet">${l.projectName}</div>
+            </div>`;
+          }).join('');
+          results.innerHTML = html;
+          results.classList.add('visible');
+          return;
+        }
 
         // Search topics
         const topicMatches = graphData.nodes.filter(n => n.name.toLowerCase().includes(q)).slice(0, 5);
 
-        // Search documents by title + snippet
-        const docMatches = graphData.documents.filter(d =>
+        // Search documents by title + snippet, with source filter
+        let filteredDocs = graphData.documents;
+        if (sf !== 'all' && sf !== 'jira' && sf !== 'github') {
+          filteredDocs = filteredDocs.filter(d => d.source === sf);
+        }
+        const docMatches = filteredDocs.filter(d =>
           d.title.toLowerCase().includes(q) ||
           (d.snippet && d.snippet.toLowerCase().includes(q))
         ).slice(0, 6);
 
-        if (!topicMatches.length && !docMatches.length) {
+        // Search projects by name
+        const projMatches = (graphData.projects || []).filter(p =>
+          p.name.toLowerCase().includes(q)
+        ).slice(0, 4);
+
+        // Search links when filter is jira or github
+        let linkMatches = [];
+        if (sf === 'jira' || sf === 'github') {
+          (graphData.projects || []).forEach(p => {
+            (p.links || []).forEach(l => {
+              if (!l.source_type.includes(sf)) return;
+              if (l.title.toLowerCase().includes(q) || (l.source_id || '').toLowerCase().includes(q))
+                linkMatches.push({...l, projectName: p.name, projectId: p.id});
+            });
+          });
+          linkMatches = linkMatches.slice(0, 6);
+        }
+
+        if (!topicMatches.length && !docMatches.length && !projMatches.length && !linkMatches.length) {
           results.classList.remove('visible'); return;
         }
 
@@ -887,6 +1010,16 @@
             `<div class="result-item" onclick="focusNode(${n.id})">${n.name} <span style="color:#6366f1">(${n.doc_count})</span></div>`
           ).join('');
         }
+        if (projMatches.length) {
+          html += '<div class="result-section">Projects</div>';
+          html += projMatches.map(p =>
+            `<div class="result-item" onclick="openProjectSidebar(${p.id})">
+              ${p.name}
+              <span class="pc-status ps-${p.status}" style="display:inline-block;margin-left:6px;font-size:9px">${p.status}</span>
+              ${p.phase ? `<span class="pc-phase pp-${p.phase.toLowerCase()}" style="display:inline-block;margin-left:4px;font-size:9px">${p.phase}</span>` : ''}
+            </div>`
+          ).join('');
+        }
         if (docMatches.length) {
           html += '<div class="result-section">Documents</div>';
           html += docMatches.map(d => {
@@ -895,6 +1028,17 @@
             return `<div class="result-item" onclick="window.open('${d.source_url || '#'}', '_blank')">
               ${d.title} <span style="color:#555">${date}</span>
               ${snippet ? `<div class="result-snippet">${snippet.substring(0, 80)}...</div>` : ''}
+            </div>`;
+          }).join('');
+        }
+        if (linkMatches.length) {
+          html += `<div class="result-section">${sf === 'jira' ? 'Jira Tickets' : 'GitHub Items'}</div>`;
+          html += linkMatches.map(l => {
+            const statusColor = l.status === 'Done' || l.status === 'Merged' ? '#4ade80' : l.status === 'Open' || l.status === 'In Progress' ? '#60a5fa' : '#888';
+            return `<div class="result-item" onclick="window.open('${l.url}', '_blank')">
+              <span style="color:${statusColor};font-size:10px;font-weight:600">${l.status || '?'}</span>
+              ${l.source_id} — ${l.title}
+              <div class="result-snippet">${l.projectName}</div>
             </div>`;
           }).join('');
         }
@@ -1286,15 +1430,193 @@
       document.getElementById('reportContent').innerHTML = html;
     }
 
+    // ── Summary (project-grouped update) ─────────────────────
+
+    let reportMode = 'topics';
+    let lastSummaryMarkdown = '';
+
+    function setReportMode(mode) {
+      reportMode = mode;
+      document.getElementById('reportModeTopics').classList.toggle('active', mode === 'topics');
+      document.getElementById('reportModeUpdate').classList.toggle('active', mode === 'update');
+      document.getElementById('copySummaryBtn').style.display = mode === 'update' ? 'inline-block' : 'none';
+      onDateInputChange();
+    }
+
+    // Patch renderReport to dispatch
+    const _origRenderReport = renderReport;
+    renderReport = function(startDate, endDate) {
+      if (reportMode === 'update') {
+        renderUpdateSummary(startDate, endDate);
+      } else {
+        _origRenderReport(startDate, endDate);
+      }
+    };
+
+    function renderUpdateSummary(startDate, endDate) {
+      const startStr = startDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+      const endStr = endDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+
+      // Filter docs in date range
+      const periodDocs = graphData.documents.filter(d => {
+        if (!d.created_at) return false;
+        const date = new Date(d.created_at);
+        return date >= startDate && date <= endDate;
+      });
+      const periodDocIds = new Set(periodDocs.map(d => d.id));
+
+      // Find projects with activity in this period
+      const activeProjects = (graphData.projects || []).map(p => {
+        const docs = (p.doc_ids || []).filter(id => periodDocIds.has(id))
+          .map(id => docMap[id]).filter(Boolean)
+          .sort((a, b) => (b.created_at || '').localeCompare(a.created_at || ''));
+
+        // Group docs by source
+        const bySrc = {};
+        docs.forEach(d => {
+          if (!bySrc[d.source]) bySrc[d.source] = [];
+          bySrc[d.source].push(d);
+        });
+
+        // Links (Jira/GitHub) — filter by created_at if available, else include all
+        const links = (p.links || []).filter(l => {
+          if (!l.created_at) return true;  // include if no date
+          const d = new Date(l.created_at);
+          return d >= startDate && d <= endDate;
+        });
+
+        const linksByType = {};
+        links.forEach(l => {
+          const t = l.source_type;
+          if (!linksByType[t]) linksByType[t] = [];
+          linksByType[t].push(l);
+        });
+
+        return { ...p, periodDocs: docs, bySrc, links, linksByType, docCount: docs.length };
+      }).filter(p => p.docCount > 0 || p.links.length > 0)
+        .sort((a, b) => b.docCount - a.docCount);
+
+      document.getElementById('reportSub').textContent = `${startStr} - ${endStr} (${periodDocs.length} documents across ${activeProjects.length} projects)`;
+
+      if (!activeProjects.length) {
+        document.getElementById('reportContent').innerHTML = '<div class="report-empty">No project activity in this period.</div>';
+        lastSummaryMarkdown = '';
+        return;
+      }
+
+      // Build HTML and Markdown simultaneously
+      let html = '';
+      let md = `## Update: ${startStr} – ${endStr}\n\n`;
+
+      // Totals for summary
+      let totalDocs = 0;
+      let totalTickets = 0;
+
+      activeProjects.forEach(p => {
+        const phase = p.phase ? `<span class="pc-phase pp-${p.phase.toLowerCase()}" style="display:inline-block;margin-left:8px">${p.phase}</span>` : '';
+        const phaseMd = p.phase ? ` (${p.phase})` : '';
+
+        html += `<div class="report-category">
+          <div class="report-cat-header" style="cursor:pointer" onclick="openProjectSidebar(${p.id})">
+            <div class="report-cat-dot" style="background:${catColors[p.category]}"></div>
+            <div class="report-cat-name">${p.name}${phase}</div>
+            <div class="report-cat-count">${p.docCount} docs${p.links.length ? ', ' + p.links.length + ' tickets' : ''}</div>
+          </div>`;
+
+        md += `### ${p.name}${phaseMd}\n`;
+
+        // Documents grouped by source
+        const srcLabels = { google_docs: 'Google Docs', 'google-docs': 'Google Docs', 'google-slides': 'Slides', confluence: 'Confluence', slack: 'Slack' };
+        for (const [src, srcDocs] of Object.entries(p.bySrc)) {
+          const label = srcLabels[src] || src;
+          html += `<div class="report-cluster">
+            <div class="report-cluster-name" style="color:#888">${label} (${srcDocs.length})</div>`;
+          md += `- **${label}:** `;
+
+          const titles = [];
+          srcDocs.forEach(doc => {
+            const date = doc.created_at ? new Date(doc.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
+            const url = doc.source_url || '#';
+            html += `<div class="report-doc" onclick="window.open('${url}', '_blank')">
+              <div class="doc-title">${doc.title}</div>
+              <div class="doc-source">${src}</div>
+              <div class="doc-date">${date}</div>
+            </div>`;
+            titles.push(doc.title);
+            totalDocs++;
+          });
+          md += titles.join(', ') + '\n';
+          html += `</div>`;
+        }
+
+        // Jira / GitHub links
+        for (const [type, items] of Object.entries(p.linksByType)) {
+          const typeLabel = type === 'jira' ? 'Jira' : type === 'github-pr' ? 'GitHub PRs' : type === 'github-issue' ? 'GitHub Issues' : type;
+
+          // Group by status
+          const byStatus = {};
+          items.forEach(l => {
+            const s = l.status || 'Unknown';
+            if (!byStatus[s]) byStatus[s] = [];
+            byStatus[s].push(l);
+          });
+
+          html += `<div class="report-cluster">
+            <div class="report-cluster-name" style="color:#60a5fa">${typeLabel} (${items.length})</div>`;
+
+          const statusParts = [];
+          for (const [status, sItems] of Object.entries(byStatus)) {
+            const statusColor = (status === 'Done' || status === 'Merged') ? '#4ade80' : (status === 'In Progress' || status === 'Open') ? '#60a5fa' : '#888';
+            sItems.forEach(l => {
+              html += `<div class="report-doc" onclick="window.open('${l.url}', '_blank')">
+                <div class="doc-title" style="display:flex;align-items:center;gap:6px">
+                  <span style="color:${statusColor};font-size:10px;font-weight:600">${status}</span>
+                  ${l.source_id} — ${l.title}
+                </div>
+                <div class="doc-source">${type}</div>
+              </div>`;
+            });
+            statusParts.push(`${sItems.length} ${status}`);
+            totalTickets += sItems.length;
+          }
+          md += `- **${typeLabel}:** ${statusParts.join(', ')}\n`;
+          html += `</div>`;
+        }
+
+        html += `</div>`;
+        md += '\n';
+      });
+
+      // Bottom summary
+      md += `---\n**Total:** ${totalDocs} documents across ${activeProjects.length} projects`;
+      if (totalTickets) md += `, ${totalTickets} tickets`;
+      md += '\n';
+
+      lastSummaryMarkdown = md;
+      document.getElementById('reportContent').innerHTML = html;
+    }
+
+    function copySummary() {
+      if (!lastSummaryMarkdown) return;
+      navigator.clipboard.writeText(lastSummaryMarkdown).then(() => {
+        const btn = document.getElementById('copySummaryBtn');
+        btn.textContent = 'Copied!';
+        btn.style.color = '#4ade80';
+        setTimeout(() => { btn.textContent = 'Copy as Markdown'; btn.style.color = '#a78bfa'; }, 1500);
+      });
+    }
+
     // ── Projects View ──────────────────────────────────────────
 
     function renderProjects() {
       const statusFilter = document.getElementById('projectsStatus').value;
+      const phaseFilter = document.getElementById('projectsPhase').value;
       const sortBy = document.getElementById('projectsSort').value;
 
       let projects = (graphData.projects || [])
         .filter(p => !hiddenCategories.has(p.category))
-        .filter(p => statusFilter === 'all' || p.status === statusFilter);
+        .filter(p => statusFilter === 'all' || p.status === statusFilter)
+        .filter(p => phaseFilter === 'all' || p.phase === phaseFilter);
 
       // Sort
       if (sortBy === 'activity') {
@@ -1348,11 +1670,13 @@
           html += `<div class="project-card" onclick="openProjectSidebar(${p.id})">
             <div class="pc-top">
               <div class="pc-name">${p.name}</div>
+              ${p.phase ? `<div class="pc-phase pp-${p.phase.toLowerCase()}">${p.phase}</div>` : ''}
               <div class="pc-status ps-${p.status}">${p.status}</div>
             </div>
             <div class="pc-stats">
               <span>${p.doc_count} docs</span>
-              ${(p.links||[]).length ? `<span style="color:#60a5fa">${(p.links||[]).length} tickets</span>` : ''}
+              ${(p.links||[]).filter(l=>l.source_type==='jira').length ? `<span style="color:#60a5fa">${(p.links||[]).filter(l=>l.source_type==='jira').length} tickets</span>` : ''}
+              ${(p.links||[]).filter(l=>l.source_type.startsWith('github')).length ? `<span style="color:#8b5cf6">${(p.links||[]).filter(l=>l.source_type.startsWith('github')).length} GH</span>` : ''}
             </div>
             <div class="pc-dates">
               ${startDate ? 'Since ' + startDate : ''}${lastDate ? ' · Last: ' + lastDate : ''}
@@ -1375,23 +1699,33 @@
       document.getElementById('sidebarMeta').innerHTML =
         `<span style="color:${catColors[project.category]}">${catLabels[project.category] || project.category}</span>` +
         ` · <span class="pc-status ps-${project.status}" style="display:inline-block">${project.status}</span>` +
+        (project.phase ? ` · <span class="pc-phase pp-${project.phase.toLowerCase()}" style="display:inline-block">${project.phase}</span>` : '') +
         ` · ${project.doc_count} documents`;
 
-      // Jira tickets
+      // External links (Jira, GitHub)
       const links = project.links || [];
+      const jiraLinks = links.filter(l => l.source_type === 'jira');
+      const ghLinks = links.filter(l => l.source_type.startsWith('github'));
       let ticketHtml = '';
-      if (links.length) {
-        ticketHtml = links.map(l => {
-          const statusColor = l.status === 'Done' ? '#4ade80' : l.status === 'In Progress' ? '#60a5fa' : '#888';
+
+      function renderLinkList(items) {
+        return items.map(l => {
+          const statusColor = (l.status === 'Done' || l.status === 'Merged') ? '#4ade80'
+            : (l.status === 'In Progress' || l.status === 'Open') ? '#60a5fa' : '#888';
+          const icon = l.source_type.startsWith('github') ? 'GH' : 'JIRA';
           return `<li onclick="window.open('${l.url}', '_blank')">
             <div class="doc-title" style="display:flex;align-items:center;gap:8px">
               <span style="color:${statusColor};font-size:10px;font-weight:600;padding:2px 8px;border-radius:8px;background:${statusColor}15;white-space:nowrap">${l.status || 'To Do'}</span>
+              <span style="font-size:9px;color:#555;font-weight:600">${icon}</span>
               ${l.source_id} — ${l.title}
             </div>
-            <div class="doc-meta">${l.source_type}${l.priority ? ' · ' + l.priority : ''}</div>
+            <div class="doc-meta">${l.source_type}${l.priority ? ' · ' + l.priority : ''}${l.assignee ? ' · ' + l.assignee : ''}</div>
           </li>`;
         }).join('');
       }
+
+      if (jiraLinks.length) ticketHtml += renderLinkList(jiraLinks);
+      if (ghLinks.length) ticketHtml += renderLinkList(ghLinks);
 
       // Documents sorted by date
       const docs = (project.doc_ids || []).map(id => docMap[id]).filter(Boolean)
@@ -1403,9 +1737,15 @@
         </li>
       `).join('');
 
+      const hasLinks = jiraLinks.length || ghLinks.length;
+      let linkSectionTitle = '';
+      if (jiraLinks.length && ghLinks.length) linkSectionTitle = 'Jira & GitHub';
+      else if (jiraLinks.length) linkSectionTitle = 'Jira Tickets';
+      else if (ghLinks.length) linkSectionTitle = 'GitHub';
+
       document.getElementById('docList').innerHTML =
-        (ticketHtml ? '<div class="section-title" style="margin:-4px 0 8px;font-size:11px;color:#60a5fa">Jira Tickets</div>' + ticketHtml : '') +
-        (ticketHtml && docsHtml ? '<div class="section-title" style="margin:16px 0 8px">Documents</div>' : '') +
+        (hasLinks ? `<div class="section-title" style="margin:-4px 0 8px;font-size:11px;color:#60a5fa">${linkSectionTitle}</div>` + ticketHtml : '') +
+        (hasLinks && docsHtml ? '<div class="section-title" style="margin:16px 0 8px">Documents</div>' : '') +
         docsHtml;
 
       // Related projects: those that share docs

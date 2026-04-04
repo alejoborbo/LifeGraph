@@ -10,6 +10,11 @@ from lifegraph.db import (
     get_project_documents,
     get_work_summary,
     init_db,
+    rebuild_fts,
+    search_documents,
+    search_project_links,
+    search_projects,
+    update_project_phase,
     update_project_status,
 )
 from lifegraph.extractor import process_document
@@ -68,6 +73,50 @@ def sync_confluence():
     click.echo("Fetching pages...")
     count = connector.sync()
     click.echo(f"Done! Synced {count} page(s).")
+
+
+@sync.command("slack")
+@click.option("--channel", default=None, help="Sync a single channel (name or ID) instead of all configured.")
+def sync_slack(channel):
+    """Fetch threads from Slack channels and store as documents."""
+    from lifegraph.connectors.slack import SlackConnector
+
+    connector = SlackConnector()
+    if channel:
+        connector.channel_filter = [channel]
+    click.echo("Authenticating with Slack...")
+    try:
+        user = connector.authenticate()
+        click.echo(f"Authenticated as {user}")
+    except ValueError as e:
+        click.echo(f"Error: {e}", err=True)
+        raise SystemExit(1)
+
+    click.echo(f"Syncing channels...")
+    count = connector.sync()
+    click.echo(f"Done! Synced {count} thread(s).")
+
+
+@sync.command("github")
+@click.option("--repo", default=None, help="Sync a single repo (owner/repo) instead of all configured.")
+def sync_github(repo):
+    """Fetch PRs and issues from GitHub repos."""
+    from lifegraph.connectors.github import GitHubConnector
+
+    connector = GitHubConnector()
+    if repo:
+        connector.repos = [repo]
+    click.echo("Authenticating with GitHub...")
+    try:
+        user = connector.authenticate()
+        click.echo(f"Authenticated as {user}")
+    except ValueError as e:
+        click.echo(f"Error: {e}", err=True)
+        raise SystemExit(1)
+
+    click.echo(f"Syncing {len(connector.repos)} repo(s)...")
+    count = connector.sync()
+    click.echo(f"Done! Synced {count} PR(s)/issue(s).")
 
 
 @cli.command()
@@ -355,6 +404,101 @@ def set_status(name, status):
         p = matches[0]
     update_project_status(p["id"], status)
     click.echo(f"Updated '{p['name']}' -> {status}")
+
+
+@cli.command()
+@click.argument("query")
+@click.option("--source", type=click.Choice(["google_docs", "confluence", "slack", "github"]), default=None)
+@click.option("--project", default=None, help="Filter to a project name (partial match).")
+@click.option("--limit", default=20)
+def search(query, source, project, limit):
+    """Full-text search across documents, projects, and tickets.
+
+    Prefix syntax: jira:query, github:query, status:blocked, confluence:query
+    """
+    # Handle prefix syntax
+    prefix_map = {"jira:": "jira", "github:": "github", "confluence:": "confluence"}
+    for prefix, src in prefix_map.items():
+        if query.lower().startswith(prefix):
+            remainder = query[len(prefix):].strip()
+            if prefix in ("jira:", "github:"):
+                results = search_project_links(remainder, source_type=src)
+                if not results:
+                    click.echo("No matching tickets found.")
+                    return
+                for r in results:
+                    click.echo(
+                        f"  [{r['source_type']}] {r['source_id']} — {r['title']}"
+                        f"  ({r.get('status', '?')}) in {r['project_name']}"
+                    )
+                return
+            else:
+                source = src
+                query = remainder
+                break
+
+    # Handle status: prefix
+    if query.lower().startswith("status:"):
+        status = query.split(":")[1].strip()
+        results = search_projects(status=status)
+        if not results:
+            click.echo(f"No projects with status '{status}'.")
+            return
+        for p in results:
+            phase = p.get("phase") or ""
+            click.echo(f"  [{p['status']}] {p['name']} ({p['doc_count']} docs){' — ' + phase if phase else ''}")
+        return
+
+    # Resolve project name to ID
+    project_id = None
+    if project:
+        all_projects = get_all_projects()
+        matches = [p for p in all_projects if project.lower() in p["name"].lower()]
+        if matches:
+            project_id = matches[0]["id"]
+
+    # Document search
+    results = search_documents(query, source=source, project_id=project_id, limit=limit)
+    if not results:
+        click.echo("No documents found.")
+        return
+
+    click.echo(f"Found {len(results)} document(s):\n")
+    for r in results:
+        date = r["created_at"][:10] if r.get("created_at") else ""
+        snippet = (r.get("snippet") or "")[:120].replace("\n", " ")
+        click.echo(f"  {r['title']}")
+        click.echo(f"    {r['source']} · {date}")
+        if snippet:
+            click.echo(f"    {snippet}")
+        click.echo()
+
+
+@cli.command("rebuild-fts")
+def rebuild_fts_cmd():
+    """Rebuild the full-text search index (run once after upgrade)."""
+    rebuild_fts()
+    click.echo("FTS index rebuilt.")
+
+
+@cli.command("compute-phases")
+def compute_phases():
+    """Auto-compute project phases (Planning/Building/Shipped) from artifacts."""
+    from lifegraph.heuristics import compute_all_phases
+
+    phases = compute_all_phases()
+    projects = {p["id"]: p for p in get_all_projects()}
+    changed = 0
+    for pid, phase in phases.items():
+        old = projects[pid].get("phase") or "?"
+        update_project_phase(pid, phase)
+        name = projects[pid]["name"]
+        if old != phase:
+            click.echo(f"  {name}: {old} -> {phase}")
+            changed += 1
+        else:
+            click.echo(f"  {name}: {phase} (unchanged)")
+    click.echo(f"\nUpdated {len(phases)} projects ({changed} changed).")
 
 
 if __name__ == "__main__":
