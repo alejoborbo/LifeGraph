@@ -5,6 +5,7 @@ from lifegraph.db import (
     count_documents_by_source,
     get_all_topics_with_counts,
     get_documents_without_topics,
+    get_work_summary,
     init_db,
 )
 from lifegraph.extractor import process_document
@@ -45,6 +46,24 @@ def sync_google_docs():
     click.echo("Fetching documents...")
     count = connector.sync()
     click.echo(f"Done! Synced {count} document(s).")
+
+
+@sync.command("confluence")
+def sync_confluence():
+    """Fetch all Confluence pages and store them locally."""
+    from lifegraph.connectors.confluence import ConfluenceConnector
+
+    connector = ConfluenceConnector()
+    click.echo("Authenticating with Confluence...")
+    try:
+        connector.authenticate()
+    except ValueError as e:
+        click.echo(f"Error: {e}", err=True)
+        raise SystemExit(1)
+
+    click.echo("Fetching pages...")
+    count = connector.sync()
+    click.echo(f"Done! Synced {count} page(s).")
 
 
 @cli.command()
@@ -115,6 +134,145 @@ def graph(min_edge, output):
         json.dump(g, f, indent=2)
     click.echo(f"Graph exported: {len(g['nodes'])} nodes, {len(g['edges'])} edges, {len(g['documents'])} docs")
     click.echo(f"Written to {output}")
+
+
+@cli.command()
+@click.option("--days", default=30, help="Number of days to look back.")
+@click.option("--since", "since_date", default=None, help="Start date (YYYY-MM-DD).")
+@click.option("--until", "until_date", default=None, help="End date (YYYY-MM-DD).")
+@click.option("--format", "fmt", type=click.Choice(["plain", "markdown"]), default="plain")
+def report(days, since_date, until_date, fmt):
+    """Show a summary of what you worked on in a date range."""
+    from datetime import datetime, timedelta
+
+    if since_date:
+        start = since_date
+    else:
+        start = (datetime.now() - timedelta(days=days)).strftime("%Y-%m-%d")
+
+    if until_date:
+        end = until_date
+    else:
+        end = datetime.now().strftime("%Y-%m-%d")
+
+    docs = get_work_summary(start, end + "T23:59:59")
+
+    if not docs:
+        click.echo(f"No documents found between {start} and {end}.")
+        return
+
+    # Group docs by topic cluster -> category
+    # Import cluster mapping for category assignment
+    from lifegraph.clusters import CLUSTERS, _get_category
+
+    # Build reverse map: topic name -> cluster
+    topic_to_cluster = {}
+    for cluster, patterns in CLUSTERS.items():
+        for pat in patterns:
+            topic_to_cluster[pat] = cluster
+
+    # Group docs by cluster
+    from collections import defaultdict
+    cluster_docs = defaultdict(list)
+    uncategorized = []
+
+    for doc in docs:
+        topic_names = (doc["topics"] or "").split("||")
+        placed = False
+        for tname in topic_names:
+            tname = tname.strip()
+            cluster = topic_to_cluster.get(tname)
+            if cluster:
+                cluster_docs[cluster].append(doc)
+                placed = True
+                break
+        if not placed:
+            uncategorized.append(doc)
+
+    # Group clusters by category
+    cat_clusters = defaultdict(list)
+    for cluster in cluster_docs:
+        cat = _get_category(cluster)
+        cat_clusters[cat].append(cluster)
+
+    cat_labels = {
+        "posture": "Posture & Coverage",
+        "automation": "Automation & AI",
+        "strategy": "Strategy & Planning",
+        "ux": "UX & Design",
+        "team": "Team & Meetings",
+        "teaching": "Teaching & Education",
+        "personal": "Personal",
+        "code": "Code & Engineering",
+        "other": "Other",
+    }
+
+    # Format dates for header
+    start_fmt = datetime.strptime(start, "%Y-%m-%d").strftime("%b %-d, %Y")
+    end_fmt = datetime.strptime(end, "%Y-%m-%d").strftime("%b %-d, %Y")
+
+    if fmt == "markdown":
+        click.echo(f"# What I worked on: {start_fmt} - {end_fmt} ({len(docs)} documents)\n")
+    else:
+        click.echo(f"What I worked on: {start_fmt} - {end_fmt} ({len(docs)} documents)\n")
+
+    # Print by category
+    cat_order = ["posture", "automation", "strategy", "ux", "team", "teaching", "code", "personal", "other"]
+    for cat in cat_order:
+        clusters = cat_clusters.get(cat, [])
+        if not clusters:
+            continue
+
+        total = sum(len(cluster_docs[c]) for c in clusters)
+        label = cat_labels.get(cat, cat.upper())
+
+        if fmt == "markdown":
+            click.echo(f"## {label} ({total} docs)\n")
+        else:
+            click.echo(f"{label.upper()} ({total} docs)")
+
+        for cluster in sorted(clusters, key=lambda c: -len(cluster_docs[c])):
+            if fmt == "markdown":
+                click.echo(f"**{cluster}**")
+            else:
+                click.echo(f"  {cluster}")
+
+            for doc in cluster_docs[cluster]:
+                date_str = ""
+                if doc["created_at"]:
+                    try:
+                        date_str = datetime.fromisoformat(doc["created_at"].replace("Z", "+00:00")).strftime("%b %-d")
+                    except (ValueError, TypeError):
+                        pass
+
+                if fmt == "markdown":
+                    url = doc.get("source_url", "")
+                    if url:
+                        click.echo(f"- [{doc['title']}]({url}) ({date_str})")
+                    else:
+                        click.echo(f"- {doc['title']} ({date_str})")
+                else:
+                    click.echo(f"    - {doc['title']} ({date_str})")
+
+            click.echo()
+
+    if uncategorized:
+        if fmt == "markdown":
+            click.echo(f"## Uncategorized ({len(uncategorized)} docs)\n")
+        else:
+            click.echo(f"UNCATEGORIZED ({len(uncategorized)} docs)")
+        for doc in uncategorized:
+            date_str = ""
+            if doc["created_at"]:
+                try:
+                    date_str = datetime.fromisoformat(doc["created_at"]).strftime("%b %-d")
+                except (ValueError, TypeError):
+                    pass
+            if fmt == "markdown":
+                click.echo(f"- {doc['title']} ({date_str})")
+            else:
+                click.echo(f"    - {doc['title']} ({date_str})")
+        click.echo()
 
 
 if __name__ == "__main__":

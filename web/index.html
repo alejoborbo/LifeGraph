@@ -58,23 +58,32 @@
     /* Search */
     #search { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 5; }
     #search input {
-      width: 300px; padding: 9px 16px; border-radius: 20px;
+      width: 360px; padding: 9px 16px; border-radius: 20px;
       border: 1px solid #1e1e2e; background: #111119; color: #ddd;
       font-size: 13px; outline: none;
     }
     #search input:focus { border-color: #6366f1; box-shadow: 0 0 0 2px rgba(99,102,241,0.15); }
     #search .results {
-      position: absolute; top: 42px; left: 0; width: 300px;
+      position: absolute; top: 42px; left: 0; width: 360px;
       background: #111119; border: 1px solid #1e1e2e; border-radius: 12px;
       max-height: 260px; overflow-y: auto; display: none;
     }
     #search .results.visible { display: block; }
-    #search .results div {
+    #search .results .result-item {
       padding: 10px 16px; cursor: pointer; font-size: 13px;
       border-bottom: 1px solid #1a1a2a;
     }
-    #search .results div:hover { background: #1e1e3a; }
-    #search .results div:last-child { border: none; }
+    #search .results .result-item:hover { background: #1e1e3a; }
+    #search .results .result-item:last-child { border: none; }
+    #search .results .result-section {
+      padding: 6px 16px 2px; font-size: 10px; color: #555;
+      text-transform: uppercase; letter-spacing: 1px;
+      border-bottom: 1px solid #1a1a2a;
+    }
+    #search .results .result-snippet {
+      font-size: 11px; color: #555; margin-top: 2px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
 
     /* View toggle buttons */
     .view-toggles {
@@ -186,7 +195,7 @@
   </div>
 
   <div id="search">
-    <input type="text" placeholder="Search topics..." id="searchInput">
+    <input type="text" placeholder="Search topics and documents..." id="searchInput">
     <div class="results" id="searchResults"></div>
   </div>
 
@@ -591,11 +600,40 @@
       input.addEventListener('input', () => {
         const q = input.value.toLowerCase();
         if (q.length < 2) { results.classList.remove('visible'); return; }
-        const matches = graphData.nodes.filter(n => n.name.toLowerCase().includes(q)).slice(0, 8);
-        if (!matches.length) { results.classList.remove('visible'); return; }
-        results.innerHTML = matches.map(n =>
-          `<div onclick="focusNode(${n.id})">${n.name} <span style="color:#6366f1">(${n.doc_count})</span></div>`
-        ).join('');
+
+        // Search topics
+        const topicMatches = graphData.nodes.filter(n => n.name.toLowerCase().includes(q)).slice(0, 5);
+
+        // Search documents by title + snippet
+        const docMatches = graphData.documents.filter(d =>
+          d.title.toLowerCase().includes(q) ||
+          (d.snippet && d.snippet.toLowerCase().includes(q))
+        ).slice(0, 6);
+
+        if (!topicMatches.length && !docMatches.length) {
+          results.classList.remove('visible'); return;
+        }
+
+        let html = '';
+        if (topicMatches.length) {
+          html += '<div class="result-section">Topics</div>';
+          html += topicMatches.map(n =>
+            `<div class="result-item" onclick="focusNode(${n.id})">${n.name} <span style="color:#6366f1">(${n.doc_count})</span></div>`
+          ).join('');
+        }
+        if (docMatches.length) {
+          html += '<div class="result-section">Documents</div>';
+          html += docMatches.map(d => {
+            const date = d.created_at ? d.created_at.split('T')[0] : '';
+            const snippet = d.snippet || '';
+            return `<div class="result-item" onclick="window.open('${d.source_url || '#'}', '_blank')">
+              ${d.title} <span style="color:#555">${date}</span>
+              ${snippet ? `<div class="result-snippet">${snippet.substring(0, 80)}...</div>` : ''}
+            </div>`;
+          }).join('');
+        }
+
+        results.innerHTML = html;
         results.classList.add('visible');
       });
       input.addEventListener('blur', () => setTimeout(() => results.classList.remove('visible'), 200));

@@ -367,10 +367,15 @@ def build_clustered_graph(min_edge_weight: int = 2) -> dict:
     documents = []
     if all_doc_ids:
         rows = conn.execute("""
-            SELECT id, title, source, source_url, created_at
+            SELECT id, title, source, source_url, created_at, raw_text
             FROM documents WHERE id IN ({})
         """.format(",".join("?" * len(all_doc_ids))), list(all_doc_ids)).fetchall()
-        documents = [dict(r) for r in rows]
+        documents = []
+        for r in rows:
+            d = dict(r)
+            raw = d.pop("raw_text", "") or ""
+            d["snippet"] = raw[:200].replace("\n", " ").strip()
+            documents.append(d)
 
     conn.close()
 

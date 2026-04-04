@@ -76,11 +76,16 @@ def build_graph(min_docs: int = 2, min_edge_weight: int = 1) -> dict:
     documents = []
     if doc_ids_used:
         rows = conn.execute("""
-            SELECT id, title, source, source_url, created_at
+            SELECT id, title, source, source_url, created_at, raw_text
             FROM documents
             WHERE id IN ({})
         """.format(",".join("?" * len(doc_ids_used))), list(doc_ids_used)).fetchall()
-        documents = [dict(r) for r in rows]
+        documents = []
+        for r in rows:
+            d = dict(r)
+            raw = d.pop("raw_text", "") or ""
+            d["snippet"] = raw[:200].replace("\n", " ").strip()
+            documents.append(d)
 
     conn.close()
 

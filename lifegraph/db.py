@@ -133,6 +133,26 @@ def get_documents_without_topics() -> list[dict]:
     return [dict(r) for r in rows]
 
 
+def get_work_summary(start_date: str, end_date: str) -> list[dict]:
+    """Get documents with their topics in a date range, for the work report."""
+    conn = get_connection()
+    rows = conn.execute(
+        """
+        SELECT d.id, d.title, d.source, d.source_url, d.created_at,
+               GROUP_CONCAT(t.name, '||') as topics
+        FROM documents d
+        LEFT JOIN doc_topics dt ON d.id = dt.doc_id
+        LEFT JOIN topics t ON dt.topic_id = t.id
+        WHERE d.created_at >= ? AND d.created_at <= ?
+        GROUP BY d.id
+        ORDER BY d.created_at DESC
+        """,
+        (start_date, end_date),
+    ).fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+
 def get_all_topics_with_counts() -> list[dict]:
     conn = get_connection()
     rows = conn.execute(
