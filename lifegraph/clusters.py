@@ -9,6 +9,7 @@ CLUSTERS = {
     # === WORK: Monitoring Posture & Coverage ===
     "Monitoring Posture & Coverage": [
         "Monitoring Posture", "Monitoring Coverage", "Monitor Posture",
+        "Monitoring Posture & Coverage",
         "Measuring Monitoring Posture", "Monitoring Posture Alignment",
         "Monitoring Posture Assessment", "Monitoring Posture Overview",
         "Monitoring Posture Blog Post", "Monitoring Posture Roadmap",
@@ -28,6 +29,8 @@ CLUSTERS = {
         "Baseline Monitor Coverage", "Monitor Quality",
         "Monitor Quality Assessment", "Monitor Quality Validation",
         "Monitoring Best Practices Consulting",
+        "Monitor Best Practices", "Monitor Quality",
+        "Monitor Posture Team", "Intelligent Monitoring",
     ],
 
     "Datadog-Managed Monitors": [
@@ -64,6 +67,9 @@ CLUSTERS = {
         "Natural Language Monitor Interaction",
         "Dashboard To Monitor Conversion", "Dashboard-to-Monitor Conversion",
         "Dashboard Widget Monitors", "CMD+I Monitor Creation",
+        "LLM-Powered Monitor Generation", "LLM Output Evaluation",
+        "Monitor Generation Validation", "LLM As A Judge",
+        "Syntactic And Semantic Validation", "Dashboard To Monitor",
     ],
 
     "Threshold & Configuration": [
@@ -87,6 +93,10 @@ CLUSTERS = {
         "AI-Assisted Detection", "AI Detection Initiatives",
         "AI Detection Pipeline", "Context-Aware Detection",
         "AI Initiatives Updates", "AI Vision",
+        "MCP Server For Alerting", "Model Context Protocol",
+        "Datadog MCP Server", "Claude Code Integration",
+        "AI-Powered Alerting", "AI-Native Observability",
+        "AI-Assisted Monitor Setup",
     ],
 
     "Monitor Templates": [
@@ -111,13 +121,15 @@ CLUSTERS = {
         "Kubernetes Pod Monitoring", "APM Service Error Monitoring",
         "Error Rate Monitoring", "Traffic Anomaly Detection",
         "Service Tier Prioritization", "Service Health Assessment",
-        "Service Health View",
+        "Service Health View", "APM Service Monitoring",
+        "Kubernetes Configuration",
     ],
 
     "Terraform & Governance": [
         "Terraform Monitor Management", "Terraform Integration",
         "Terraform-Based Monitoring", "Restriction Policies",
-        "GRACE Permissions", "Monitor Access Control",
+        "GRACE Permissions", "GRACE (Granular Access Control)", "Monitor Access Control",
+        "Monitor Permissions & RBAC", "Infrastructure As Code",
         "Monitor Governance", "Monitor Trust And Control", "Monitor Creation Security",
         "Monitor Trust and Transparency", "Monitor Automation Control",
         "Monitor Configuration Ownership",
@@ -141,6 +153,7 @@ CLUSTERS = {
         "Feature Validation", "Onboarding Experience",
         "Monitor Onboarding Flow", "Zero-Setup Monitoring Onboarding",
         "Time-To-Value Optimization", "Stack Detection",
+        "Monitor Onboarding", "Trial Conversion",
     ],
 
     "Alerting Platform & Roadmap": [
@@ -148,6 +161,7 @@ CLUSTERS = {
         "Alerting Platform AI Roadmap", "Alerting Automation",
         "SLO Automation", "Monitor Generation Roadmap",
         "AI Squad Updates",
+        "Datadog AI Product Roadmap",
     ],
 
     "Ops Manager & Cross-Team": [
@@ -174,7 +188,8 @@ CLUSTERS = {
         "Side Panel Design", "UX Design", "Signal-First UX",
         "Health Component Design", "Monitor And Dashboard Packs",
         "Dashboards And Graphing", "Software Catalog Integration",
-        "IDP and Software Catalog", "Demo Strategy",
+        "IDP and Software Catalog", "Service Catalog Integration", "Demo Strategy",
+        "Monitor UX", "Monitor Message Editor", "VQA Testing",
         "Monitoring Posture Overview", "Executive Dashboards",
         "Executive Dashboard Monitors",
     ],
@@ -195,8 +210,49 @@ CLUSTERS = {
         "Integration Monitors OOTB", "Infrastructure Monitoring Defaults",
     ],
 
+    "Sensitive Data Scanner": [
+        "Sensitive Data Scanner", "PII Detection Rules",
+        "AI/ML-Powered Detection", "Regex Pattern Matching",
+        "Data Security & Privacy",
+        "Compliance (GDPR, HIPAA, PCI-DSS)",
+    ],
+
+    "Datadog AI Products": [
+        "Bits AI SRE", "Watchdog Anomaly Detection",
+        "Natural Language Querying", "Event Management AIOps",
+        "Incident AI", "Open Source GenAI",
+        "LLM Evaluation", "AI Agent Evaluation",
+    ],
+
+    "OpenTelemetry": [
+        "OpenTelemetry Integration", "DDOT Collector",
+        "OTel Semantic Conventions", "APM Trace Intake",
+        "Metric Equivalence",
+    ],
+
+    "Event Platform & Streaming": [
+        "Event Store (Husky)", "Kafka Streaming Platform",
+        "Full-Text Search", "Log Management",
+        "CIDR Network Querying", "Reference Tables",
+    ],
+
+    "APM & Tracing": [
+        "Telemetry Payload Validation", "JSON Schema Validation",
+        "APM Tracer Quality", "Cross-Language Tracer Testing",
+        "System Tests", "RUM Auto-Injection",
+        "APM Service Discovery", "Libdatadog",
+    ],
+
+    "Engineering Culture": [
+        "Engineering Onboarding", "SSH Key Management",
+        "GitHub Configuration", "Developer Environment Setup",
+        "Engineering Promotion", "Cross-Team Technical Leadership",
+        "Developer Tooling", "Conference Talks",
+    ],
+
     "CI/CD & Deployment Monitoring": [
         "CI/CD Monitoring", "Automatic Rollbacks", "Deployment Visibility",
+        "CI/CD Improvements", "Alerting Platform Infrastructure",
     ],
 
     "Monitor Search & Metrics": [
@@ -217,7 +273,8 @@ CLUSTERS = {
         "1:1 Meeting Notes", "Team Retrospective", "Team Collaboration",
         "Team Leadership", "Project Management", "Weekly Team Sync",
         "NYC Team Meetup", "Brainstorm Notes", "Kickoff Meeting",
-        "PM Career Development", "PM Career Growth",
+        "PM Career Development", "PM Career Growth", "Product Management",
+        "Career Development",
         "Career Growth to Senior PM", "Promotion and Career Growth",
         "Team Organization", "Brag Document", "Features Shipped",
         "Blog Content on Monitoring", "Sales Enablement for Monitoring",
@@ -248,7 +305,7 @@ CLUSTERS = {
     ],
 
     "Hackathons": [
-        "Hackathon Ideas", "Hackathon Project", "Hackathon Project Ideas",
+        "Hackathon Ideas", "Hackathon Project", "Hackathon Project Ideas", "Hackathon Projects",
         "GCPU Hackathon", "Misinformation Detection",
         "Critical Thinking AI", "NLP Fallacy Detection",
         "Cross-Source Knowledge Synthesis", "AI Decision Context Builder",
@@ -392,11 +449,11 @@ def _get_category(cluster_name: str) -> str:
         "posture": ["Monitoring Posture", "Posture.md", "RED Metrics", "Alert Quality"],
         "automation": ["Datadog-Managed", "Monitor Generation", "Threshold", "MCP", "Monitor Templates"],
         "strategy": ["OKR", "DASH", "Alerting Platform", "Ops Manager", "Customer Research", "Customer Onboarding", "Terraform"],
-        "ux": ["UX", "Side Panel", "Synthetics", "Monitor Search", "Agent Observability"],
-        "team": ["1:1", "Workshop", "CI/CD"],
-        "teaching": ["Teaching", "Education", "Machine Learning", "Hackathon"],
+        "ux": ["UX", "Side Panel", "Synthetics", "Monitor Search", "Agent Observability", "Sensitive Data"],
+        "team": ["1:1", "Workshop", "CI/CD", "Engineering Culture"],
+        "teaching": ["Teaching", "Education", "Machine Learning", "Hackathon", "Datadog AI Products"],
         "personal": ["Astrology", "Personal", "Career Exploration"],
-        "code": ["Code Review"],
+        "code": ["Code Review", "OpenTelemetry", "Event Platform", "APM"],
     }
     for cat, keywords in categories.items():
         for kw in keywords:
