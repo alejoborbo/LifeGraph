@@ -581,7 +581,7 @@
 
       const edgeScale = d3.scaleLinear()
         .domain([d3.min(edges, e => e.weight) || 1, d3.max(edges, e => e.weight) || 1])
-        .range([0.5, 2.5]);
+        .range([0.3, 2]);
 
       // Cluster force: pull nodes toward their category's radial position
       const clusterRadius = Math.min(width, height) * 0.35;
@@ -590,16 +590,16 @@
           const angle = catAngles[n.category] || 0;
           const tx = width / 2 + Math.cos(angle) * clusterRadius;
           const ty = height / 2 + Math.sin(angle) * clusterRadius;
-          n.vx += (tx - n.x) * alpha * 0.1;
-          n.vy += (ty - n.y) * alpha * 0.1;
+          n.vx += (tx - n.x) * alpha * 0.12;
+          n.vy += (ty - n.y) * alpha * 0.12;
         });
       }
 
       simulation = d3.forceSimulation(nodes)
-        .force('link', d3.forceLink(edges).id(d => d.id).distance(90).strength(e => e.weight * 0.02))
-        .force('charge', d3.forceManyBody().strength(-400))
-        .force('center', d3.forceCenter(width / 2, height / 2).strength(0.03))
-        .force('collision', d3.forceCollide().radius(d => sizeScale(d.doc_count) + 20))
+        .force('link', d3.forceLink(edges).id(d => d.id).distance(120).strength(e => e.weight * 0.01))
+        .force('charge', d3.forceManyBody().strength(d => -200 - d.doc_count * 30))
+        .force('center', d3.forceCenter(width / 2, height / 2).strength(0.02))
+        .force('collision', d3.forceCollide().radius(d => sizeScale(d.doc_count) + 35).strength(1))
         .force('cluster', clusterForce);
 
       // Edges
