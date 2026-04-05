@@ -1218,7 +1218,9 @@
             .sort((a, b) => (b.created_at || '').localeCompare(a.created_at || ''))
             .slice(0, 15);
           if (!browseDocs.length) { results.innerHTML = '<div class="result-section">No documents</div>'; results.classList.add('visible'); return; }
-          let html = `<div class="result-section">${btn ? btn.textContent : sf} (${browseDocs.length})</div>`;
+          const activeChip = document.querySelector('#search .filter-chip.active');
+          const label = activeChip ? activeChip.textContent : sf;
+          let html = `<div class="result-section">${label} (${browseDocs.length})</div>`;
           html += browseDocs.map(d => {
             const date = d.created_at ? d.created_at.split('T')[0] : '';
             return `<div class="result-item" onclick="window.open('${d.source_url || '#'}', '_blank')">
