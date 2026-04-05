@@ -97,6 +97,13 @@ Search Confluence for pages by OTHER people that match the user's top topics. Th
 3. Insert results with author info
 4. Rebuild graph: `lifegraph graph`
 
+## When the user says "prep me for my meeting with X" or similar
+
+Look up X in the People data and provide a briefing:
+1. Read graph.json to find the person
+2. List shared topics, their recent docs, and suggested talking points
+3. The Insights view also has a Meeting Prep feature in the UI
+
 ## Architecture notes
 
 - Backend: Python + SQLite + Click CLI

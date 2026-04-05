@@ -436,6 +436,58 @@
       font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
     }
 
+    /* Insights view */
+    #insightsView {
+      position: fixed; inset: 0; z-index: 4;
+      background: #0a0a0f; overflow-y: auto;
+      padding: 80px 40px 40px; display: none;
+    }
+    #insightsView.visible { display: block; }
+    .insights-container { max-width: 1100px; margin: 0 auto; }
+    .insights-header { margin-bottom: 24px; }
+    .insights-header h2 { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .insights-header .insights-sub { font-size: 13px; color: #555; }
+    .insights-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    }
+    .insight-card {
+      background: #111119; border: 1px solid #1e1e2e; border-radius: 14px;
+      padding: 20px;
+    }
+    .insight-title {
+      font-size: 12px; text-transform: uppercase; letter-spacing: 1px;
+      color: #555; margin-bottom: 14px;
+    }
+    .insight-chart { height: 160px; position: relative; }
+    .insight-body { font-size: 13px; color: #999; }
+    .momentum-item {
+      display: flex; align-items: center; gap: 10px; padding: 8px 0;
+      border-bottom: 1px solid #1a1a2a;
+    }
+    .momentum-item:last-child { border: none; }
+    .momentum-name { flex: 1; color: #ddd; font-size: 13px; }
+    .momentum-arrow { font-size: 16px; }
+    .momentum-delta { font-size: 12px; font-weight: 600; }
+    .momentum-up { color: #4ade80; }
+    .momentum-down { color: #f87171; }
+    .momentum-flat { color: #555; }
+    .alloc-bar {
+      display: flex; align-items: center; gap: 10px; padding: 6px 0;
+    }
+    .alloc-label { font-size: 12px; color: #999; width: 140px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .alloc-track { flex: 1; height: 8px; background: #1a1a2a; border-radius: 4px; overflow: hidden; }
+    .alloc-fill { height: 100%; border-radius: 4px; }
+    .alloc-pct { font-size: 11px; color: #555; width: 36px; text-align: right; }
+    .prep-briefing { margin-top: 12px; }
+    .prep-section { margin-bottom: 16px; }
+    .prep-section-title { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #555; margin-bottom: 8px; }
+    .prep-topic { display: inline-block; padding: 4px 10px; margin: 2px 4px 2px 0; border-radius: 10px; font-size: 12px; border: 1px solid #2a2a3a; background: #16162a; color: #888; }
+    .prep-topic.shared { border-color: #6366f155; color: #a78bfa; background: #1a1a3a; }
+    .prep-doc { padding: 6px 0; font-size: 12px; color: #999; cursor: pointer; }
+    .prep-doc:hover { color: #a78bfa; }
+    .prep-talking-point { padding: 4px 0; font-size: 13px; color: #ddd; }
+    .prep-talking-point::before { content: '→ '; color: #6366f1; }
+
     /* ── Mobile responsive ─────────────────────────── */
     @media (max-width: 768px) {
       body { overflow: auto; }
@@ -466,6 +518,8 @@
       .projects-container { max-width: 100%; }
       .project-grid { grid-template-columns: 1fr; }
       #peopleView { padding: 60px 16px 80px; }
+      #insightsView { padding: 60px 16px 80px; }
+      .insights-grid { grid-template-columns: 1fr; }
       .people-container { max-width: 100%; }
       .suggestions-grid { grid-template-columns: 1fr; }
       #timelineControls { flex-wrap: wrap; gap: 6px; padding: 0 12px; }
@@ -536,6 +590,7 @@
     <button class="view-btn" id="reportBtn" onclick="switchView('report')">Report</button>
     <button class="view-btn" id="projectsBtn" onclick="switchView('projects')">Projects</button>
     <button class="view-btn" id="peopleBtn" onclick="switchView('people')">People</button>
+    <button class="view-btn" id="insightsBtn" onclick="switchView('insights')">Insights</button>
     <button class="view-btn" id="overview-toggle" onclick="toggleOverview()">Overview</button>
   </div>
   <div id="catFilters"></div>
@@ -620,6 +675,41 @@
         </select>
       </div>
       <div id="peopleContent"></div>
+    </div>
+  </div>
+
+  <div id="insightsView">
+    <div class="insights-container">
+      <div class="insights-header">
+        <h2>Insights</h2>
+        <div class="insights-sub" id="insightsSub"></div>
+      </div>
+      <div class="insights-grid">
+        <div class="insight-card" id="insightOutput">
+          <div class="insight-title">Weekly output</div>
+          <div class="insight-chart" id="outputChart"></div>
+        </div>
+        <div class="insight-card" id="insightMomentum">
+          <div class="insight-title">Topic momentum</div>
+          <div class="insight-body" id="momentumBody"></div>
+        </div>
+        <div class="insight-card" id="insightAllocation">
+          <div class="insight-title">Where your time goes</div>
+          <div class="insight-chart" id="allocationChart"></div>
+        </div>
+        <div class="insight-card" id="insightImpact">
+          <div class="insight-title">Your reach</div>
+          <div class="insight-body" id="impactBody"></div>
+        </div>
+      </div>
+      <div class="insight-card" id="insightPrep" style="margin-top:16px">
+        <div class="insight-title">Meeting prep</div>
+        <div style="display:flex;gap:10px;margin:12px 0">
+          <input type="text" id="prepInput" placeholder="Type a person's name..." style="flex:1;padding:9px 14px;border-radius:12px;border:1px solid #1e1e2e;background:#0a0a0f;color:#ddd;font-size:13px;outline:none;font-family:inherit;">
+          <button onclick="runMeetingPrep()" style="padding:9px 18px;border-radius:12px;border:1px solid #6366f1;background:#12122a;color:#a78bfa;font-size:13px;cursor:pointer;font-family:inherit;">Prep</button>
+        </div>
+        <div id="prepResult"></div>
+      </div>
     </div>
   </div>
 
@@ -1414,8 +1504,9 @@
       document.getElementById('reportBtn').classList.toggle('active', view === 'report');
       document.getElementById('projectsBtn').classList.toggle('active', view === 'projects');
       document.getElementById('peopleBtn').classList.toggle('active', view === 'people');
+      document.getElementById('insightsBtn').classList.toggle('active', view === 'insights');
 
-      const isOverlay = view === 'report' || view === 'projects' || view === 'people';
+      const isOverlay = view === 'report' || view === 'projects' || view === 'people' || view === 'insights';
       document.getElementById('legend').style.display = view === 'graph' ? 'flex' : 'none';
       document.getElementById('stats').style.display = isOverlay ? 'none' : 'block';
       document.getElementById('timelineControls').style.display = view === 'timeline' ? 'flex' : 'none';
@@ -1424,6 +1515,7 @@
       document.getElementById('reportView').classList.toggle('visible', view === 'report');
       document.getElementById('projectsView').classList.toggle('visible', view === 'projects');
       document.getElementById('peopleView').classList.toggle('visible', view === 'people');
+      document.getElementById('insightsView').classList.toggle('visible', view === 'insights');
 
       if (view === 'report') {
         if (simulation) simulation.stop();
@@ -1434,6 +1526,9 @@
       } else if (view === 'people') {
         if (simulation) simulation.stop();
         renderPeople();
+      } else if (view === 'insights') {
+        if (simulation) simulation.stop();
+        renderInsights();
       } else {
         // Reset zoom
         svg.call(d3.zoom().scaleExtent([0.3, 4]).on('zoom', e => g.attr('transform', e.transform))
@@ -2177,6 +2272,242 @@
       document.getElementById('peopleContent').innerHTML = html;
       } catch(e) { console.error('renderPeople error:', e); document.getElementById('peopleContent').innerHTML = '<div style="color:red;padding:20px">Error: ' + e.message + '</div>'; }
     }
+
+    // ── Insights View ──────────────────────────────────────────
+
+    function renderInsights() {
+      const myDocs = graphData.documents;
+      const allDocs = graphData.allDocuments || myDocs;
+      const otherDocs = allDocs.filter(d => d.author && d.author !== 'Capucine Marteau');
+
+      document.getElementById('insightsSub').textContent =
+        `${myDocs.length} documents · ${graphData.nodes.length} topics · ${otherDocs.length} docs from others`;
+
+      renderWeeklyOutput(myDocs);
+      renderTopicMomentum();
+      renderTimeAllocation(myDocs);
+      renderImpact(otherDocs);
+    }
+
+    function renderWeeklyOutput(docs) {
+      // Group docs by week
+      const weeks = {};
+      docs.forEach(d => {
+        if (!d.created_at) return;
+        const date = new Date(d.created_at);
+        const weekStart = new Date(date);
+        weekStart.setDate(date.getDate() - date.getDay());
+        const key = weekStart.toISOString().split('T')[0];
+        if (!weeks[key]) weeks[key] = 0;
+        weeks[key]++;
+      });
+
+      const sorted = Object.entries(weeks).sort((a, b) => a[0].localeCompare(b[0])).slice(-16);
+      if (!sorted.length) { document.getElementById('outputChart').innerHTML = '<div style="color:#555">No date data</div>'; return; }
+
+      const maxCount = Math.max(...sorted.map(w => w[1]));
+      const container = document.getElementById('outputChart');
+      container.innerHTML = `<div style="display:flex;align-items:flex-end;gap:4px;height:140px;padding-top:20px">` +
+        sorted.map(([week, count]) => {
+          const h = Math.max(4, (count / maxCount) * 120);
+          const label = new Date(week).toLocaleDateString('en', {month:'short', day:'numeric'});
+          return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
+            <span style="font-size:10px;color:#666">${count}</span>
+            <div style="width:100%;height:${h}px;background:#6366f1;border-radius:4px 4px 0 0;opacity:0.7"></div>
+            <span style="font-size:9px;color:#444;white-space:nowrap">${label}</span>
+          </div>`;
+        }).join('') + '</div>';
+    }
+
+    function renderTopicMomentum() {
+      const nodes = graphData.allNodes || graphData.nodes || [];
+      const momentum = [];
+
+      nodes.forEach(n => {
+        const trend = n.trend || [];
+        if (trend.length < 3) return;
+        const recent = trend.slice(-2).reduce((s, t) => s + t.count, 0);
+        const older = trend.slice(-4, -2).reduce((s, t) => s + t.count, 0);
+        const delta = recent - older;
+        if (delta !== 0) momentum.push({ name: n.name, delta, recent, older, category: n.category });
+      });
+
+      momentum.sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta));
+
+      const body = document.getElementById('momentumBody');
+      if (!momentum.length) { body.innerHTML = '<div style="color:#555">Not enough data yet</div>'; return; }
+
+      body.innerHTML = momentum.slice(0, 8).map(m => {
+        const cls = m.delta > 0 ? 'momentum-up' : m.delta < 0 ? 'momentum-down' : 'momentum-flat';
+        const arrow = m.delta > 0 ? '↑' : '↓';
+        return `<div class="momentum-item">
+          <span class="momentum-name">${m.name}</span>
+          <span class="momentum-arrow ${cls}">${arrow}</span>
+          <span class="momentum-delta ${cls}">${m.delta > 0 ? '+' : ''}${m.delta} docs</span>
+        </div>`;
+      }).join('');
+    }
+
+    function renderTimeAllocation(docs) {
+      // Group docs by category using node membership
+      const docCat = {};
+      graphData.nodes.forEach(n => {
+        (n.doc_ids || []).forEach(id => {
+          if (!docCat[id]) docCat[id] = n.category;
+        });
+      });
+
+      const catCounts = {};
+      docs.forEach(d => {
+        const cat = docCat[d.id] || 'other';
+        catCounts[cat] = (catCounts[cat] || 0) + 1;
+      });
+
+      const total = docs.length || 1;
+      const sorted = Object.entries(catCounts).sort((a, b) => b[1] - a[1]);
+
+      document.getElementById('allocationChart').innerHTML = sorted.map(([cat, count]) => {
+        const pct = Math.round((count / total) * 100);
+        const color = catColors[cat] || '#555';
+        const label = catLabels[cat] || cat;
+        return `<div class="alloc-bar">
+          <span class="alloc-label">${label}</span>
+          <div class="alloc-track"><div class="alloc-fill" style="width:${pct}%;background:${color}"></div></div>
+          <span class="alloc-pct">${pct}%</span>
+        </div>`;
+      }).join('');
+    }
+
+    function renderImpact(otherDocs) {
+      const allNodes = graphData.allNodes || graphData.nodes || [];
+      const docTopicMap = {};
+      allNodes.forEach(n => (n.doc_ids || []).forEach(id => {
+        if (!docTopicMap[id]) docTopicMap[id] = [];
+        docTopicMap[id].push(n.name);
+      }));
+
+      // Count unique authors per topic that overlap with your topics
+      const myTopicNames = new Set(graphData.nodes.map(n => n.name));
+      const topicAuthors = {};
+      otherDocs.forEach(d => {
+        const topics = docTopicMap[d.id] || [];
+        topics.filter(t => myTopicNames.has(t)).forEach(t => {
+          if (!topicAuthors[t]) topicAuthors[t] = new Set();
+          topicAuthors[t].add(d.author);
+        });
+      });
+
+      const uniqueAuthors = new Set(otherDocs.map(d => d.author));
+      const topicsSorted = Object.entries(topicAuthors).sort((a, b) => b[1].size - a[1].size);
+
+      let html = `<div style="margin-bottom:16px">
+        <span style="font-size:28px;font-weight:700;color:#a78bfa">${uniqueAuthors.size}</span>
+        <span style="color:#666;font-size:13px"> people writing about your topics</span>
+      </div>
+      <div style="margin-bottom:16px">
+        <span style="font-size:28px;font-weight:700;color:#6366f1">${otherDocs.length}</span>
+        <span style="color:#666;font-size:13px"> related docs from others</span>
+      </div>`;
+
+      if (topicsSorted.length) {
+        html += '<div style="margin-top:12px;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#555;margin-bottom:8px">Most shared topics</div>';
+        html += topicsSorted.slice(0, 5).map(([topic, authors]) =>
+          `<div style="display:flex;justify-content:space-between;padding:4px 0;font-size:12px">
+            <span style="color:#ddd">${topic}</span>
+            <span style="color:#a78bfa">${authors.size} people</span>
+          </div>`
+        ).join('');
+      }
+
+      document.getElementById('impactBody').innerHTML = html;
+    }
+
+    // ── Meeting Prep ──────────────────────────────────────────
+
+    function runMeetingPrep() {
+      const name = document.getElementById('prepInput').value.trim();
+      if (!name) return;
+
+      const { authors, myTopics, docTopicMap } = buildPeopleData();
+      // Fuzzy match
+      const match = authors.find(a => a.name.toLowerCase().includes(name.toLowerCase()));
+
+      if (!match) {
+        document.getElementById('prepResult').innerHTML =
+          `<div style="color:#555;padding:12px">No match for "${name}". Try a different spelling.</div>`;
+        return;
+      }
+
+      const sharedTopics = [...match.topics].filter(t => myTopics.has(t));
+      const uniqueTopics = [...match.topics].filter(t => !myTopics.has(t));
+      const recentDocs = match.docs
+        .sort((a, b) => (b.created_at || '').localeCompare(a.created_at || ''))
+        .slice(0, 5);
+
+      // Generate talking points from shared topics
+      const talkingPoints = sharedTopics.slice(0, 4).map(topic => {
+        const theirDocs = match.docs.filter(d => {
+          const dt = docTopicMap[d.id] || new Set();
+          return dt.has(topic);
+        });
+        if (theirDocs.length) {
+          return `Ask about "${theirDocs[0].title}" — you both work on ${topic}`;
+        }
+        return `Discuss ${topic} — you're both active here`;
+      });
+
+      const color = nameColor(match.name);
+      const initials = match.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+
+      let html = `<div class="prep-briefing">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px">
+          <div class="person-avatar" style="background:${color}">${initials}</div>
+          <div>
+            <div style="font-size:16px;font-weight:600;color:#ddd">${match.name}</div>
+            <div style="font-size:12px;color:#555">${match.docs.length} docs · ${match.topics.size} topics · Last active: ${(match.latestDate || '').split('T')[0]}</div>
+          </div>
+        </div>`;
+
+      if (sharedTopics.length) {
+        html += `<div class="prep-section">
+          <div class="prep-section-title">Topics you share (${sharedTopics.length})</div>
+          ${sharedTopics.map(t => `<span class="prep-topic shared">${t}</span>`).join('')}
+        </div>`;
+      }
+
+      if (uniqueTopics.length) {
+        html += `<div class="prep-section">
+          <div class="prep-section-title">Topics they work on that you don't</div>
+          ${uniqueTopics.slice(0, 8).map(t => `<span class="prep-topic">${t}</span>`).join('')}
+        </div>`;
+      }
+
+      if (talkingPoints.length) {
+        html += `<div class="prep-section">
+          <div class="prep-section-title">Suggested talking points</div>
+          ${talkingPoints.map(tp => `<div class="prep-talking-point">${tp}</div>`).join('')}
+        </div>`;
+      }
+
+      if (recentDocs.length) {
+        html += `<div class="prep-section">
+          <div class="prep-section-title">Their recent work</div>
+          ${recentDocs.map(d => {
+            const date = d.created_at ? d.created_at.split('T')[0] : '';
+            return `<div class="prep-doc" onclick="window.open('${d.source_url || '#'}', '_blank')">${d.title} <span style="color:#444">(${date})</span></div>`;
+          }).join('')}
+        </div>`;
+      }
+
+      html += '</div>';
+      document.getElementById('prepResult').innerHTML = html;
+    }
+
+    // Enter key on prep input
+    document.addEventListener('DOMContentLoaded', () => {
+      const pi = document.getElementById('prepInput');
+      if (pi) pi.addEventListener('keydown', e => { if (e.key === 'Enter') runMeetingPrep(); });
+    });
 
     function togglePerson(name) {
       expandedPerson = expandedPerson === name ? null : name;
