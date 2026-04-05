@@ -262,10 +262,48 @@ def graph(min_edge, output):
     """Export the clustered knowledge graph as JSON for visualization."""
     import json, os
     os.makedirs(os.path.dirname(output) or ".", exist_ok=True)
+
+    # Load previous graph for diff
+    prev_node_names = set()
+    prev_doc_ids = set()
+    prev_edge_keys = set()
+    if os.path.exists(output):
+        try:
+            with open(output) as f:
+                prev = json.load(f)
+            prev_node_names = {n["name"] for n in prev.get("nodes", [])}
+            prev_doc_ids = {d["id"] for d in prev.get("documents", [])}
+            prev_edge_keys = {f"{e['source']}-{e['target']}" for e in prev.get("edges", [])}
+        except Exception:
+            pass
+
     g = build_clustered_graph(min_edge_weight=min_edge)
+
+    # Compute diff
+    new_nodes = [n["name"] for n in g["nodes"] if n["name"] not in prev_node_names]
+    new_docs = [d["id"] for d in g["documents"] if d["id"] not in prev_doc_ids]
+    new_edges = [e for e in g["edges"] if f"{e['source']}-{e['target']}" not in prev_edge_keys]
+
+    # Mark new items in the graph data
+    for n in g["nodes"]:
+        n["is_new"] = n["name"] not in prev_node_names
+    for d in g["documents"]:
+        d["is_new"] = d["id"] not in prev_doc_ids
+
+    g["diff"] = {
+        "new_nodes": len(new_nodes),
+        "new_docs": len(new_docs),
+        "new_edges": len(new_edges),
+        "node_names": new_nodes[:10],
+        "generated_at": __import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat(),
+    }
+
     with open(output, "w") as f:
         json.dump(g, f, indent=2)
+
     click.echo(f"Graph exported: {len(g['nodes'])} nodes, {len(g['edges'])} edges, {len(g['documents'])} docs")
+    if new_nodes or new_docs:
+        click.echo(f"What's new: {len(new_nodes)} topics, {len(new_docs)} docs, {len(new_edges)} connections")
     click.echo(f"Written to {output}")
 
 
@@ -609,6 +647,34 @@ def digest(days, no_slack):
     click.echo(f"Building digest for the last {days} days...\n")
     result = run_digest(days=days, post=not no_slack)
     click.echo(result)
+
+
+@cli.command("auto-cluster")
+def auto_cluster_cmd():
+    """Auto-cluster topics using Claude (replaces hand-crafted clusters)."""
+    from lifegraph.auto_cluster import auto_cluster
+    import json
+    from pathlib import Path
+    from lifegraph.config import DATABASE_PATH
+
+    click.echo("Sending topics to Claude for clustering...")
+    try:
+        clusters = auto_cluster()
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        raise SystemExit(1)
+
+    out_path = Path(DATABASE_PATH).parent / "auto_clusters.json"
+    with open(out_path, "w") as f:
+        json.dump(clusters, f, indent=2)
+
+    click.echo(f"Generated {len(clusters)} clusters -> {out_path}")
+    for name, info in sorted(clusters.items()):
+        topics = info["topics"] if isinstance(info, dict) else info
+        cat = info.get("category", "?") if isinstance(info, dict) else "?"
+        click.echo(f"  [{cat}] {name}: {len(topics)} topics")
+
+    click.echo(f"\nRun 'lifegraph graph' to rebuild with new clusters.")
 
 
 @cli.command("compute-phases")

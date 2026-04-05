@@ -22,6 +22,7 @@ token.json
 manifest.json
 web/graph.json
 scripts/mcp_output/
+auto_clusters.json
 
 # Temp
 tmp_mcp_results/

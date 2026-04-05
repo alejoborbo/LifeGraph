@@ -1,6 +1,7 @@
 """Topic clustering - merge granular topics into meaningful groups."""
 import sqlite3
 from datetime import datetime, timezone
+from pathlib import Path
 
 from lifegraph.config import DATABASE_PATH
 
@@ -351,9 +352,28 @@ def build_clustered_graph(min_edge_weight: int = 2) -> dict:
         JOIN doc_topics dt ON t.id = dt.topic_id
     """).fetchall()
 
+    # Load auto-generated clusters if available, fallback to hand-crafted
+    active_clusters = CLUSTERS
+    auto_categories = {}
+    auto_path = Path(DATABASE_PATH).parent / "auto_clusters.json"
+    if auto_path.exists():
+        try:
+            import json
+            auto_data = json.loads(auto_path.read_text())
+            active_clusters = {}
+            for name, info in auto_data.items():
+                if isinstance(info, dict):
+                    active_clusters[name] = info["topics"]
+                    auto_categories[name] = info.get("category", "other")
+                else:
+                    active_clusters[name] = info
+            print(f"  Using auto-generated clusters ({len(active_clusters)} clusters)")
+        except Exception as e:
+            print(f"  Warning: failed to load auto_clusters.json: {e}, using hand-crafted")
+
     # Build topic_name -> cluster mapping
     topic_to_cluster = {}
-    for cluster, patterns in CLUSTERS.items():
+    for cluster, patterns in active_clusters.items():
         for pat in patterns:
             topic_to_cluster[pat] = cluster
 
@@ -377,15 +397,39 @@ def build_clustered_graph(min_edge_weight: int = 2) -> dict:
     # Build nodes
     nodes = []
     cluster_id_map = {}
+    # Build doc date lookup for trends
+    doc_dates = {}
+    if all_doc_ids_precheck := set():
+        pass
+    date_rows = conn.execute("SELECT id, created_at FROM documents WHERE created_at IS NOT NULL").fetchall()
+    for r in date_rows:
+        doc_dates[r["id"]] = r["created_at"][:7] if r["created_at"] else None  # "2026-03"
+
     for i, (cluster, docs) in enumerate(sorted(cluster_docs.items(), key=lambda x: -len(x[1]))):
         cid = i + 1
         cluster_id_map[cluster] = cid
+
+        # Compute monthly trend
+        from collections import Counter as Ctr
+        month_counts = Ctr()
+        for did in docs:
+            m = doc_dates.get(did)
+            if m:
+                month_counts[m] += 1
+        # Build sorted monthly array (last 12 months)
+        if month_counts:
+            all_months = sorted(month_counts.keys())
+            trend = [{"month": m, "count": month_counts[m]} for m in all_months[-12:]]
+        else:
+            trend = []
+
         nodes.append({
             "id": cid,
             "name": cluster,
             "doc_count": len(docs),
             "doc_ids": sorted(docs.keys()),
-            "category": _get_category(cluster),
+            "category": auto_categories.get(cluster) or _get_category(cluster),
+            "trend": trend,
         })
 
     # Build edges (co-occurrence)

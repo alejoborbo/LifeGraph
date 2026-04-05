@@ -381,6 +381,16 @@
       background: #16162a; color: #666; white-space: nowrap;
     }
 
+    /* What's new badge */
+    .whats-new-badge {
+      display: inline-block; font-size: 11px; padding: 3px 10px; border-radius: 10px;
+      background: #4ade8022; color: #4ade80; cursor: pointer; margin-left: 8px;
+      transition: all 0.15s; font-weight: 500;
+    }
+    .whats-new-badge:hover { background: #4ade8033; }
+    .node-new-ring { animation: pulseRing 2s ease-in-out infinite; }
+    @keyframes pulseRing { 0%, 100% { stroke-opacity: 0.3; } 50% { stroke-opacity: 0.8; } }
+
     /* Suggestions */
     .suggestions-section {
       margin-bottom: 32px; padding: 24px; border-radius: 16px;
@@ -702,6 +712,17 @@
       graphData.nodes = graphData.nodes.filter(n => n.doc_count > 0);
 
       document.getElementById('headerSub').textContent = `Knowledge graph of ${graphData.documents.length} documents`;
+
+      // Show "What's new" badge if there are new items
+      const diff = graphData.diff || {};
+      if (diff.new_docs > 0 || diff.new_nodes > 0) {
+        const parts = [];
+        if (diff.new_nodes) parts.push(`${diff.new_nodes} new topic${diff.new_nodes > 1 ? 's' : ''}`);
+        if (diff.new_docs) parts.push(`${diff.new_docs} new doc${diff.new_docs > 1 ? 's' : ''}`);
+        if (diff.new_edges) parts.push(`${diff.new_edges} new connection${diff.new_edges > 1 ? 's' : ''}`);
+        document.getElementById('headerSub').innerHTML +=
+          ` <span class="whats-new-badge" onclick="toggleWhatsNew()" title="Click to highlight">${parts.join(', ')}</span>`;
+      }
       updateDocCount();
       document.getElementById('stats').textContent =
         `${graphData.nodes.length} topics / ${graphData.edges.length} connections / ${graphData.documents.length} documents`;
@@ -922,6 +943,33 @@
         .attr('font-weight', 600)
         .style('pointer-events', 'none');
 
+      // Sparkline trends (below node)
+      nodeGroup.each(function(d) {
+        const trend = d.trend || [];
+        if (trend.length < 2) return;
+        const sparkW = Math.max(24, sizeScale(d.doc_count) * 2);
+        const sparkH = 10;
+        const counts = trend.map(t => t.count);
+        const maxC = Math.max(...counts, 1);
+        const xS = d3.scaleLinear().domain([0, counts.length - 1]).range([-sparkW/2, sparkW/2]);
+        const yS = d3.scaleLinear().domain([0, maxC]).range([sparkH, 0]);
+        const line = d3.line().x((v, i) => xS(i)).y(v => yS(v)).curve(d3.curveMonotoneX);
+        const sparkG = d3.select(this).append('g')
+          .attr('transform', `translate(0, ${sizeScale(d.doc_count) + 6})`);
+        sparkG.append('path')
+          .attr('d', line(counts))
+          .attr('fill', 'none')
+          .attr('stroke', catColors[d.category] || '#555')
+          .attr('stroke-width', 1.5)
+          .attr('stroke-opacity', 0.6);
+        // Dot on last value
+        sparkG.append('circle')
+          .attr('cx', xS(counts.length - 1))
+          .attr('cy', yS(counts[counts.length - 1]))
+          .attr('r', 2)
+          .attr('fill', catColors[d.category] || '#555');
+      });
+
       simulation.on('tick', () => {
         linkEls
           .attr('x1', d => d.source.x).attr('y1', d => d.source.y)
@@ -969,10 +1017,50 @@
 
     function onNodeClick(event, d) { openSidebar(d); }
 
+    let showingNew = false;
+    function toggleWhatsNew() {
+      showingNew = !showingNew;
+      if (currentView !== 'graph') switchView('graph');
+      if (showingNew) {
+        // Dim old nodes, highlight new ones
+        g.selectAll('g > g').each(function(d) {
+          if (!d) return;
+          const isNew = d.is_new;
+          d3.select(this).attr('opacity', isNew ? 1 : 0.15);
+          if (isNew) {
+            d3.select(this).select('.node-label').attr('opacity', 1);
+            // Add pulsing ring
+            const r = sizeScale(d.doc_count) + 6;
+            d3.select(this).append('circle')
+              .attr('class', 'node-new-ring')
+              .attr('r', r)
+              .attr('fill', 'none')
+              .attr('stroke', '#4ade80')
+              .attr('stroke-width', 2);
+          }
+        });
+      } else {
+        // Reset
+        g.selectAll('g > g').attr('opacity', 1);
+        g.selectAll('.node-label').attr('opacity', d => d && d.doc_count >= 5 ? 0.9 : 0);
+        g.selectAll('.node-new-ring').remove();
+      }
+    }
+
     function openSidebar(topic) {
       document.getElementById('sidebarTitle').textContent = topic.name;
+      // Trend indicator
+      const trend = topic.trend || [];
+      let trendLabel = '';
+      if (trend.length >= 2) {
+        const recent = trend.slice(-2).reduce((s, t) => s + t.count, 0);
+        const older = trend.slice(0, -2).reduce((s, t) => s + t.count, 0) || 1;
+        const ratio = recent / Math.max(older / Math.max(trend.length - 2, 1), 0.5);
+        if (ratio > 1.5) trendLabel = ' &middot; <span style="color:#4ade80">trending up</span>';
+        else if (ratio < 0.5) trendLabel = ' &middot; <span style="color:#f87171">cooling down</span>';
+      }
       document.getElementById('sidebarMeta').innerHTML =
-        `<span style="color:${catColors[topic.category]}">${catLabels[topic.category] || topic.category}</span> &middot; ${topic.doc_count} documents`;
+        `<span style="color:${catColors[topic.category]}">${catLabels[topic.category] || topic.category}</span> &middot; ${topic.doc_count} documents${trendLabel}`;
 
       // Docs
       const docs = (topic.doc_ids || []).map(id => docMap[id]).filter(Boolean)
