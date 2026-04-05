@@ -668,6 +668,9 @@
       const myDocIds = new Set(graphData.documents.map(d => d.id));
       graphData.allDocuments.forEach(d => docMap[d.id] = d);
 
+      // Save unfiltered nodes for People view (before we strip other people's doc IDs)
+      graphData.allNodes = graphData.nodes.map(n => ({...n, doc_ids: [...(n.doc_ids || [])]}));
+
       // Recompute node doc_ids/doc_count to only include my docs
       graphData.nodes.forEach(node => {
         node.doc_ids = (node.doc_ids || []).filter(id => myDocIds.has(id));
@@ -928,6 +931,7 @@
 
       // Dim unrelated nodes, show all labels for connected nodes
       g.selectAll('g > g').each(function(n) {
+        if (!n) return;
         const isRelevant = n.id === d.id || connected.has(n.id);
         d3.select(this).attr('opacity', isRelevant ? 1 : 0.12);
         d3.select(this).select('.node-label').attr('opacity', isRelevant ? 1 : 0);
@@ -1866,8 +1870,8 @@
       const authors = {};
       const docTopicMap = {};  // doc_id -> Set of topic names
 
-      // Build doc -> topics from graph nodes
-      (graphData.nodes || []).forEach(node => {
+      // Build doc -> topics from ALL nodes (unfiltered, so other people's docs get topics too)
+      (graphData.allNodes || graphData.nodes || []).forEach(node => {
         (node.doc_ids || []).forEach(did => {
           if (!docTopicMap[did]) docTopicMap[did] = new Set();
           docTopicMap[did].add(node.name);
