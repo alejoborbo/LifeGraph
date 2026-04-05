@@ -39,6 +39,7 @@ Click the **People** tab to see who across DD is working on the same topics as y
 | Source | How it works | Setup needed |
 |--------|-------------|--------------|
 | Google Docs | Google Workspace MCP | None |
+| Google Slides | Google Workspace MCP | None |
 | Confluence | Atlassian MCP | None |
 | Jira | Atlassian MCP | None |
 | GitHub | `gh` CLI | `gh auth login` (most already have it) |

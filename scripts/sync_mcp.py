@@ -60,6 +60,34 @@ def ingest_google_docs():
     return count
 
 
+def ingest_google_slides():
+    """Ingest Google Slides from MCP output."""
+    path = OUTPUT_DIR / "google_slides.json"
+    if not path.exists():
+        return 0
+    slides = json.loads(path.read_text())
+    count = 0
+    for d in slides:
+        text = d.get("content", "")
+        if not text or len(text) < 50:
+            continue
+        doc = Document(
+            id=None,
+            title=d["title"],
+            source="google_slides",
+            source_id=d["id"],
+            source_url=d.get("url", f"https://docs.google.com/presentation/d/{d['id']}"),
+            created_at=d.get("created_at") or d.get("modifiedTime"),
+            fetched_at=datetime.now(timezone.utc).isoformat(),
+            raw_text=text,
+            author=d.get("author"),
+        )
+        upsert_document(doc)
+        count += 1
+        print(f"  [slides] {d['title'][:60]}")
+    return count
+
+
 def ingest_confluence():
     """Ingest Confluence pages from MCP output."""
     path = OUTPUT_DIR / "confluence_pages.json"
@@ -197,6 +225,7 @@ def main():
 
     total = 0
     total += ingest_google_docs()
+    total += ingest_google_slides()
     total += ingest_confluence()
     total += ingest_jira()
     total += ingest_github()

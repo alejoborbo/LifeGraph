@@ -24,6 +24,11 @@ Create `scripts/mcp_output/` directory, then fetch from all available sources:
 [{"id": "doc_id", "title": "Doc Title", "content": "plain text...", "url": "https://docs.google.com/document/d/...", "created_at": "2026-01-01T00:00:00Z"}]
 ```
 
+**Google Slides** — use Google Workspace MCP:
+1. `mcp__datadog-google-workspace-mcp__search_files` with `query: "mimeType = 'application/vnd.google-apps.presentation'"`, `max_results: 100`
+2. For each presentation, call `mcp__datadog-google-workspace-mcp__get_file_content` with the file ID (exports as text)
+3. Save results to `scripts/mcp_output/google_slides.json` (same format as google_docs.json)
+
 **Confluence** — use Atlassian MCP:
 1. `mcp__datadog-atlassian__search_content` with `cql: "type = page AND contributor = currentUser() ORDER BY lastmodified DESC"`, `max_results: 50`
 2. For each page, call `mcp__datadog-atlassian__get_page` with the page ID to get body content

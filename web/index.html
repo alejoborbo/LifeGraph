@@ -436,6 +436,48 @@
       font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
     }
 
+    /* ── Mobile responsive ─────────────────────────── */
+    @media (max-width: 768px) {
+      body { overflow: auto; }
+      #header { left: 12px; top: 10px; }
+      #header h1 { font-size: 18px; }
+      #search { position: fixed; top: 10px; left: 12px; right: 12px; transform: none; }
+      #search input { width: 100%; font-size: 14px; }
+      #search .filter-chips { flex-wrap: wrap; }
+      #search .results { width: 100%; }
+      .view-toggles {
+        position: fixed; top: auto; bottom: 0; left: 0; right: 0;
+        display: flex; justify-content: center; gap: 4px;
+        background: #111119; border-top: 1px solid #1e1e2e;
+        padding: 8px 12px; z-index: 10;
+      }
+      .view-btn { font-size: 11px; padding: 8px 12px; }
+      #catFilters { position: fixed; top: 52px; left: 12px; right: 12px; max-width: none; justify-content: flex-start; overflow-x: auto; flex-wrap: nowrap; }
+      #sidebar { width: 100vw; right: -100vw; }
+      #sidebar.open { right: 0; }
+      #canvas { height: calc(100vh - 52px); }
+      #legend { bottom: 56px; left: 12px; }
+      #stats { bottom: 56px; right: 12px; }
+      #overview { width: calc(100vw - 24px); right: 12px; top: 52px; }
+      #reportView { padding: 60px 16px 80px; }
+      #reportView .report-container { max-width: 100%; }
+      #reportView .report-period { flex-wrap: wrap; gap: 8px; }
+      #projectsView { padding: 60px 16px 80px; }
+      .projects-container { max-width: 100%; }
+      .project-grid { grid-template-columns: 1fr; }
+      #peopleView { padding: 60px 16px 80px; }
+      .people-container { max-width: 100%; }
+      .suggestions-grid { grid-template-columns: 1fr; }
+      #timelineControls { flex-wrap: wrap; gap: 6px; padding: 0 12px; }
+    }
+
+    @media (max-width: 480px) {
+      .view-btn { font-size: 10px; padding: 6px 8px; }
+      #header { display: none; }
+      #search { top: 6px; }
+      #search input { font-size: 13px; padding: 8px 12px; }
+    }
+
     /* Password gate */
     #gate {
       position: fixed; inset: 0; z-index: 100;
@@ -479,6 +521,7 @@
     <div class="filter-chips">
       <button class="filter-chip active" data-source="all" onclick="setSearchFilter(this)">All</button>
       <button class="filter-chip" data-source="google_docs" onclick="setSearchFilter(this)">Google Docs</button>
+      <button class="filter-chip" data-source="google_slides" onclick="setSearchFilter(this)">Slides</button>
       <button class="filter-chip" data-source="confluence" onclick="setSearchFilter(this)">Confluence</button>
       <button class="filter-chip" data-source="jira" onclick="setSearchFilter(this)">Jira</button>
       <button class="filter-chip" data-source="slack" onclick="setSearchFilter(this)">Slack</button>
