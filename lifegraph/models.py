@@ -13,6 +13,7 @@ class Document:
     created_at: Optional[str]
     fetched_at: str
     raw_text: str
+    author: Optional[str] = None
 
 
 @dataclass

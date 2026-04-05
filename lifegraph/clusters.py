@@ -424,7 +424,7 @@ def build_clustered_graph(min_edge_weight: int = 2) -> dict:
     documents = []
     if all_doc_ids:
         rows = conn.execute("""
-            SELECT id, title, source, source_url, created_at, raw_text
+            SELECT id, title, source, source_url, created_at, raw_text, author
             FROM documents WHERE id IN ({})
         """.format(",".join("?" * len(all_doc_ids))), list(all_doc_ids)).fetchall()
         documents = []

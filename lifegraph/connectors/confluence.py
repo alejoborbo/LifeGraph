@@ -86,17 +86,28 @@ class ConfluenceConnector(BaseConnector):
         while True:
             resp = self.session.get(
                 f"{self.base_url}/wiki/rest/api/content/search",
-                params={"cql": cql, "start": start, "limit": limit},
+                params={
+                    "cql": cql,
+                    "start": start,
+                    "limit": limit,
+                    "expand": "history.createdBy",
+                },
             )
             resp.raise_for_status()
             data = resp.json()
 
             for page in data.get("results", []):
-                created = page.get("history", {}).get("createdDate", "")
+                history = page.get("history", {})
+                created = history.get("createdDate", "")
+                author = (
+                    history.get("createdBy", {}).get("displayName", "")
+                    or history.get("createdBy", {}).get("username", "")
+                )
                 pages.append({
                     "id": page["id"],
                     "title": page["title"],
                     "created_at": created,
+                    "author": author,
                     "url": f"{self.base_url}/wiki{page.get('_links', {}).get('webui', '')}",
                 })
 
@@ -141,6 +152,7 @@ class ConfluenceConnector(BaseConnector):
                     created_at=page.get("created_at"),
                     fetched_at=datetime.now(timezone.utc).isoformat(),
                     raw_text=text,
+                    author=page.get("author"),
                 )
                 upsert_document(doc)
                 count += 1
@@ -148,3 +160,48 @@ class ConfluenceConnector(BaseConnector):
                 print(f"  Warning: failed to sync '{page['title']}': {e}")
 
         return count
+
+    def search_pages(self, cql: str, max_results: int = 50) -> list[dict]:
+        """Search for pages using CQL, returning metadata with author."""
+        self._ensure_auth()
+
+        pages = []
+        start = 0
+        limit = min(max_results, 50)
+
+        while len(pages) < max_results:
+            resp = self.session.get(
+                f"{self.base_url}/wiki/rest/api/content/search",
+                params={
+                    "cql": cql,
+                    "start": start,
+                    "limit": limit,
+                    "expand": "history.createdBy",
+                },
+            )
+            resp.raise_for_status()
+            data = resp.json()
+
+            for page in data.get("results", []):
+                history = page.get("history", {})
+                created = history.get("createdDate", "")
+                author = (
+                    history.get("createdBy", {}).get("displayName", "")
+                    or history.get("createdBy", {}).get("username", "")
+                )
+                space = page.get("_expandable", {}).get("space", "")
+                space_key = space.split("/")[-1] if space else ""
+                pages.append({
+                    "id": page["id"],
+                    "title": page["title"],
+                    "created_at": created,
+                    "author": author,
+                    "space": space_key,
+                    "url": f"{self.base_url}/wiki{page.get('_links', {}).get('webui', '')}",
+                })
+
+            if data.get("size", 0) < limit:
+                break
+            start += limit
+
+        return pages[:max_results]

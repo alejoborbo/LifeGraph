@@ -128,6 +128,7 @@ def init_db():
     # Migrations
     _migrate_projects_phase(conn)
     _migrate_summaries(conn)
+    _migrate_author(conn)
     conn.commit()
     conn.close()
 
@@ -139,16 +140,24 @@ def _migrate_projects_phase(conn):
         conn.execute("ALTER TABLE projects ADD COLUMN phase TEXT DEFAULT 'Planning'")
 
 
+def _migrate_author(conn):
+    """Add author column to documents if missing."""
+    cols = [row[1] for row in conn.execute("PRAGMA table_info(documents)").fetchall()]
+    if "author" not in cols:
+        conn.execute("ALTER TABLE documents ADD COLUMN author TEXT")
+
+
 def upsert_document(doc: Document):
     conn = get_connection()
     conn.execute(
         """
-        INSERT INTO documents (title, source, source_id, source_url, created_at, fetched_at, raw_text)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO documents (title, source, source_id, source_url, created_at, fetched_at, raw_text, author)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT(source, source_id) DO UPDATE SET
             title = excluded.title,
             fetched_at = excluded.fetched_at,
-            raw_text = excluded.raw_text
+            raw_text = excluded.raw_text,
+            author = COALESCE(excluded.author, documents.author)
         """,
         (
             doc.title,
@@ -158,6 +167,7 @@ def upsert_document(doc: Document):
             doc.created_at,
             doc.fetched_at,
             doc.raw_text,
+            doc.author,
         ),
     )
     conn.commit()
@@ -246,6 +256,38 @@ def get_all_topics_with_counts() -> list[dict]:
         """SELECT t.id, t.name, COUNT(dt.doc_id) as doc_count
            FROM topics t LEFT JOIN doc_topics dt ON t.id = dt.topic_id
            GROUP BY t.id ORDER BY doc_count DESC"""
+    ).fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+
+def get_authors_with_counts() -> list[dict]:
+    """Return all known authors with their document counts."""
+    conn = get_connection()
+    rows = conn.execute(
+        """SELECT author, COUNT(*) as doc_count
+           FROM documents
+           WHERE author IS NOT NULL AND author != ''
+           GROUP BY author
+           ORDER BY doc_count DESC"""
+    ).fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
+
+
+def get_documents_by_author(author: str) -> list[dict]:
+    """Return documents by a specific author."""
+    conn = get_connection()
+    rows = conn.execute(
+        """SELECT d.id, d.title, d.source, d.source_url, d.created_at, d.author,
+                  GROUP_CONCAT(t.name, '||') as topics
+           FROM documents d
+           LEFT JOIN doc_topics dt ON d.id = dt.doc_id
+           LEFT JOIN topics t ON dt.topic_id = t.id
+           WHERE d.author = ?
+           GROUP BY d.id
+           ORDER BY d.created_at DESC""",
+        (author,),
     ).fetchall()
     conn.close()
     return [dict(r) for r in rows]

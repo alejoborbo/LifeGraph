@@ -3,7 +3,7 @@
     {
       "id": 1,
       "name": "Monitoring Posture & Coverage",
-      "doc_count": 49,
+      "doc_count": 80,
       "doc_ids": [
         1,
         6,
@@ -53,14 +53,45 @@
         151,
         157,
         160,
-        161
+        161,
+        167,
+        168,
+        169,
+        170,
+        174,
+        175,
+        176,
+        177,
+        178,
+        179,
+        180,
+        181,
+        183,
+        184,
+        185,
+        186,
+        187,
+        188,
+        190,
+        191,
+        192,
+        193,
+        194,
+        200,
+        201,
+        202,
+        203,
+        204,
+        206,
+        207,
+        208
       ],
       "category": "posture"
     },
     {
       "id": 2,
       "name": "Datadog-Managed Monitors",
-      "doc_count": 45,
+      "doc_count": 62,
       "doc_ids": [
         1,
         2,
@@ -106,7 +137,24 @@
         138,
         139,
         151,
-        160
+        160,
+        167,
+        170,
+        172,
+        173,
+        176,
+        190,
+        192,
+        194,
+        195,
+        196,
+        197,
+        198,
+        199,
+        202,
+        203,
+        204,
+        205
       ],
       "category": "automation"
     },
@@ -148,7 +196,7 @@
     {
       "id": 4,
       "name": "RED Metrics & Baseline Signals",
-      "doc_count": 19,
+      "doc_count": 24,
       "doc_ids": [
         1,
         6,
@@ -168,12 +216,46 @@
         151,
         154,
         160,
-        163
+        163,
+        170,
+        182,
+        183,
+        189,
+        205
       ],
       "category": "posture"
     },
     {
       "id": 5,
+      "name": "Threshold & Configuration",
+      "doc_count": 21,
+      "doc_ids": [
+        1,
+        13,
+        17,
+        24,
+        52,
+        55,
+        57,
+        63,
+        64,
+        76,
+        88,
+        94,
+        105,
+        114,
+        174,
+        175,
+        179,
+        186,
+        187,
+        189,
+        206
+      ],
+      "category": "automation"
+    },
+    {
+      "id": 6,
       "name": "Monitor Generation & LLM",
       "doc_count": 19,
       "doc_ids": [
@@ -200,7 +282,7 @@
       "category": "automation"
     },
     {
-      "id": 6,
+      "id": 7,
       "name": "1:1 & Team Meetings",
       "doc_count": 17,
       "doc_ids": [
@@ -225,7 +307,7 @@
       "category": "team"
     },
     {
-      "id": 7,
+      "id": 8,
       "name": "Customer Research & Design Partners",
       "doc_count": 15,
       "doc_ids": [
@@ -246,28 +328,6 @@
         107
       ],
       "category": "strategy"
-    },
-    {
-      "id": 8,
-      "name": "Threshold & Configuration",
-      "doc_count": 14,
-      "doc_ids": [
-        1,
-        13,
-        17,
-        24,
-        52,
-        55,
-        57,
-        63,
-        64,
-        76,
-        88,
-        94,
-        105,
-        114
-      ],
-      "category": "automation"
     },
     {
       "id": 9,
@@ -655,7 +715,7 @@
     {
       "source": 1,
       "target": 2,
-      "weight": 24,
+      "weight": 33,
       "doc_ids": [
         1,
         6,
@@ -680,7 +740,16 @@
         131,
         138,
         151,
-        160
+        160,
+        167,
+        170,
+        176,
+        190,
+        192,
+        194,
+        202,
+        203,
+        204
       ]
     },
     {
@@ -708,7 +777,7 @@
     {
       "source": 1,
       "target": 4,
-      "weight": 13,
+      "weight": 15,
       "doc_ids": [
         1,
         6,
@@ -722,13 +791,15 @@
         67,
         104,
         151,
-        160
+        160,
+        170,
+        183
       ]
     },
     {
       "source": 1,
-      "target": 8,
-      "weight": 9,
+      "target": 5,
+      "weight": 15,
       "doc_ids": [
         1,
         13,
@@ -738,7 +809,13 @@
         57,
         63,
         64,
-        105
+        105,
+        174,
+        175,
+        179,
+        186,
+        187,
+        206
       ]
     },
     {
@@ -786,7 +863,7 @@
     {
       "source": 2,
       "target": 4,
-      "weight": 11,
+      "weight": 13,
       "doc_ids": [
         1,
         6,
@@ -798,12 +875,14 @@
         62,
         71,
         151,
-        160
+        160,
+        170,
+        205
       ]
     },
     {
       "source": 2,
-      "target": 8,
+      "target": 5,
       "weight": 7,
       "doc_ids": [
         1,
@@ -859,7 +938,7 @@
     },
     {
       "source": 3,
-      "target": 8,
+      "target": 5,
       "weight": 7,
       "doc_ids": [
         1,
@@ -896,12 +975,13 @@
     },
     {
       "source": 4,
-      "target": 8,
-      "weight": 3,
+      "target": 5,
+      "weight": 4,
       "doc_ids": [
         1,
         13,
-        17
+        17,
+        189
       ]
     },
     {
@@ -924,7 +1004,7 @@
       ]
     },
     {
-      "source": 8,
+      "source": 5,
       "target": 10,
       "weight": 2,
       "doc_ids": [
@@ -933,7 +1013,7 @@
       ]
     },
     {
-      "source": 8,
+      "source": 5,
       "target": 13,
       "weight": 4,
       "doc_ids": [
@@ -1127,7 +1207,7 @@
     },
     {
       "source": 1,
-      "target": 7,
+      "target": 8,
       "weight": 8,
       "doc_ids": [
         11,
@@ -1174,7 +1254,7 @@
     },
     {
       "source": 2,
-      "target": 7,
+      "target": 8,
       "weight": 9,
       "doc_ids": [
         2,
@@ -1223,7 +1303,7 @@
       ]
     },
     {
-      "source": 7,
+      "source": 8,
       "target": 11,
       "weight": 3,
       "doc_ids": [
@@ -1233,7 +1313,7 @@
       ]
     },
     {
-      "source": 7,
+      "source": 8,
       "target": 18,
       "weight": 2,
       "doc_ids": [
@@ -1242,7 +1322,7 @@
       ]
     },
     {
-      "source": 7,
+      "source": 8,
       "target": 21,
       "weight": 2,
       "doc_ids": [
@@ -1315,7 +1395,7 @@
       ]
     },
     {
-      "source": 8,
+      "source": 5,
       "target": 12,
       "weight": 2,
       "doc_ids": [
@@ -1324,7 +1404,7 @@
       ]
     },
     {
-      "source": 8,
+      "source": 5,
       "target": 14,
       "weight": 2,
       "doc_ids": [
@@ -1333,7 +1413,7 @@
       ]
     },
     {
-      "source": 8,
+      "source": 5,
       "target": 17,
       "weight": 3,
       "doc_ids": [
@@ -1377,7 +1457,7 @@
     },
     {
       "source": 1,
-      "target": 5,
+      "target": 6,
       "weight": 8,
       "doc_ids": [
         17,
@@ -1392,7 +1472,7 @@
     },
     {
       "source": 1,
-      "target": 6,
+      "target": 7,
       "weight": 5,
       "doc_ids": [
         17,
@@ -1404,7 +1484,7 @@
     },
     {
       "source": 2,
-      "target": 5,
+      "target": 6,
       "weight": 4,
       "doc_ids": [
         17,
@@ -1415,7 +1495,7 @@
     },
     {
       "source": 2,
-      "target": 6,
+      "target": 7,
       "weight": 12,
       "doc_ids": [
         8,
@@ -1445,16 +1525,6 @@
     {
       "source": 5,
       "target": 6,
-      "weight": 3,
-      "doc_ids": [
-        17,
-        39,
-        79
-      ]
-    },
-    {
-      "source": 5,
-      "target": 8,
       "weight": 7,
       "doc_ids": [
         17,
@@ -1468,6 +1538,26 @@
     },
     {
       "source": 5,
+      "target": 7,
+      "weight": 3,
+      "doc_ids": [
+        17,
+        57,
+        114
+      ]
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "weight": 3,
+      "doc_ids": [
+        17,
+        39,
+        79
+      ]
+    },
+    {
+      "source": 6,
       "target": 11,
       "weight": 2,
       "doc_ids": [
@@ -1476,7 +1566,7 @@
       ]
     },
     {
-      "source": 5,
+      "source": 6,
       "target": 13,
       "weight": 4,
       "doc_ids": [
@@ -1487,17 +1577,7 @@
       ]
     },
     {
-      "source": 6,
-      "target": 8,
-      "weight": 3,
-      "doc_ids": [
-        17,
-        57,
-        114
-      ]
-    },
-    {
-      "source": 6,
+      "source": 7,
       "target": 11,
       "weight": 3,
       "doc_ids": [
@@ -1507,7 +1587,7 @@
       ]
     },
     {
-      "source": 6,
+      "source": 7,
       "target": 13,
       "weight": 4,
       "doc_ids": [
@@ -1518,7 +1598,7 @@
       ]
     },
     {
-      "source": 6,
+      "source": 7,
       "target": 17,
       "weight": 2,
       "doc_ids": [
@@ -1585,7 +1665,7 @@
     },
     {
       "source": 3,
-      "target": 5,
+      "target": 6,
       "weight": 10,
       "doc_ids": [
         24,
@@ -1615,16 +1695,16 @@
       "weight": 2,
       "doc_ids": [
         24,
-        56
+        55
       ]
     },
     {
-      "source": 8,
+      "source": 6,
       "target": 9,
       "weight": 2,
       "doc_ids": [
         24,
-        55
+        56
       ]
     },
     {
@@ -1637,8 +1717,8 @@
       ]
     },
     {
-      "source": 6,
-      "target": 7,
+      "source": 7,
+      "target": 8,
       "weight": 2,
       "doc_ids": [
         39,
@@ -1647,7 +1727,7 @@
     },
     {
       "source": 3,
-      "target": 6,
+      "target": 7,
       "weight": 3,
       "doc_ids": [
         8,
@@ -1669,7 +1749,7 @@
     },
     {
       "source": 4,
-      "target": 7,
+      "target": 8,
       "weight": 4,
       "doc_ids": [
         61,
@@ -1688,7 +1768,7 @@
       ]
     },
     {
-      "source": 7,
+      "source": 8,
       "target": 9,
       "weight": 3,
       "doc_ids": [
@@ -1740,7 +1820,7 @@
       ]
     },
     {
-      "source": 6,
+      "source": 7,
       "target": 15,
       "weight": 2,
       "doc_ids": [
@@ -1749,7 +1829,7 @@
       ]
     },
     {
-      "source": 6,
+      "source": 7,
       "target": 16,
       "weight": 2,
       "doc_ids": [
@@ -1768,7 +1848,7 @@
       ]
     },
     {
-      "source": 7,
+      "source": 8,
       "target": 15,
       "weight": 2,
       "doc_ids": [
@@ -1851,7 +1931,7 @@
       ]
     },
     {
-      "source": 7,
+      "source": 8,
       "target": 10,
       "weight": 2,
       "doc_ids": [
@@ -1860,7 +1940,7 @@
       ]
     },
     {
-      "source": 5,
+      "source": 6,
       "target": 10,
       "weight": 2,
       "doc_ids": [
@@ -1876,6 +1956,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1G4fiOnINogCkJCQBiHdjLr2zyD1jnq4F5BVZQZXL3Fc/edit?usp=drivesdk",
       "created_at": "2026-04-03T14:16:26.776Z",
+      "author": null,
       "snippet": "\ufeffProblem statement & Open Questions\r Datadog-Managed Monitors[a][b] (Bits Monitors)\r \r \r Author: Capucine Marteau\r Last Updated: Dec 15, 2025\r Status: Approved\r Team: Monitor Posture\r Docs: Define and"
     },
     {
@@ -1884,6 +1965,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1VOoVK6ZwNmaXOIxo0j4i-ZRg4MCs2gnOAgNcskq8dM8/edit?usp=drivesdk",
       "created_at": "2026-03-24T17:39:00.488Z",
+      "author": null,
       "snippet": "\ufeff\ud83d\udcdd Notes\r Mar 24, 2026\r Automatic Detection sync\r Invited Capucine Marteau Erik Petersen Nick Adams Carol Yao Samantha Scaglione Alejandro Borbolla Angira Shirahatti\r Attachments Automatic Detection s"
     },
     {
@@ -1892,6 +1974,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1tlUfP3WpXi2lMa3henmYkBCOU3cPU7ZVG-emz4RgPfw/edit?usp=drivesdk",
       "created_at": "2026-04-02T14:16:05.616Z",
+      "author": null,
       "snippet": "OKR Pitch  OKR Q2 2026  So O1 is about automatic detection that customers can rely on to find problems early and broadly. Today, users have the responsibility to decide what to monitor, how to configu"
     },
     {
@@ -1900,6 +1983,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1OLvVKFfM3FDd8qeMDr2AUd-8_AuV2ZaRj1hjwQzwVEY/edit?usp=drivesdk",
       "created_at": "2026-04-03T18:37:44.558Z",
+      "author": null,
       "snippet": "Reconciling the AI detection initiatives  Author:  Last updated:   Ops Manager and Alerting are working on overlapping areas of automated monitoring. We need a clear collaboration model to deliver a s"
     },
     {
@@ -1908,6 +1992,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1ZVkgpd6N1mODx_-V33fbRbZnUAJZmWP1EL3S0E-taog/edit?usp=drivesdk",
       "created_at": "2026-03-31T13:38:25.801Z",
+      "author": null,
       "snippet": "Mar 31, 2026 | Omri / Capucine\r Attendees: Capucine Marteau Omri Sass\r \r Notes\r * Worried about the Detection OKRs\r * Steven = manager for Alerting\r * Simone asked for internal mobility\r * Whether sta"
     },
     {
@@ -1916,6 +2001,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/18L3YkEPyvPjMHHdxuvPDrhJR8XK7M7r7_9IkZL8sZcE/edit?usp=drivesdk",
       "created_at": "2026-03-31T12:12:21.452Z",
+      "author": null,
       "snippet": "Posture.md and Posture Agent: Enforcing and improving monitoring posture at scale  Author: Capucine Marteau Last updated: Mar 25, 2026 Status: Ready for Review Related doc: Reconciling the AI detectio"
     },
     {
@@ -1924,6 +2010,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1SLxY-k715UugbBty-Q27mUSZQJyIRIG2r2ijFPHKbas/edit?usp=drivesdk",
       "created_at": "2026-03-27T10:17:47.359Z",
+      "author": null,
       "snippet": "Rethinking the code review system  Context AI has removed the coding bottleneck. Now the bottleneck is: review, alignment and trust. Human-in-the-loop is not optional. It must scale. The challenge is"
     },
     {
@@ -1932,6 +2019,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1sDxq0aXNlM-RFNE5dfJa4I_37HBZPvMPqca_Td_xXxs/edit?usp=drivesdk",
       "created_at": "2026-03-26T19:54:17.010Z",
+      "author": null,
       "snippet": "Customer Feedback - Research on Monitoring Posture Raw notes Sanofi Pierre | Sanofi | Platform team | 4 equipes 3 ans \u2013 recrut\u00e9 pour monter la plateforme Monter une \u00e9quipe sur compliance et securite \u2013"
     },
     {
@@ -1940,6 +2028,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/13t6laY8Npt9nVBIivw3_LP-MqT2XrDC5XypDKfEX1y4/edit?usp=drivesdk",
       "created_at": "2026-03-26T16:05:40.620Z",
+      "author": null,
       "snippet": "[Feature Announcement][Monitors] Automatic Monitors: zero setup, instant coverage  Hi everyone, The Alerting, Onboarding and APM teams are excited to announce that new orgs now start with instant moni"
     },
     {
@@ -1948,6 +2037,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1V7rQN9J-esBWyp95TfG2NCqLwiBwqKHOHgxr0S0dimc/edit?usp=drivesdk",
       "created_at": "2026-03-24T23:02:06.753Z",
+      "author": null,
       "snippet": "Mar 24, 2026 | Automatic Detection sync Attendees: Capucine Marteau Erik Petersen Nick Adams Carol Yao Samantha Scaglione Alejandro Borbolla Angira Shirahatti Notes * Quick updates from each team:"
     },
     {
@@ -1956,6 +2046,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1t07hDQOmgKmFf53d4i0Q1GsyR1xPUiQsrFl7l1MZ4F0/edit?usp=drivesdk",
       "created_at": "2026-03-23T13:27:46.368Z",
+      "author": null,
       "snippet": "Monitoring Posture Skill --- name: monitoring-posture description: Assess monitoring coverage and monitor quality across teams and services. metadata:   tools:     - get_coverage ---  # Monitoring Pos"
     },
     {
@@ -1964,6 +2055,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1H-MNDReOaoNezRmO8KDYu65Hll7BMD1JibB9pzE8o5Y/edit?usp=drivesdk",
       "created_at": "2026-03-19T23:03:48.647Z",
+      "author": null,
       "snippet": "Suggested Demo Flow 1. Start with the pain (30s) Open the Overview page on a team that has no Bits monitors yet. Let the customer see the gaps.  2. Trigger the magic \u2014 Onboarding flow (2-3 min) Create"
     },
     {
@@ -1972,6 +2064,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/19FcxlVjrSwJotB3HN_4ZBM57lekBuA0uxJ9TuIzO3Kg/edit?usp=drivesdk",
       "created_at": "2026-03-18T19:36:30.093Z",
+      "author": null,
       "snippet": "Bits Monitors: Automation with Deterministic Quality The Problem Customers struggle to reach and sustain a strong monitoring posture. Designing high-quality detection at scale requires time and expert"
     },
     {
@@ -1980,6 +2073,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1ZB3GKqZc10Dj774GPPLSqnJNt_HgakLrKayciOKwNu4/edit?usp=drivesdk",
       "created_at": "2026-03-18T16:28:14.350Z",
+      "author": null,
       "snippet": "Mar 18, 2026 | Capucine / Phillip Alerting vision: DETECT \u2192 TRIAGE \u2192 ACTION Collab with ops manager: * Data Science task force on thresholds * build a common UX * Living Runbook Owned by us: * platfor"
     },
     {
@@ -1988,6 +2082,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1XOE2KkBjCOYMvefa9EEid-JPLY9FWbgBvWlTbaUa2LA/edit?usp=drivesdk",
       "created_at": "2026-03-04T19:42:12.692Z",
+      "author": null,
       "snippet": "\ufeff2026 - AI roadmap for Alerting\r Alerting Platform \u2013 2026 AI roadmap\r \r \r ________________\r \r \r \r \r Author: Capucine Marteau for alerting-platform@datadoghq.com\r Last updated: Feb 10, 2026\r Eng owners"
     },
     {
@@ -1996,6 +2091,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1jfE2edWuDinC6qu4w0bpUb7qYFEqiA_m0BN5D_F1Qm4/edit?usp=drivesdk",
       "created_at": "2026-01-06T10:06:51.565Z",
+      "author": null,
       "snippet": "\ufeff[ template ]\r \ud83e\ude91 Stepping back\r Pierre CariouCapucine Marteauto fill this in prior to our meeting.\r All other topics - longer term objectives, recurring challenges, career development, etc.\r * \ud83c\udfc3 Run"
     },
     {
@@ -2004,6 +2100,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1W_J0IvO9L0M_9D8SFA1p6aPaRL6rKyXMPTR4jXh6Mcs/edit?usp=drivesdk",
       "created_at": "2026-01-11T15:28:36.610Z",
+      "author": null,
       "snippet": "\ufeffDamien\r Damien\r \ud83c\udf1f What Is the North Node?\r * The North Node represents your soul\u2019s evolutionary path \u2014 what you're here to learn and embody in this life.\r \r * It often feels unfamiliar, uncomfortable"
     },
     {
@@ -2012,6 +2109,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1vTrghGLQ2eq7EscoEoiG0mn6v0Z4DC-Seec6HlDBZck/edit?usp=drivesdk",
       "created_at": "2026-03-14T14:29:26.575Z",
+      "author": null,
       "snippet": "Lisa Astro Chart Venus in Virgo in the first house Traits principaux: * Presence attractive * Attitude diplomatique et plaisante * Sens esth\u00e9tique * Les relations forment son sens de l'identit\u00e9  Moon"
     },
     {
@@ -2020,6 +2118,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/11NzJ5ASUZxQp2G8LVeh6wEs7OIPuQJev3J6WVeT1HrQ/edit?usp=drivesdk",
       "created_at": "2026-03-11T14:31:51.654Z",
+      "author": null,
       "snippet": "Nick / Capucine - 2026/03/11 15:02 CET - Notes by Gemini Summary Managed monitors and Ops Manager project status review included core design challenges and technical implementation models for monitor"
     },
     {
@@ -2028,6 +2127,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1XcVmLOPPqiBGQdhuxtxQ9gkEYXmsIJXsgX8D06QAEhs/edit?usp=drivesdk",
       "created_at": "2026-03-10T17:29:48.503Z",
+      "author": null,
       "snippet": "Automatic Detection sync - 2026/03/10 18:00 CET - Notes by Gemini Summary Team updates covered new personnel and a Managed Monitor API presentation, leading to discussion on Q2 collaboration areas for"
     },
     {
@@ -2036,6 +2136,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1dy2D4mUmeJgZW45x9pk0jmqutFb6rp7wmtlhv01B724/edit?usp=drivesdk",
       "created_at": "2026-03-07T19:21:45.399Z",
+      "author": null,
       "snippet": "Intro: qui suis-je, pourquoi je parle d\u2019IA, pourquoi je donne des cours  Ice breaker: Question d'ouverture Vous avez 100 points d'investissement intellectuel pour cet apr\u00e8s-midi.  5 cartes: A. Challen"
     },
     {
@@ -2044,6 +2145,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/16z_aIny98cyKpQ-6YLWWGn0MToOSVSN-LxuPdqu4Zyg/edit?usp=drivesdk",
       "created_at": "2026-02-27T14:51:35.051Z",
+      "author": null,
       "snippet": "Threshold Recommendations \u2014 Product Spec 1. Problem Statement Today, customers expect Datadog to act as the expert, using their data and product knowledge to guide configuration decisions. Threshold c"
     },
     {
@@ -2052,6 +2154,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1hhycqwKRwMW_eJYghk71jdUgyh0J9gnD9JElG3TN4cw/edit?usp=drivesdk",
       "created_at": "2026-02-24T17:30:38.908Z",
+      "author": null,
       "snippet": "Automatic Detection sync - 2026/02/24 18:01 CET - Notes by Gemini Summary Team shared work on coverage controller and creating monitors from coverage gaps without surfacing gaps to customers. Carol di"
     },
     {
@@ -2060,6 +2163,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1K1xtKr-FCgZ-UJvQ-Y1dpZad9kXiMt_hM5OA8L3TstU/edit?usp=drivesdk",
       "created_at": "2026-02-19T17:26:40.967Z",
+      "author": null,
       "snippet": "Feb 19, 2026 | Maxime / Capucine Attendees: Capucine Marteau Maxime Agostini  Notes * Maxime is asking Claude to provide a good posture to 10 DD teams and see gaps with current monitoring * Capucine i"
     },
     {
@@ -2068,6 +2172,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1z8zLadHYx0BBTaI48syqHQ16Ke88h-ORqAUFfZvlflE/edit?usp=drivesdk",
       "created_at": "2026-02-17T14:18:58.081Z",
+      "author": null,
       "snippet": "Hackathon Ideas  Idea: Customer Monitoring Posture Auto-Report Input: Org, Industry, Revenue Tier Generates: Monitoring maturity score, Coverage gaps, Hygiene issues, Business risk framing, Estimated"
     },
     {
@@ -2076,6 +2181,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1qZWzbyf1eA_ZPw5dvgRYj1v3AC7xCeFrtpk60Zo0MWE/edit?usp=drivesdk",
       "created_at": "2026-02-16T15:26:27.061Z",
+      "author": null,
       "snippet": "Define and compute coverage (Product specs) Author: Capucine Marteau Eng owner: Alejandro Borbolla Status: Approved  Context: Our goal is to make Monitoring Posture visible, measurable, and fixable. C"
     },
     {
@@ -2084,6 +2190,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1P4pHqFWEGJ0VPPWC0zpqoaRZuYnvtinnC7xZc0squMg/edit?usp=drivesdk",
       "created_at": "2026-02-14T18:38:29.122Z",
+      "author": null,
       "snippet": "Brag Document  Features shipped: * Monitor Empty State * Template variables in Recommended Monitors * GRACE migration * Export to Terraform * Recommended Monitors in Creation Form * Noisy Monitors in"
     },
     {
@@ -2092,6 +2199,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1BJqojcgUq2pE02rOFI2fhpfbzIo_lC5_RXEorivfa1s/edit?usp=drivesdk",
       "created_at": "2026-02-13T19:53:40.935Z",
+      "author": null,
       "snippet": "Monitoring Posture Recommendations for Shahid (MBC) Goal: Reduce missed incidents without creating alert fatigue. Separate signals: ALERT (Action required, pages) vs INFO (Awareness, non-paging).  Pla"
     },
     {
@@ -2100,6 +2208,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1SFMhdQKd8fbQyKKYiXI329uhB6pxw1db4VQnq9SKhVc/edit?usp=drivesdk",
       "created_at": "2026-02-13T17:48:48.470Z",
+      "author": null,
       "snippet": "Monitoring Posture Recommendations for Shahid (MBC) Goal: Reduce missed incidents without creating alert fatigue. Separate signals: ALERT (Action required) vs INFO (Awareness).  Plan: 1. Monitor Start"
     },
     {
@@ -2108,6 +2217,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1UBublqHxEAbhXuXxbRV1FpSV-Y3fg_p3Okm_scGhar8/edit?usp=drivesdk",
       "created_at": "2026-02-10T14:52:17.968Z",
+      "author": null,
       "snippet": "Building an MCP server for Alerting & Graphing Author: Capucine Marteau  Why: Enable AI-powered features that help users create better monitors, reduce noise, and understand alerting posture. LLMs nee"
     },
     {
@@ -2116,6 +2226,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1DSHKiLK39MozYBoqsZxK4M9XU5d3qO7jE9GCq3gggOU/edit?usp=drivesdk",
       "created_at": "2026-01-30T15:41:52.238Z",
+      "author": null,
       "snippet": "MCP Alerting Toolset Testing Instructions New alerting tools enabled as part of preview of Remote Datadog MCP Server.  Searching & retrieving monitors: * search_datadog_monitors, search_datadog_slos,"
     },
     {
@@ -2124,6 +2235,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1SdurWlROhJWlNER7a6PZ3JztLas4UQCrDhbzMB2T2uY/edit?usp=drivesdk",
       "created_at": "2026-01-28T17:27:14.789Z",
+      "author": null,
       "snippet": "Coverage Deep Dive \u2013 Liberty Mutual Liberty Mutual is a large-scale, long-time Datadog customer with tens of thousands of monitors.  Monitoring context: ~42K monitors including 11K Integration, 10K AP"
     },
     {
@@ -2132,6 +2244,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1ACfPQeEt2RfmmVc5KO1iw8l7SUwXeYFzfVc0vcX62Mk/edit?usp=drivesdk",
       "created_at": "2026-01-26T19:53:46.166Z",
+      "author": null,
       "snippet": "Interview questions for Toyota Structured interview guide for validating Datadog-Managed Monitors with Toyota.  Sections: 1. Context & current workflow: How Toyota creates, reviews, maintains monitors"
     },
     {
@@ -2140,6 +2253,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1iJ1NGnDyx_jmJ5r3iPnsLMYcQNwXj797Mp4SveIzIn4/edit?usp=drivesdk",
       "created_at": "2026-01-26T13:56:15.701Z",
+      "author": null,
       "snippet": "Product Spec: get_posture API Owner: Capucine Marteau Status: Reviewable  get_posture is a new API endpoint (internal MCP, later public) that evaluates the monitoring posture of a given resource, retu"
     },
     {
@@ -2148,6 +2262,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1u_Ptj5m6tXBkf5pFRTrRkmCgM5PldrQLDcsH4BRbQ2w/edit?usp=drivesdk",
       "created_at": "2026-01-25T17:55:06.438Z",
+      "author": null,
       "snippet": "Chart Magali Astro chart analysis.  Noeud nord en Verseau en Maison 1: Trajectoire de vie - \u00eatre toi-m\u00eame sans permission. Transition de vivre pour les autres \u00e0 vivre en tant que soi authentique.  V\u00e9n"
     },
     {
@@ -2156,6 +2271,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1JltBhKbwDtzYKA7_1BKtiC9312qggmc6ySUAkBj9VM4/edit?usp=drivesdk",
       "created_at": "2026-01-15T14:24:39.481Z",
+      "author": null,
       "snippet": "Meeting notes | Capucine / Khang Jan 15, 2026: Executive Dashboard (e-commerce) link monitors, DASH talk on Posture + Detection, Blog post on Monitoring Posture  Nov 6, 2025: Automatic Monitors for ex"
     },
     {
@@ -2164,6 +2280,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1CGIjlm8SR1HDYp3zgwrSvzYVkPIsKbOKOsROlmaMGk4/edit?usp=drivesdk",
       "created_at": "2026-01-15T14:19:24.618Z",
+      "author": null,
       "snippet": "DASH submission Governance \u2192 Monitor & Dashboard Management  * How to start with the right collection of monitors & dashboard? Automatic monitors, DD-managed monitors, Monitor templates, RED metrics *"
     },
     {
@@ -2172,6 +2289,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1048Gv2fkFJEKq3J6nPW-oQcByCNGc-IzdBh_D333PPQ/edit?usp=drivesdk",
       "created_at": "2026-01-12T18:27:56.450Z",
+      "author": null,
       "snippet": "To clarify on DD-managed monitors: Q1 goal: ship first iteration to design partners, focused on auto-creation of RED monitors from coverage gaps, with UI visibility and managed properties (overridabil"
     },
     {
@@ -2180,6 +2298,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1puBhUfl9J2oHzmuI3Z_w68KcleR125p_XUFnRCQl4iI/edit?usp=drivesdk",
       "created_at": "2026-01-09T14:40:34.729Z",
+      "author": null,
       "snippet": "Monitoring Posture blog post: from reactive alerts to confident coverage  Why monitoring posture matters: Early detection, low noise, continuous confidence.  Coverage: seeing the whole picture * Basel"
     },
     {
@@ -2188,6 +2307,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1ibaZcemvtzsuKpOEcZb60MzQOw6BtqleSKgXINwjWH4/edit?usp=drivesdk",
       "created_at": "2026-01-07T03:18:33.766Z",
+      "author": null,
       "snippet": "Automatic Monitors \u2014 Next Steps Author: Capucine Marteau  Vision: Zero-setup, Datadog-managed monitoring coverage for all customers.  1. Automatic Monitors become Datadog-managed monitors (Q1-Q2) * Up"
     },
     {
@@ -2196,6 +2316,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1k1REoRw8vtUxONnFk77il17fh6sw3HNkjDYe2yv7Sxg/edit?usp=drivesdk",
       "created_at": "2025-12-29T19:29:14.691Z",
+      "author": null,
       "snippet": "Site Mont Kailash https://montkailash-bien-etre.fr/  Maintenance Checklist (WordPress): 1. Connexion & sauvegarde (UpdraftPlus) 2. Mises \u00e0 jour: WordPress core, th\u00e8me, plugins 3. S\u00e9curit\u00e9: plugin Word"
     },
     {
@@ -2204,6 +2325,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1ewZ1LbX2t2wL87_RkctFIdWdnRDmgVZJb5_-lT_ErJ8/edit?usp=drivesdk",
       "created_at": "2025-12-19T14:44:59.766Z",
+      "author": null,
       "snippet": "KPIs for Monitor Posture initiatives  Monitor Templates: * 77% orgs creating monitors from templates * 60% of monitors created from templates (vs. 3% last year) * Time spent: 600s (templates) vs. 670s"
     },
     {
@@ -2212,6 +2334,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1ZZDW_yJzkgGiPfu7LNgjGgm-beoX2xY_ZAgCA6TYc08/edit?usp=drivesdk",
       "created_at": "2025-12-17T17:29:16.210Z",
+      "author": null,
       "snippet": "Monitor Generation Roadmap & Milestones Author: Capucine Marteau  Vision: Enable Datadog to generate high-quality monitors automatically or with minimal user input, by predicting all key attributes: q"
     },
     {
@@ -2220,6 +2343,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/16ySpLqUDRycelKb1L2XnJFaptCfWaXCgtA4ib7q5WoM/edit?usp=drivesdk",
       "created_at": "2025-12-14T22:45:41.705Z",
+      "author": null,
       "snippet": "Prototype proposal: Monitoring Posture Overview Author: Capucine Marteau Status: Approved  Purpose: Validate how customers understand and interact with monitoring posture \u2014 coverage, quality, recommen"
     },
     {
@@ -2228,6 +2352,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1O5wlK_OvmPZ_xxlZXkpKUnCnNPWEmCwPLHJZzZpOKog/edit?usp=drivesdk",
       "created_at": "2025-12-12T20:48:36.118Z",
+      "author": null,
       "snippet": "Cadeaux de No\u00ebl  Pour ma famille:  * Ampoules Philips Hue * Ustensiles de cuisine: Couteaux de cuisine, Spatule, Louche, Fouet, Cuilleres en bois, Couverts \u00e0 salade, Eplucheur, Planche \u00e0 d\u00e9couper, Epi"
     },
     {
@@ -2236,6 +2361,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1IghFaV4WJqk9No01cXeEhHoL2Lr7RNEfWQ8HP8qrwW4/edit?usp=drivesdk",
       "created_at": "2025-12-12T15:20:47.945Z",
+      "author": null,
       "snippet": "Dec 12, 2025 | Capucine / Cole 1:1 Attendees: Capucine Marteau Cole Murphy  Notes * Generate message * Cmd+i * TF: Cole will wrap up research next week * Cole will own Dashboards, focused more on Grap"
     },
     {
@@ -2244,6 +2370,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1xAdH_Cz0nuag7Z4JSN1501sBnWbmPfmL0Uhe5dFvi4Y/edit?usp=drivesdk",
       "created_at": "2025-12-11T22:44:02.003Z",
+      "author": null,
       "snippet": "Chart Alejandro  Core Themes of the Chart 1. Intellectual Growth and Communication * Key Placements: Mercury, Jupiter, Saturn in Gemini (8th and 7th Houses) * Heavily focused on intellectual curiosity"
     },
     {
@@ -2252,6 +2379,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1_JGaLWqbRaSn87dcuZIVX95zf3-DsLwWtr5jPiwlHj8/edit?usp=drivesdk",
       "created_at": "2025-12-08T17:04:37.333Z",
+      "author": null,
       "snippet": "Measuring Monitoring Posture  This document outlines our approach to measuring and improving monitoring posture at Datadog, meaning supporting customers in setting no more no less than the right monit"
     },
     {
@@ -2260,6 +2388,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1Dw7fyxf0o2BHn-MAGW7zFNqMBUJz-C1b3Ne54UBpStA/edit?usp=drivesdk",
       "created_at": "2025-12-05T11:06:14.419Z",
+      "author": null,
       "snippet": "Autonotifications for Trial Orgs  Context * In Q2, we released automatic monitors for trial orgs: every new org starts with a standard set of monitors. * Currently, customers must set up notifications"
     },
     {
@@ -2268,6 +2397,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/114nRZI9oCRvTN0J_PHpQb1Y3DIDquybIdCG25sQiKpw/edit?usp=drivesdk",
       "created_at": "2025-12-05T10:32:22.814Z",
+      "author": null,
       "snippet": "Writing monitor templates Author \u2014 Maxime Matheron Simone Tafaro Yao Ding  A monitor template is essentially made of the definition of a Datadog monitor and some additional metadata. The extra metadat"
     },
     {
@@ -2276,6 +2406,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1fmKeaqRFlBZokXkyPARkxc_hALhNqb3p4Dgf9tdGUE0/edit?usp=drivesdk",
       "created_at": "2025-12-03T16:29:45.595Z",
+      "author": null,
       "snippet": "Dec 3, 2025 | Brainstorm: Datadog Managed Monitors Attendees: Alejandro Borbolla Capucine Marteau Carol Yao Darnell Shumpert Martin Esguerra Phillip Baker Scott Xue Vahe Karamyan Myriam Anki  Notes *"
     },
     {
@@ -2284,6 +2415,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1OuwiFjEBzPRAkE2izfCWTUIYRdLuptdo5xM1nFMOInI/edit?usp=drivesdk",
       "created_at": "2025-12-02T12:32:52.231Z",
+      "author": null,
       "snippet": "Grand maman,  Un petit mot, comme d'habitude, pour te dire encore que je t'aime.  Depuis que tu es partie, j'accueille le deuil en moi, et j'apprends \u00e0 le conna\u00eetre. Je pensais que le deuil, c'\u00e9tait l"
     },
     {
@@ -2292,6 +2424,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1dSTtEPe8Ld2v6NsmGf8_uatbdP0k8MkjzlkUc-hCS6A/edit?usp=drivesdk",
       "created_at": "2025-12-01T17:56:48.223Z",
+      "author": null,
       "snippet": "Nov 24, 2025 | Follow up of requirements for training datasets Attendees: Assaf Muller Zach Garcia Phillip Baker Alejandro Borbolla Martin Esguerra Capucine Marteau  Split to three projects: 1) Sort u"
     },
     {
@@ -2300,6 +2433,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/10fIfM_Mm1PGxWkECcnVPdHuC1hH4XifLfzVMpXQfyKc/edit?usp=drivesdk",
       "created_at": "2025-12-01T14:51:36.446Z",
+      "author": null,
       "snippet": "Mistral  Poste: Product Manager, AI Observability Suite @ Mistral AI (Paris) Define and execute the strategy for Mistral's observability platform, enabling enterprises to monitor, analyze, and optimiz"
     },
     {
@@ -2308,6 +2442,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1g52y_HjKhPInImrF3-TbvaZTaVKS3rDGj6WIo_0QK80/edit?usp=drivesdk",
       "created_at": "2025-11-28T10:09:24.870Z",
+      "author": null,
       "snippet": "Facilitate monitor configuration with proactive suggestions  Author: Capucine Marteau Engineering owner: Enrique Cruz Last updated: Aug 19, 2024 Status: Completed  Context Users typically spend ~13min"
     },
     {
@@ -2316,6 +2451,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1kwhF7-WnQxT789RcBAL7fg3uD-lfvNRv4Wdt2jHVA9I/edit?usp=drivesdk",
       "created_at": "2025-11-28T10:07:06.811Z",
+      "author": null,
       "snippet": "Designing the E2E experience for automated monitor creation during onboarding  Author: Capucine Marteau Last updated: Nov 20, 2024 Status: Completed  Two pieces: 1. Automated monitor creation during o"
     },
     {
@@ -2324,6 +2460,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1RPd4Yn_9RR16FlOB-_jGwZDsTyWBDp8-B1DGVKzqcQg/edit?usp=drivesdk",
       "created_at": "2025-11-23T13:41:13.978Z",
+      "author": null,
       "snippet": "Id\u00e9es Chill et Cosy pour l'hiver  Les bains du Marais Caliceo - espace spa aquatique Tea time au Dali Tea time au Ritz Tea time au Prince de Galles"
     },
     {
@@ -2332,6 +2469,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1zZ0Hauiap8JTRUFtvPQ1u3cV3z4zpabjFWhIAjOxfAI/edit?usp=drivesdk",
       "created_at": "2025-11-23T12:44:36.925Z",
+      "author": null,
       "snippet": "Cours IA Bsc  Objectifs p\u00e9dagogiques: Comprendre le r\u00f4le du PM en IA, structurer un probl\u00e8me, design thinking/discovery/framing, pont entre technique (IA), business et UX.  Planning (9h-17h): 9h00 - I"
     },
     {
@@ -2340,6 +2478,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1Vq_C_a1-kWspqx7UyOmZl2Y1MbqCQKFjGwqTIGq0g2o/edit?usp=drivesdk",
       "created_at": "2025-11-21T17:00:37.806Z",
+      "author": null,
       "snippet": "Nov 21, 2025 | Alerting MCP Attendees: Alejandro Borbolla Capucine Marteau Phillip Baker Till Pieper Will Osborne  Notes * A lot of usage for DD MCP and interest for monitor creation * Concerns on per"
     },
     {
@@ -2348,6 +2487,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1gUUeSYock-FfJrkQuIFg5TNfIQK4sptwZf8L0DYqXkw/edit?usp=drivesdk",
       "created_at": "2025-11-20T09:59:40.563Z",
+      "author": null,
       "snippet": "[content not yet fetched]"
     },
     {
@@ -2356,6 +2496,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1VsoOkgZfjjL8gHoABdvOLVqUVjwp5IkOCPIM2RL03ns/edit?usp=drivesdk",
       "created_at": "2025-11-17T09:37:18.913Z",
+      "author": null,
       "snippet": "[Dogfood Announcement][Monitors] Auto-generated message: start with context, not a blank page  The Alerting team announces that Datadog now writes the first draft of your alert message, saving setup t"
     },
     {
@@ -2364,6 +2505,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1egh9EAysUBuscXHopPp9nTtfECgM19-Snh_jTMNWwqs/edit?usp=drivesdk",
       "created_at": "2025-11-13T21:07:24.716Z",
+      "author": null,
       "snippet": "Proposition for monitor generation preview  Goal: validate usefulness and accuracy, collect early feedback.  Customers selection: * Mix of orgs with many monitors (experienced) and fewer monitors (sim"
     },
     {
@@ -2372,6 +2514,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1tB45iqREU4O91zlM9WCVKkAxHEkLw7qf3BTcTiZVEIo/edit?usp=drivesdk",
       "created_at": "2025-11-13T20:23:05.300Z",
+      "author": null,
       "snippet": "List of customers for calls on Posture  Customers already talking to: Kingfisher (enterprise migration from Dynatrace to DD, built tf module for APM monitors, too noisy)  Interested customers: Gusto,"
     },
     {
@@ -2380,6 +2523,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1v9RHix8BSW1nnFo5b53BTpbDPEGsKDFOV-lQGPsG1tw/edit?usp=drivesdk",
       "created_at": "2025-11-13T16:11:40.119Z",
+      "author": null,
       "snippet": "Prep Kingfisher's meeting  Context: Kingfisher ($2.6M ARR enterprise migration from Dynatrace to Datadog, led by RapDev) experiencing major noise and false positives from APM-based anomaly monitors be"
     },
     {
@@ -2388,6 +2532,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1wANpst5_KXR2tJ93l1n_G5Iz10RrLKLyprLQGSb9emg/edit?usp=drivesdk",
       "created_at": "2025-11-12T18:46:27.782Z",
+      "author": null,
       "snippet": "Product Spec: Monitor Importance Ranking  Owner: Capucine Marteau Status: Completed Last updated: Jul 7, 2025  Tl;dr: Build a Monitor Importance Rank scoring system to surface most relevant monitors a"
     },
     {
@@ -2396,6 +2541,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1QF41qBs4I2zupN4VMFBz9yOYEE9hUmZfKAv9_xKHfpo/edit?usp=drivesdk",
       "created_at": "2025-11-10T16:08:49.368Z",
+      "author": null,
       "snippet": "Nov 10, 2025 | Monitors/SLOs - Related Metrics Requirements Attendees: Capucine Marteau Racheal Ou Alejandro Borbolla  Notes: * Custom metrics = accidental success, customers not getting value * Initi"
     },
     {
@@ -2404,6 +2550,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1CdmQFzak1RBfv_PSJFTwriik4BSKwJCoPqlf4drRHF0/edit?usp=drivesdk",
       "created_at": "2025-11-10T15:31:55.964Z",
+      "author": null,
       "snippet": "Nov 10, 2025 | Alan / Capucine: Integration monitors OOTB Attendees: Alan Zhao Capucine Marteau  Notes: * Direction for Monitors: already installing baseline monitors for trial users, expanding to exi"
     },
     {
@@ -2412,6 +2559,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1pXCVXT0zCKk9K4mOatnaV5HBABion63lZA3_bWhLijY/edit?usp=drivesdk",
       "created_at": "2025-11-10T14:31:01.372Z",
+      "author": null,
       "snippet": "Nov 10, 2025 | Align on monitor importance ranking next steps Attendees: Capucine Marteau Assaf Muller Zach Garcia Phillip Baker  Notes: * Eng research on technical feasibility of per-user recency * B"
     },
     {
@@ -2420,6 +2568,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1oQfPSgYMF8eghw08nVepypTFoPb7PTGhtXWtzajEZfk/edit?usp=drivesdk",
       "created_at": "2025-11-07T12:31:24.553Z",
+      "author": null,
       "snippet": "Working Doc: AI Initiatives updates  Highlights: * Delivered Alerting MCP in prod, integrated with Datadog MCP; first tool enables monitor validation * Built core team (Monitor Posture) with 1 SWE and"
     },
     {
@@ -2428,6 +2577,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1TqWqLeedkStcr10bgcd38OetGAE8S8FPqiBiFKckapA/edit?usp=drivesdk",
       "created_at": "2025-11-06T10:22:26.038Z",
+      "author": null,
       "snippet": "Nov 5, 2025 | OOTB Monitors and SLOs x AI created tests for Feature Coverage Attendees: Capucine Marteau Yasmine El Hafdi Younes Berradia  Agenda: * Side panel with Synthetics + OOTB recos * How to re"
     },
     {
@@ -2436,6 +2586,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1PHq7nqk3eKk3C4sUs9g6z1_hAvQun4IPGBzeXkk0EMg/edit?usp=drivesdk",
       "created_at": "2025-11-05T20:14:19.573Z",
+      "author": null,
       "snippet": "Thoughts on the side panel design  Make the panel feel like an intelligent guide to understanding service state \u2014 what's being watched, what's missing, and what actions to take.  Sections: * Baseline"
     },
     {
@@ -2444,6 +2595,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1jHOkTZjesJYRZ_wb92QxV_UFxFD7kZfNcfGZ64t7In0/edit?usp=drivesdk",
       "created_at": "2025-11-03T10:18:53.592Z",
+      "author": null,
       "snippet": "Notes - Monitor Posture team sync  Multiple meetings from Mar 2025 to Oct 2025 covering LLM squad progress.  Key themes across meetings: * MCP server development: monitor validation tools, generate-mo"
     },
     {
@@ -2452,6 +2604,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1fn0arBp1Q44Tz8iEoP-wmuSgJgZ0FacXQ-5jfhzr0x0/edit?usp=drivesdk",
       "created_at": "2025-10-30T11:19:41.368Z",
+      "author": null,
       "snippet": "Oct 29, 2025 | Sync on Monitor Relevance Attendees: Amine Erraqabi Assaf Muller Capucine Marteau Zach Garcia  Notes: * Applied AI team working at monitor event/alert level vs Alerting org at monitor l"
     },
     {
@@ -2460,6 +2613,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1eLonX5kZQH9htDl4o3fw3gs5IIMJdNKtGJp9Hls-oLg/edit?usp=drivesdk",
       "created_at": "2025-10-29T13:53:29.076Z",
+      "author": null,
       "snippet": "User-Defined Templates - Rollout Plan  Preview Goal: Validate users can create, reuse, and manage user-defined templates for monitor setup consistency.  Preview Customers: Liberty, GM, Raymond James,"
     },
     {
@@ -2468,6 +2622,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1slzjkN2TqW4QOLfgAfuxuE31zvBJzwjOgDspxAON2yw/edit?usp=drivesdk",
       "created_at": "2025-10-28T08:57:36.466Z",
+      "author": null,
       "snippet": "AI in Monitoring Posture  TL;DR: Building toward a future where Datadog manages most monitors for every customer, automatically creating, tuning, and maintaining strong monitoring posture.  New orgs a"
     },
     {
@@ -2476,6 +2631,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/11NQS9JJm0khKWkCVCk5o0ptNW0aQB6oSTKQZqf11KYE/edit?usp=drivesdk",
       "created_at": "2025-10-23T19:59:49.467Z",
+      "author": null,
       "snippet": "Notes - Paul / Capucine  Oct 23, 2025 * Improvement area: more structured weekly meetings with line items, prioritization * Owners in each area/workstreams * Tracking and guiding people along the pict"
     },
     {
@@ -2484,6 +2640,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1LZHMcMlUYNmPrrUQQOTrYBbkQD4HeMzCfg_Pot9d7_8/edit?usp=drivesdk",
       "created_at": "2025-10-23T18:57:53.398Z",
+      "author": null,
       "snippet": "1-Hour Workshop: Posture for SREs  Objective: Understand why monitoring posture matters for SREs, what problems it should solve, and how it should manifest in Datadog.  Agenda: * 0-10 min: Framing the"
     },
     {
@@ -2492,6 +2649,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/14K4r8RFpe9vBJGqINeLjcp_Z8y-oB8jc4YQb0Po_jMs/edit?usp=drivesdk",
       "created_at": "2025-10-21T23:01:07.851Z",
+      "author": null,
       "snippet": "Automatic Monitors clarification:  We're not expecting users to page on raw metrics, but to gain instant visibility into their systems as a first step.  Mid-term vision: Datadog automatically generate"
     },
     {
@@ -2500,6 +2658,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1PttxAVO-36ZyY_uYFbBdm5PkVf1eFLl3Bl_royW3Btk/edit?usp=drivesdk",
       "created_at": "2025-10-21T18:29:14.181Z",
+      "author": null,
       "snippet": "Retro Carol   What went well:   * On AMC: we went from idea to execution without big feedback, and it's huge, so congrats on that, we should be proud of ourselves. Feedback sessions were super well-or"
     },
     {
@@ -2508,6 +2667,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/15OownYzVUiT24-mRpr7BqxHu36lQn1zxrDa695DBdNs/edit?usp=drivesdk",
       "created_at": "2025-10-16T13:03:20.105Z",
+      "author": null,
       "snippet": "Oct 16, 2025 | Capucine / Guillaume Attendees: Capucine Marteau Guillaume Turbat   Notes * CI/CD - Visibility * Vrai probleme: incidents en prod a cause des deployments * Tout le monde de pouvoir fair"
     },
     {
@@ -2516,6 +2676,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/18N63eJqpU0_bLWM30skX0f3sy5Fhjqh3gBKXzk7m0z8/edit?usp=drivesdk",
       "created_at": "2025-10-15T13:32:10.715Z",
+      "author": null,
       "snippet": "Oct 15, 2025 |  Enrique / Capucine 1:1 (re-scheduled) Attendees: Capucine Marteau Enrique Cruz   Notes *  Action items *  May 28, 2025 | Enrique / Capucine weekly Agenda: * Metrics recommendations - u"
     },
     {
@@ -2524,6 +2685,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/10NvLSn5HPEd8vNd0RyNPemsvgm3KyX0tKBNSvpyfEfE/edit?usp=drivesdk",
       "created_at": "2025-10-13T14:01:33.560Z",
+      "author": null,
       "snippet": "[Feature Announcement][Monitors] Automatic Monitors: zero setup, instant coverage - This email is INTERNAL. Use the Release Note section at the bottom to share externally. - Hi everyone, The Alerting,"
     },
     {
@@ -2532,6 +2694,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/19f2FeAFkhFDEuN-qf2DuSK3rS2WnQCfyCiycWnNm0Pw/edit?usp=drivesdk",
       "created_at": "2025-10-09T17:23:08.744Z",
+      "author": null,
       "snippet": "Meetings/workshops in NYC   See here: Alerting Team Meetup NYC/Paris - Oct 2025   Workshops/Brainstorm sessions with the Monitor Posture team:   * Monitoring Coverage - APIs & UI * UX for SREs to unde"
     },
     {
@@ -2540,6 +2703,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1GO1OhAtIrTLDKu6xm8DxLPFV2QnB6138mf1T8_5FF3Q/edit?usp=drivesdk",
       "created_at": "2025-10-08T15:49:53.863Z",
+      "author": null,
       "snippet": "Oct 8, 2025 | Host Monitoring sync - Part 2 Attendees: Capucine Marteau Aswin Thiyagarajan Cole Murphy Carol Yao Khang Truong   Notes * Goal: make the monitors list more useful in the panel * Topics t"
     },
     {
@@ -2548,6 +2712,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1ZOuR2yznZ0ndqktvPa79q1dKPM40qyD-9xQG3rEr8ig/edit?usp=drivesdk",
       "created_at": "2025-10-07T19:03:43.678Z",
+      "author": null,
       "snippet": "Should the Health Component and Coverage for SREs be part of the same bulk of work?   Decision: No - Prioritizing health component in Q4 and downgrading coverage per team to a brief in Q4. Recommendat"
     },
     {
@@ -2556,6 +2721,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1MEF-cKzk9p7_LVSPgQQSO9CJLVfefvyWzs4WfxaebHM/edit?usp=drivesdk",
       "created_at": "2025-10-06T15:08:56.447Z",
+      "author": null,
       "snippet": "\ufeffOct 6, 2025 | Automatic Monitor Creation - Weekly touchpoint\r Attendees: Capucine Marteau Jasmine Zhang Zach Garcia Carol Yao Carl Martensen Scott Xue Phillip Baker Brian Connor Nick Jagodzinski Harr"
     },
     {
@@ -2564,6 +2730,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1yG4BfWDislpS32jpe__FZVGa9TDb_N0-EdbR72wrKm4/edit?usp=drivesdk",
       "created_at": "2025-10-01T06:20:09.530Z",
+      "author": null,
       "snippet": "1. Post tl;dr on our vision for coverage to:    1. Jerem    2. Phillip    3. Ai-squad 2. Post everything on Q3 and Q4 on:    1. AI-squad    2. Monitoring-design    3. Alerting-platform backroom?   Hey"
     },
     {
@@ -2572,6 +2739,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1hD4TlgH1TuU_lNi_1wJWGsFtQBT6geqkg5zFqHdUW5E/edit?usp=drivesdk",
       "created_at": "2025-09-29T11:53:22.869Z",
+      "author": null,
       "snippet": "Je, soussignee Capucine Marteau, residant au 46 rue du General Foy 75008 Paris, certifie que j'heberge depuis plus d'un an Hermann Obodji a mon domicile.   Pour faire valoir ce que de droit.   Capucin"
     },
     {
@@ -2580,6 +2748,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1Hp4oB8gxOAdP6cjgqitREFGlfcPfvTc--fPvo30AjJ0/edit?usp=drivesdk",
       "created_at": "2025-09-26T11:48:31.076Z",
+      "author": null,
       "snippet": "Tab 1 Ideas for Datadog Paris Summit   400-500 personnes   Talk about Monitoring Posture: * Managing your Posture:    * Getting basic coverage OOTB with Automatic Monitors    * Build better monitors f"
     },
     {
@@ -2588,6 +2757,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1fvAFhRKiRajK9aq6oJGN5lTnCepN53dYCU_Ep-srTSE/edit?usp=drivesdk",
       "created_at": "2025-09-25T21:21:25.908Z",
+      "author": null,
       "snippet": "AMC Monitor Expiration - Discussion  Problem Our AMC feature automatically installs monitors when customers install agents or integrations. While this helps with onboarding and coverage, it may create"
     },
     {
@@ -2596,6 +2766,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1HXPzC9Jlwl9lkz4LHqsd95aZEJ_w6r0xNcMV9sKDQgk/edit?usp=drivesdk",
       "created_at": "2025-09-20T16:27:04.154Z",
+      "author": null,
       "snippet": "Sep 16, 2025 | Alignement on Posture x AI vision and deliverables Attendees: Alejandro Borbolla Assaf Muller Capucine Marteau Cole Murphy Paul Fallon Phillip Baker Scott Xue  Proposition for Q4 OKRs P"
     },
     {
@@ -2604,6 +2775,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1koRpK1A6SP5Y_BVAC8UcniWb6DoPLVAqtirsgF94-YM/edit?usp=drivesdk",
       "created_at": "2025-09-05T13:28:30.887Z",
+      "author": null,
       "snippet": "Workshop summary - Dashboard to Monitor with LLM  Week of workshop: August 11th-14th Participants: Cole Murphy, Myriam Anki, Capucine Marteau, Alejandro Borbolla, Brian Connor Goal: Enable users to ge"
     },
     {
@@ -2612,6 +2784,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/14iXZ3LpyuuQLmDk-hkpS7VburC7ZS4RQW9BZZVVg6tM/edit?usp=drivesdk",
       "created_at": "2025-09-04T14:37:55.357Z",
+      "author": null,
       "snippet": "Milestone Doc for Q3: LLM-Generated Monitors from a Dashboard Widget  Author: Capucine Marteau Last updated: Aug 5, 2025 Related specs: Building an MCP server for Alerting & Graphing Doc on Posture in"
     },
     {
@@ -2620,6 +2793,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1eaDf0YQAV7ZYQ8UDRRm9mAwcSgfu6jS00hYs980z_N8/edit?usp=drivesdk",
       "created_at": "2025-09-04T12:05:28.529Z",
+      "author": null,
       "snippet": "Sep 4, 2025 | Secret meeting Attendees: Alejandro Borbolla Capucine Marteau Damien Mehala   Notes * A2A Observability + Orchestration - Agent Ops - Agent Management and Observability    * https://sneh"
     },
     {
@@ -2628,6 +2802,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1ExYbOVHKO_lSujeDjjQam7Up4aL6jBmYMF0zD1Vp568/edit?usp=drivesdk",
       "created_at": "2025-09-02T15:20:53.939Z",
+      "author": null,
       "snippet": "Make restriction_policies work better with Terraform  Context The new GRACE experience, allowing users to restrict permissions by teams and users in addition to roles, is now implemented for monitors"
     },
     {
@@ -2636,6 +2811,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1V0vvs-oAKsLXEgdxBcT_gPB-2DJqGBNTxblXq_NMsiU/edit?usp=drivesdk",
       "created_at": "2025-08-27T12:45:44.277Z",
+      "author": null,
       "snippet": "Validation and Evaluation plan for LLM-generated title and message  Author: Capucine Marteau Last updated: Jul 31, 2025 Status: Reviewable  Objective Ensure that LLM-generated messages are: * Accurate"
     },
     {
@@ -2644,6 +2820,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1aqB068-FcB1J8BePPceewkDVh8vhE0K3BL36Zr6k72g/edit?usp=drivesdk",
       "created_at": "2025-08-11T12:09:57.551Z",
+      "author": null,
       "snippet": "Product Rollout - Automatic Monitor Creation  Summary * Feature Name: Automatic Monitor Creation * Objective: All trial orgs have basic coverage for their hosts, services and top 5 integrations in the"
     },
     {
@@ -2652,6 +2829,7 @@
       "source": "google-docs",
       "source_url": "https://docs.google.com/document/d/1I-5y0pbnPqzTwlpr1rlBvTcHEntyxoUnFx1DePuV-ZU/edit?usp=drivesdk",
       "created_at": "2025-08-08T20:45:53.541Z",
+      "author": null,
       "snippet": "Alignment on Posture initiatives  Author: Capucine Marteau Last updated: Aug 5, 2025  What is Posture and why is it important? We call monitoring posture the coverage (do I have the right monitors) &"
     },
     {
@@ -2660,6 +2838,7 @@
       "source": "google-slides",
       "source_url": "https://docs.google.com/presentation/d/1eQYYwCpMZOd7LvBT--D0E4aV_fBWvnCvtM0RoiEER0Q/edit?usp=drivesdk",
       "created_at": "2026-03-10T23:21:24.204Z",
+      "author": null,
       "snippet": "Successful Data-Driven Company: Roadmaps and Data Value Creation in Action Capucine Marteau - ESSEC Executive Education - July, 2025  Intro: ESSEC 2018 - Accenture Business Analytics Chair. Amazon - B"
     },
     {
@@ -2668,6 +2847,7 @@
       "source": "google-slides",
       "source_url": "https://docs.google.com/presentation/d/1EwWfr8LevRl6e56_qHUbwL32HmjH5sLyd4dXPFUecHo/edit?usp=drivesdk",
       "created_at": "2026-02-27T12:49:31.880Z",
+      "author": null,
       "snippet": "Alerting Platform Roadmap - February 2026  Alerting Vision Detect issues as early as possible Provide responders with actionable material Ideally, Datadog solves the problem before it wakes you up  20"
     },
     {
@@ -2676,6 +2856,7 @@
       "source": "google-slides",
       "source_url": "https://docs.google.com/presentation/d/1KVPn2nnuaG8Yk479yy9JLssVNuGALLthmfRrvNiHYGM/edit?usp=drivesdk",
       "created_at": "2025-09-28T16:36:37.318Z",
+      "author": null,
       "snippet": "Copy of Paris Summit 2025 Main Deck - Capucine Marteau, Product Manager, Datadog Monitoring Posture: passer des alertes reactives a une couverture proactive et fiable  Le Dilemme du Monitoring: Peur d"
     },
     {
@@ -2684,6 +2865,7 @@
       "source": "google-slides",
       "source_url": "https://docs.google.com/presentation/d/1uxLB95J4HVztxh81huT_JI1bd_kNJmdmlYmEXkUzdpA/edit?usp=drivesdk",
       "created_at": "2025-09-28T16:29:24.203Z",
+      "author": null,
       "snippet": "Monitoring Posture: passer des alertes reactives a une couverture proactive et fiable Capucine Marteau, Product Manager, Datadog  Le Dilemme du Monitoring: Peur de rater une alerte critique (FOMO) vs."
     },
     {
@@ -2692,6 +2874,7 @@
       "source": "google-slides",
       "source_url": "https://docs.google.com/presentation/d/10O3t5PJ_qJjrduZrnbTjUnNYhaEEeQdoLfrH-cqDYRE/edit?usp=drivesdk",
       "created_at": "2025-09-25T20:21:52.434Z",
+      "author": null,
       "snippet": "17/11/2024 - Enhancing critical thinking with AI - Detecting fallacious arguments and promoting reliable information Pierina Camarena, Louis Jurdant, Leon Nyametso, Capucine Marteau - Clarity.AI  GCPU"
     },
     {
@@ -2700,6 +2883,7 @@
       "source": "google-slides",
       "source_url": "https://docs.google.com/presentation/d/1LghWZL1hIQgF-S1h2WjTi_qb5W43WrPE8tq-SHsFkPQ/edit?usp=drivesdk",
       "created_at": "2025-03-25T15:34:41.613Z",
+      "author": null,
       "snippet": "Monitoring Posture Roadmap - March 2025  What is Monitoring Posture? Have the right set of monitors Be able to manage them at scale From onboarding to ongoing posture (as new teams onboard, env evolve"
     },
     {
@@ -2708,6 +2892,7 @@
       "source": "google-slides",
       "source_url": "https://docs.google.com/presentation/d/1f5QwDkEJyvWO9VNR1BRpU0R46T6BcPTG3BJSy4VjglA/edit?usp=drivesdk",
       "created_at": "2025-02-03T20:05:55.168Z",
+      "author": null,
       "snippet": "Kickoff Automatic Monitor Creation - Automatic Monitor Creation At Onboarding - Kickoff meeting Feb 3rd 2025  In the product priorities shared by our CPO, onboarding is a big one. We are in the Onboar"
     },
     {
@@ -2716,6 +2901,7 @@
       "source": "google-slides",
       "source_url": "https://docs.google.com/presentation/d/1Pkq7j3bn1BwqF-XpOzi5QZTWHzYq_ueUmNiCzcuXYj4/edit?usp=drivesdk",
       "created_at": "2024-12-04T14:49:18.542Z",
+      "author": null,
       "snippet": "Hackathon December 2024 Capucine Marteau, Alejandro Borbolla and Myriam Anki LLM-based monitor features - Understand and interact with monitors in a more intuitive way  Users struggle to create good m"
     },
     {
@@ -2724,6 +2910,7 @@
       "source": "google-slides",
       "source_url": "https://docs.google.com/presentation/d/1CEQm5YCgfhtNqeMI8f24LV4EiQ8l4RJVeZZE9-_bYEg/edit?usp=drivesdk",
       "created_at": "2024-11-28T09:32:56.650Z",
+      "author": null,
       "snippet": "ESSEC Presentation - Clustering  Agenda: From classification to clustering, Introduction to clustering, Practice!  Recap of classification: Classification relies on labeled data to predict outcomes. E"
     },
     {
@@ -2732,6 +2919,7 @@
       "source": "google-slides",
       "source_url": "https://docs.google.com/presentation/d/1VB4LMTD5rP9lMIvv5vuWLpuaFKpuYNGBaChZqyLPYw4/edit?usp=drivesdk",
       "created_at": "2024-09-08T11:38:02.603Z",
+      "author": null,
       "snippet": "[content not yet fetched]"
     },
     {
@@ -2740,7 +2928,8 @@
       "source": "confluence",
       "source_url": "https://datadoghq.atlassian.net/wiki/spaces/AP/pages/6467977545",
       "created_at": "2026-03-26T17:49:22.436Z",
-      "snippet": "Problem Today, customers are responsible for defining, configuring, and maintaining their monitors. This creates a high operational burden: Teams must decide what to monitor and how to configure it Ba"
+      "author": "Capucine Marteau",
+      "snippet": "Problem: Customers are responsible for defining, configuring, and maintaining their monitors, creating high operational burden. Solution: Datadog-Managed Monitors are monitors that Datadog automatical"
     },
     {
       "id": 152,
@@ -2748,6 +2937,7 @@
       "source": "confluence",
       "source_url": "https://datadoghq.atlassian.net/wiki/spaces/AP/pages/5965447676/MCP+Integration",
       "created_at": "2025-12-18T11:09:49.786Z",
+      "author": null,
       "snippet": "Overview Status: WIP Service: SDP Slack: #monitor-posture  What it does Alerting's integration with the MCP (Model Context Protocol) service allows agentic AI products to call out to Alerting APIs as"
     },
     {
@@ -2756,6 +2946,7 @@
       "source": "confluence",
       "source_url": "https://datadoghq.atlassian.net/wiki/spaces/GTMSEH/pages/2949383224/Rules+Documentation",
       "created_at": "2023-04-17T09:33:15.700Z",
+      "author": null,
       "snippet": "Scanning rules library Sensitive Data Scanner includes 250+ out-of-the-box (OOTB) rules organized across 4 categories, plus AI/ML-powered rules that go beyond regex matching. Rules are continuously ma"
     },
     {
@@ -2764,6 +2955,7 @@
       "source": "confluence",
       "source_url": "https://datadoghq.atlassian.net/wiki/spaces/AP/pages/2762998651/Hack-a-dog+ideas",
       "created_at": "2022-12-23T08:53:15.226Z",
+      "author": null,
       "snippet": "Hackathon project ideas for an upcoming hack-a-dog session: - Tool to diff values between DC and release - CI job to check datacenter-config for misspelled k8s cluster names - Koutris SLI system: a se"
     },
     {
@@ -2772,6 +2964,7 @@
       "source": "confluence",
       "source_url": "https://datadoghq.atlassian.net/wiki/spaces/AAA/pages/3786637577",
       "created_at": "2024-06-07T23:02:42.519Z",
+      "author": null,
       "snippet": "The restriction_policy resource for the Monitor resource type is currently in private beta. With the roll out of GRACE (Granular Access Control for Everyone), customers who want parity between the UI"
     },
     {
@@ -2780,6 +2973,7 @@
       "source": "confluence",
       "source_url": "https://datadoghq.atlassian.net/wiki/spaces/GTMSEH/pages/5156044936/AI+Features+and+Roadmap",
       "created_at": "2025-06-01T15:32:50.801Z",
+      "author": null,
       "snippet": "GA Products: 1. Event Management (AIOps) - Deduplication, pattern correlations, intelligent correlations 2. Watchdog - Proactive anomaly detection, baseline behavior computation, root cause analysis 3"
     },
     {
@@ -2788,6 +2982,7 @@
       "source": "confluence",
       "source_url": "https://datadoghq.atlassian.net/wiki/spaces/AP/pages/5094278215/Alerting+AI+Squad",
       "created_at": "2025-05-14T12:02:25.759Z",
+      "author": null,
       "snippet": "All content has been migrated to Monitor Posture, managed by the newly formed Monitor Posture team.  Elevator pitch: We're building an MCP (Model Context Protocol) server for Alerting to enable smarte"
     },
     {
@@ -2796,6 +2991,7 @@
       "source": "confluence",
       "source_url": "https://datadoghq.atlassian.net/wiki/spaces/AP/pages/5386142136/MOPU+Evaluation+Validation",
       "created_at": "2025-08-11T08:59:15.293Z",
+      "author": null,
       "snippet": "Key outcomes: - Evaluate accuracy of outputs generated by implemented tools - Assess impact of changes to context and prompt structure - Validate generated-output at runtime  Problem Statement: The Ag"
     },
     {
@@ -2804,6 +3000,7 @@
       "source": "confluence",
       "source_url": "https://datadoghq.atlassian.net/wiki/spaces/~63dac55b1b13d42998e196c9/pages/5457969775",
       "created_at": "2025-09-01T10:10:09.233Z",
+      "author": null,
       "snippet": "AI Showdown: Open Source tools for LLM face-offs Who Let the Bots Out? A Guide to Evaluating AI Agents  Conference presentation notes from Linux Conference on open source GenAI topics."
     },
     {
@@ -2812,6 +3009,7 @@
       "source": "confluence",
       "source_url": "https://datadoghq.atlassian.net/wiki/spaces/~63dac55b1b13d42998e196c9/pages/5131667888/Automatic+Monitor+Creation",
       "created_at": "2025-05-25T18:33:35.925Z",
+      "author": null,
       "snippet": "WHY - What problem are we solving? During trials, customers struggle to know which monitors to create, set them up correctly and quickly, and understand whether their coverage is good enough. Competit"
     },
     {
@@ -2820,6 +3018,7 @@
       "source": "confluence",
       "source_url": "https://datadoghq.atlassian.net/wiki/spaces/~63dac55b1b13d42998e196c9/overview",
       "created_at": "2023-02-06T14:56:11.073Z",
+      "author": null,
       "snippet": "I am Capucine, Product Manager in the Alerting team. My focus is Monitoring Posture - how do we help customers be well-covered with monitors. I am highly data-driven and passionate about improving use"
     },
     {
@@ -2828,6 +3027,7 @@
       "source": "confluence",
       "source_url": "https://datadoghq.atlassian.net/wiki/spaces/EOEX/pages/396755025/SSH+Key+Setup",
       "created_at": "2020-06-10T22:20:45.295Z",
+      "author": null,
       "snippet": "SSH Key Setup guide for engineering onboarding at Datadog. Steps: Create SSH key with ed25519, add to ssh-agent, add public key to GitHub, enable SSO for GitHub, configure git to use SSH, setup SSH-ba"
     },
     {
@@ -2836,6 +3036,7 @@
       "source": "confluence",
       "source_url": "https://datadoghq.atlassian.net/wiki/spaces/APM/pages/5265817923",
       "created_at": "2025-07-02T12:44:53.795Z",
+      "author": null,
       "snippet": "Q2/2025 OpenTelemetry OKR Status Update  Theme 1: Semantic Convergence OKR 1: OTel-native Container monitoring compatible with in-app experiences - Preview of K8s dashboard compatibility with OTel, 11"
     },
     {
@@ -2844,6 +3045,7 @@
       "source": "confluence",
       "source_url": "https://datadoghq.atlassian.net/wiki/spaces/~71202052cd050b50594fa798ed696dce3fe4bd/pages/4728750092",
       "created_at": "2025-02-13T14:13:21.138Z",
+      "author": null,
       "snippet": "TL;DR: Ensure your tracer generates valid telemetry payloads and set alerts on invalid payloads. Use JSON Schema in test suites. Run JSON Schema validator in debug mode at runtime.  The investigation:"
     },
     {
@@ -2852,6 +3054,7 @@
       "source": "confluence",
       "source_url": "https://datadoghq.atlassian.net/wiki/spaces/~71202052cd050b50594fa798ed696dce3fe4bd/pages/5350850794/Addendum",
       "created_at": "2025-07-30T08:04:17.944Z",
+      "author": null,
       "snippet": "Promotion proposal addendum for Damien Mehala from Software Engineer 2 to Senior Software Engineer.  Key achievements: 1. Leading RUM Auto-Injection to completion: Feature now used by 64+ customers, k"
     },
     {
@@ -2860,7 +3063,377 @@
       "source": "confluence",
       "source_url": "https://datadoghq.atlassian.net/wiki/spaces/~504006737/pages/2991260931",
       "created_at": "2023-05-10T14:01:11.419Z",
+      "author": null,
       "snippet": "Event Platform Spring 2023 Newsletter:  1. Event Store (Husky) is Everywhere - All EvP products powered by Event Store. Storage costs savings up to $36 million. Cheaper storage, independently scalable"
+    },
+    {
+      "id": 167,
+      "title": "How to enable automatic monitor creation from coverage gaps",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/AP/pages/6369150731",
+      "created_at": "2026-03-11T13:34:12.505Z",
+      "author": "Alejandro Borbolla",
+      "snippet": "Scope: This document explains how to configure coverage computation in order to create monitors from coverage gaps. Enable Coverage Computation for an Org. For each enabled organization, coverage is c"
+    },
+    {
+      "id": 168,
+      "title": "Monitor Coverage Gaps: Amazon SQS & Nginx",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/AP/pages/6360335807",
+      "created_at": "2026-03-10T12:59:20.417Z",
+      "author": "Alejandro Borbolla",
+      "snippet": "This page documents the existing out-of-the-box monitor coverage for the Amazon SQS and Nginx integrations and identifies the most impactful failure patterns not yet covered by any monitor. Amazon SQS"
+    },
+    {
+      "id": 169,
+      "title": "Monitor Quality & Coverage - Agent Design",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/~712020542451c3fac942f48f220bde77d3af27/pages/6380781629",
+      "created_at": "2026-03-12T13:09:19.352Z",
+      "author": "Pablo Perez Schroder",
+      "snippet": "Use Case #12: Monitor Quality & Coverage. Problem: Monitor messages today are either bare alerts with no context, or link to massive runbooks. Two Capabilities: A) Monitor Message Builder - generate s"
+    },
+    {
+      "id": 170,
+      "title": "Limitations of Trino for computing monitoring coverage",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/~712020b0d02bc9f5ca4c16ae64ffe70aba2616/pages/6248339670",
+      "created_at": "2026-02-18T13:08:06.262Z",
+      "author": "Alejandro Borbolla",
+      "snippet": "This document stems from thoughts while analyzing and writing the RFC for Datadog-Managed Monitors. Coverage is computed at the service level, only RED metrics supported. For each service, we need to"
+    },
+    {
+      "id": 172,
+      "title": "How to differentiate Datadog-Managed monitors - RFC",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/AP/pages/6228640153",
+      "created_at": "2026-02-11T10:45:54.565Z",
+      "author": "Alejandro Borbolla",
+      "snippet": "Context: Some monitors are created and operated by Datadog. We need a reliable way to distinguish these from customer-created monitors. Proposal: 1. Encode 'who manages this monitor' via managed_by in"
+    },
+    {
+      "id": 173,
+      "title": "Detection-creation loop idempotency for Datadog-Managed monitors",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/AP/pages/6334284325",
+      "created_at": "2026-03-05T15:21:32.761Z",
+      "author": "Alejandro Borbolla",
+      "snippet": "High Level Architecture: Detect coverage gaps, map missing signals to monitor templates, send CreateMonitorsFromTemplates request. Problem: Reading and writing from different datastores (EvP and postg"
+    },
+    {
+      "id": 174,
+      "title": "Threshold Recommendation V1: Online Service Implementation Guide",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/~712020670994e09c254e2b8e66fa6889cf7c31/pages/6402245509",
+      "created_at": "2026-03-17T12:20:45.965Z",
+      "author": "Martin Esguerra",
+      "snippet": "Engineer guide for building the online inference service. Architecture: Monitor definition -> Fingerprint Extraction -> Fetch Metric TS via Moros -> Hierarchical Lookup (L5 to L0) -> Recommended Thres"
+    },
+    {
+      "id": 175,
+      "title": "Threshold Recommendation V1: Preliminary results summary",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/~712020670994e09c254e2b8e66fa6889cf7c31/pages/6403194883",
+      "created_at": "2026-03-17T12:19:37.179Z",
+      "author": "Martin Esguerra",
+      "snippet": "When users create metric monitors, they must choose an alert threshold. Threshold Recommendation automatically suggests a threshold by looking at similar monitors. Key Results: 33.3% coverage, 14.4% a"
+    },
+    {
+      "id": 176,
+      "title": "Handle monitors lifecycle from coverage gaps",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/~712020b0d02bc9f5ca4c16ae64ffe70aba2616/pages/6019121277",
+      "created_at": "2026-01-08T08:59:23.000Z",
+      "author": "Alejandro Borbolla",
+      "snippet": "Although this document focuses on creating monitors based on detected coverage gaps, the same approach should be applied more broadly to all Datadog-managed monitors. Context: In Q4 2025, we started b"
+    },
+    {
+      "id": 177,
+      "title": "Monitor Posture Service",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/AP/pages/5848532934",
+      "created_at": "2025-11-27T17:45:04.000Z",
+      "author": "Monitor Posture Team",
+      "snippet": "Overview: Team: #monitor-posture. Technology: Go. Code: dd-source. Monitor Posture Service provides APIs and tooling for computing monitoring posture and coverage across customer services."
+    },
+    {
+      "id": 178,
+      "title": "Monitor Posture Team Page",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/AP/pages/5606178958",
+      "created_at": "2025-11-27T17:45:04.000Z",
+      "author": "Monitor Posture Team",
+      "snippet": "About: The team Monitor Posture is responsible to give customers confidence that Datadog monitors the right signals, and that those signals lead to timely, actionable responses, out of the box and as"
+    },
+    {
+      "id": 179,
+      "title": "Threshold recommendation project page",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/AP/pages/6209930278",
+      "created_at": "2026-02-23T12:12:33.000Z",
+      "author": "Martin Esguerra",
+      "snippet": "Owner: Martin Esguerra. Contributor: Alejandro Borbolla. Objective: Recommend good threshold for monitors. Status: in progress. Problem: Creating a monitor requires selecting appropriate alert thresho"
+    },
+    {
+      "id": 180,
+      "title": "[Monitor Posture Service] Development",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/AP/pages/6000377899",
+      "created_at": "2026-01-02T13:25:32.000Z",
+      "author": "Alejandro Borbolla",
+      "snippet": "If you want to test changes on Monitor Posture Service, you can refer to deploying to staging. From a Pull Request: Create a pull request, add /integrate -d comment. This will automatically detect all"
+    },
+    {
+      "id": 181,
+      "title": "[Monitor Posture Service] Testing",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/AP/pages/5999854555",
+      "created_at": "2026-01-02T13:23:27.000Z",
+      "author": "Alejandro Borbolla",
+      "snippet": "This document explains how to interact with Monitor Posture Service and what setup is required to send requests. Two supported ways: Postman (via local port-forward + Internal Service Authentication),"
+    },
+    {
+      "id": 182,
+      "title": "BYOC RED Metrics: USM Path for APM Lite",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/BYOC/pages/6409979040",
+      "created_at": "2026-03-18T00:00:00.000Z",
+      "author": "Eyal Brami",
+      "snippet": "BYOC RED Metrics: USM Path for APM Lite. Author: Eyal Brami (USM Backend). Status: Draft. RED metrics requirements for BYOC Day 1, Quickhouse Ingestion Architecture. Providing rate, error, and duratio"
+    },
+    {
+      "id": 183,
+      "title": "How RED metrics are mapped to a service",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/AP/pages/5578555404",
+      "created_at": "2025-10-05T15:38:58.000Z",
+      "author": "Alejandro Borbolla",
+      "snippet": "Context: Coverage is computed at the service level, only RED metrics supported. Each service emits spans tied to one or more operations. The goal is to explain how to retrieve operations for a given s"
+    },
+    {
+      "id": 184,
+      "title": "Coverage Gaps \u2014 Examples from Production Traffic",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/DA/pages/6450479492",
+      "created_at": "2026-03-24T15:00:50Z",
+      "author": "Applied AI Team",
+      "snippet": "Coverage Gaps \u2014 Examples from Production Traffic"
+    },
+    {
+      "id": 185,
+      "title": "Log Coverage Matrix & Gap Detection",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/TDTI/pages/3221193250",
+      "created_at": "2024-05-30T14:16:15Z",
+      "author": "William Giraldo",
+      "snippet": "Log Coverage Matrix & Gap Detection"
+    },
+    {
+      "id": 186,
+      "title": "Monitor Recommendations System Documentation",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/reccs/pages/5257102711",
+      "created_at": "2025-06-30T17:23:07Z",
+      "author": "Recommendations Team",
+      "snippet": "Monitor Recommendations System Documentation"
+    },
+    {
+      "id": 187,
+      "title": "Status on Monitor Based Pattern Recommendations",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/LB/pages/6286836981",
+      "created_at": "2026-03-17T13:58:57Z",
+      "author": "Logs Backend Team",
+      "snippet": "Status on Monitor Based Pattern Recommendations"
+    },
+    {
+      "id": 188,
+      "title": "Buildbarn RBE Monitoring Recommendations and Critical Gaps",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/~63dac5b81b13d42998e196ff/pages/6001789413",
+      "created_at": "2026-01-05T13:12:13Z",
+      "author": "Luu Vo",
+      "snippet": "Buildbarn RBE Monitoring Recommendations and Critical Gaps"
+    },
+    {
+      "id": 189,
+      "title": "Recommendations for error rate monitors",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/ET/pages/3353347806",
+      "created_at": "2023-12-20T15:48:06Z",
+      "author": "Error Tracking Team",
+      "snippet": "Recommendations for error rate monitors"
+    },
+    {
+      "id": 190,
+      "title": "Alerting Platform Implementations",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/AP/pages/5293441295",
+      "created_at": "2026-03-31T12:00:34Z",
+      "author": "Alerting Platform Team",
+      "snippet": "Alerting Platform Implementations"
+    },
+    {
+      "id": 191,
+      "title": "Alerting Platform \u2014 Monitor Evaluation & State Management",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/~790246908/pages/6204064528",
+      "created_at": "2026-03-20T15:44:22Z",
+      "author": "Christian Jodar",
+      "snippet": "Alerting Platform \u2014 Monitor Evaluation & State Management"
+    },
+    {
+      "id": 192,
+      "title": "Alerting Platform Roadmap (2025+)",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/AP/pages/5250517670",
+      "created_at": "2026-02-24T20:43:53Z",
+      "author": "Alerting Platform Team",
+      "snippet": "Alerting Platform Roadmap (2025+)"
+    },
+    {
+      "id": 193,
+      "title": "Alerting Platform Automation \u2014 Technical onboarding",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/AP/pages/3457581692",
+      "created_at": "2026-03-16T14:08:12Z",
+      "author": "Alerting Platform Team",
+      "snippet": "Alerting Platform Automation \u2014 Technical onboarding"
+    },
+    {
+      "id": 194,
+      "title": "Monitor Template Quality Assessment",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/AP/pages/6115787746",
+      "created_at": "2026-03-25T08:34:22Z",
+      "author": "Vahe Karamyan",
+      "snippet": "Monitor Template Quality Assessment"
+    },
+    {
+      "id": 195,
+      "title": "Monitor Template Creation Claude Skill",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/AP/pages/6369412757",
+      "created_at": "2026-03-11T13:26:10Z",
+      "author": "Alerting Platform Team",
+      "snippet": "Monitor Template Creation Claude Skill"
+    },
+    {
+      "id": 196,
+      "title": "Datadog-Managed monitors: Templates to monitors mapping",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/AP/pages/6276582607",
+      "created_at": "2026-03-02T09:02:07Z",
+      "author": "Alejandro Borbolla",
+      "snippet": "Datadog-Managed monitors: Templates to monitors mapping"
+    },
+    {
+      "id": 197,
+      "title": "Datadog-Managed monitors: API for creating monitors from templates",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/AP/pages/6132466859",
+      "created_at": "2026-02-04T17:15:25Z",
+      "author": "Alejandro Borbolla",
+      "snippet": "Datadog-Managed monitors: API for creating monitors from templates"
+    },
+    {
+      "id": 198,
+      "title": "Creating monitors from templates",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/~712020b0d02bc9f5ca4c16ae64ffe70aba2616/pages/6018302422",
+      "created_at": "2026-01-07T11:19:40Z",
+      "author": "Alejandro Borbolla",
+      "snippet": "Creating monitors from templates"
+    },
+    {
+      "id": 199,
+      "title": "Monitor Templates Evolvement",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/AP/pages/6294176828",
+      "created_at": "2026-02-27T13:15:16Z",
+      "author": "Alerting Platform Team",
+      "snippet": "Monitor Templates Evolvement"
+    },
+    {
+      "id": 200,
+      "title": "[Monitor Posture Service] Operations",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/AP/pages/5999002778",
+      "created_at": "2026-01-02T10:10:40Z",
+      "author": "Alejandro Borbolla",
+      "snippet": "[Monitor Posture Service] Operations"
+    },
+    {
+      "id": 201,
+      "title": "Monitor Posture x MPX",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/AP/pages/5858626575",
+      "created_at": "2025-12-02T15:57:54Z",
+      "author": "Alerting Platform Team",
+      "snippet": "Monitor Posture x MPX"
+    },
+    {
+      "id": 202,
+      "title": "Watchdog Alert, Insight & Event \u2014 Platform API",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/DA/pages/6376194118",
+      "created_at": "2026-03-11T20:10:58Z",
+      "author": "Applied AI Team",
+      "snippet": "Watchdog Alert, Insight & Event \u2014 Platform API"
+    },
+    {
+      "id": 203,
+      "title": "Automatic Rollback on Monitor Gate Failure",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/OPLAT/pages/6325403993",
+      "created_at": "2026-03-06T15:35:04Z",
+      "author": "Runtime Orchestration Team",
+      "snippet": "Automatic Rollback on Monitor Gate Failure"
+    },
+    {
+      "id": 204,
+      "title": "Managed Monitors (Rapid Platform)",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/RAPID/pages/3566142171",
+      "created_at": "2026-03-05T19:03:48Z",
+      "author": "Rapid Platform Team",
+      "snippet": "Managed Monitors (Rapid Platform)"
+    },
+    {
+      "id": 205,
+      "title": "Memory metric in managed monitoring",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/~7120202df1ba63d1074fbd938349fa7504d185/pages/6252365107",
+      "created_at": "2026-02-19T09:37:56Z",
+      "author": "Thibault Viennot",
+      "snippet": "Memory metric in managed monitoring"
+    },
+    {
+      "id": 206,
+      "title": "Threshold Recommendation V1: Offline Performance Analysis",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/~712020670994e09c254e2b8e66fa6889cf7c31/pages/6401624020",
+      "created_at": "2026-03-17T00:00:00Z",
+      "author": "Martin Esguerra",
+      "snippet": "Threshold Recommendation V1: Offline Performance Analysis"
+    },
+    {
+      "id": 207,
+      "title": "Datadog provides serverless monitoring coverage for emerging workloads",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/SLS/pages/6277726403",
+      "created_at": "2026-02-24T21:24:34Z",
+      "author": "Serverless Team",
+      "snippet": "Datadog provides serverless monitoring coverage for emerging workloads"
+    },
+    {
+      "id": 208,
+      "title": "RT 00012 Monitor coverage",
+      "source": "confluence",
+      "source_url": "https://datadoghq.atlassian.net/wiki/spaces/~63c85ea2d16a886a25e68749/pages/6333497452",
+      "created_at": "2026-03-05T10:01:39Z",
+      "author": "Ismael Hajy",
+      "snippet": "RT 00012 Monitor coverage"
     }
   ],
   "projects": [

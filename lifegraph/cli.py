@@ -75,6 +75,89 @@ def sync_confluence():
     click.echo(f"Done! Synced {count} page(s).")
 
 
+@sync.command("confluence-discover")
+@click.option("--spaces", default=None, help="Comma-separated space keys to search (default: all).")
+@click.option("--max-pages", default=100, help="Max pages to sync per topic query.")
+@click.option("--top-topics", default=10, help="Number of top topics to search for.")
+def sync_confluence_discover(spaces, max_pages, top_topics):
+    """Discover Confluence pages by others related to your topics."""
+    from lifegraph.connectors.confluence import ConfluenceConnector
+
+    connector = ConfluenceConnector()
+    click.echo("Authenticating with Confluence...")
+    try:
+        connector.authenticate()
+    except ValueError as e:
+        click.echo(f"Error: {e}", err=True)
+        raise SystemExit(1)
+
+    # Get top topics from existing graph
+    topics = get_all_topics_with_counts()
+    if not topics:
+        click.echo("No topics extracted yet. Run 'lifegraph extract' first.")
+        raise SystemExit(1)
+
+    search_topics = topics[:top_topics]
+    click.echo(f"Searching Confluence for pages related to your top {len(search_topics)} topics...")
+
+    from datetime import datetime, timezone
+    from lifegraph.models import Document
+    from lifegraph.db import upsert_document, document_exists
+
+    total = 0
+    seen_ids = set()
+
+    for t in search_topics:
+        # Build CQL query: search for topic name in title or text
+        topic_name = t["name"]
+        cql = f'type=page AND (title ~ "{topic_name}" OR text ~ "{topic_name}")'
+        if spaces:
+            space_list = " OR ".join(f'space="{s.strip()}"' for s in spaces.split(","))
+            cql += f" AND ({space_list})"
+        cql += " ORDER BY lastmodified DESC"
+
+        click.echo(f"  Searching: {topic_name}...", nl=False)
+
+        try:
+            pages = connector.search_pages(cql, max_results=max_pages // top_topics)
+        except Exception as e:
+            click.echo(f" error: {e}")
+            continue
+
+        count = 0
+        for page in pages:
+            if page["id"] in seen_ids:
+                continue
+            seen_ids.add(page["id"])
+
+            try:
+                text = connector.fetch_content(page["id"])
+                if not text.strip():
+                    continue
+
+                doc = Document(
+                    id=None,
+                    title=page["title"],
+                    source="confluence",
+                    source_id=page["id"],
+                    source_url=page["url"],
+                    created_at=page.get("created_at"),
+                    fetched_at=datetime.now(timezone.utc).isoformat(),
+                    raw_text=text,
+                    author=page.get("author"),
+                )
+                upsert_document(doc)
+                count += 1
+            except Exception as e:
+                pass  # skip individual page errors silently
+
+        click.echo(f" {count} page(s)")
+        total += count
+
+    click.echo(f"\nDone! Discovered {total} page(s) across {len(search_topics)} topics.")
+    click.echo("Run 'lifegraph extract' to extract topics from new pages.")
+
+
 @sync.command("slack")
 @click.option("--channel", default=None, help="Sync a single channel (name or ID) instead of all configured.")
 def sync_slack(channel):

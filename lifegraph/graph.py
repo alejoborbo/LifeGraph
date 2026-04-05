@@ -76,7 +76,7 @@ def build_graph(min_docs: int = 2, min_edge_weight: int = 1) -> dict:
     documents = []
     if doc_ids_used:
         rows = conn.execute("""
-            SELECT id, title, source, source_url, created_at, raw_text
+            SELECT id, title, source, source_url, created_at, raw_text, author
             FROM documents
             WHERE id IN ({})
         """.format(",".join("?" * len(doc_ids_used))), list(doc_ids_used)).fetchall()
