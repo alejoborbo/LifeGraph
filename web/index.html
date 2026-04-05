@@ -2203,9 +2203,9 @@
               <div class="suggestions-header">You should talk to... <span class="suggestions-count">${suggestions.length}</span></div>
               <div class="suggestions-sub">People working on your topics that you haven't interacted with yet</div>
             </div>
-            <span class="collapse-arrow">&#9660;</span>
+            <span class="collapse-arrow collapsed">&#9660;</span>
           </div>
-          <div class="suggestions-grid" id="suggestGrid">`;
+          <div class="suggestions-grid collapsed" id="suggestGrid">`;
         suggestions.forEach(person => {
           const initials = person.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
           const color = nameColor(person.name);
