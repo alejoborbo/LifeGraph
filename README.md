@@ -15,48 +15,23 @@ Build a knowledge graph from everything you work on — Google Docs, Confluence,
 
 ## Quick start for Datadog employees
 
-If you're at DD, you already have access to the Google Workspace and Atlassian MCP servers via Claude Code. No GCP project, no API tokens, no OAuth needed.
-
-### 1. Install
+No GCP project, no API tokens, no OAuth. Just Claude Code.
 
 ```bash
 git clone https://github.com/capmann/LifeGraph.git
 cd LifeGraph
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -e .
 ```
 
-### 2. Fetch your docs via MCP
+Open this folder in **Claude Code** and say:
 
-Open Claude Code in this repo and paste:
+> **Set up my graph**
 
-> Fetch all my Google Docs and Confluence pages for LifeGraph. Use the Google Workspace MCP to search my docs (`mimeType = 'application/vnd.google-apps.document'`, max 100), read each one, and save to `scripts/mcp_output/google_docs.json`. Then use the Atlassian MCP to search my Confluence pages (`type = page AND contributor = currentUser()`, max 100), get each page body, and save to `scripts/mcp_output/confluence_pages.json`. See `scripts/fetch_my_docs.md` for the exact format.
+That's it. Claude will:
+1. Fetch your Google Docs via the Google Workspace MCP
+2. Fetch your Confluence pages via the Atlassian MCP
+3. Extract topics, build the graph, and open the UI
 
-Claude will use the MCPs to pull everything and save JSON files.
-
-### 3. Sync, extract, visualize
-
-```bash
-python scripts/sync_mcp.py            # Import MCP results into DB
-lifegraph extract                      # Extract topics with Claude
-lifegraph graph                        # Build the knowledge graph
-lifegraph serve                        # Open http://localhost:8042
-```
-
-### 4. Discover who's working on similar topics
-
-```bash
-# In Claude Code, ask it to search Confluence for pages related to your topics
-# and save them with author info — or run:
-lifegraph sync confluence-discover     # Needs CONFLUENCE_* env vars
-```
-
-Then click the **People** tab in the UI to see who across DD is writing about the same things you are.
-
-### 5. Keep it updated
-
-Re-run step 2-3 anytime, or set up the GitHub Action for daily auto-sync (see below).
+Click the **People** tab to see who across DD is working on the same topics as you.
 
 ---
 
