@@ -2874,8 +2874,8 @@
       "start_date": "2025-09-26T11:48:31.076Z",
       "end_date": null,
       "created_at": "2026-04-04T20:46:05.230946+00:00",
-      "updated_at": "2026-04-04T21:39:08.834125+00:00",
-      "phase": "Planning",
+      "updated_at": "2026-04-05T17:14:10.366691+00:00",
+      "phase": "Shipped",
       "doc_count": 10,
       "first_activity": "2025-09-26T11:48:31.076Z",
       "last_activity": "2026-04-03T18:37:44.558Z",
@@ -2894,7 +2894,48 @@
       "artifacts": {
         "reference": 10
       },
-      "links": []
+      "links": [
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/dogweb#123630",
+          "title": "Update monitor_alerts_overview_dashboard.json",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/dogweb/pull/123630"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/dogweb#124182",
+          "title": "Update monitor_alerts_overview_dashboard.json",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/dogweb/pull/124182"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/dogweb#138676",
+          "title": "Added a monitor_id filter to Notifications Overview Dashboard",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/dogweb/pull/138676"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/integrations-internal-core#1194",
+          "title": "creating monitor quality OOTB dashboard",
+          "status": "Closed",
+          "priority": null,
+          "url": "https://github.com/DataDog/integrations-internal-core/pull/1194"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/integrations-internal-core#1195",
+          "title": "Capucine.marteau/create monitor quality dashboard",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/integrations-internal-core/pull/1195"
+        }
+      ]
     },
     {
       "id": 15,
@@ -2906,8 +2947,8 @@
       "start_date": "2025-02-03T20:05:55.168Z",
       "end_date": null,
       "created_at": "2026-04-04T20:46:05.300776+00:00",
-      "updated_at": "2026-04-04T21:39:08.842069+00:00",
-      "phase": "Building",
+      "updated_at": "2026-04-05T17:14:10.370343+00:00",
+      "phase": "Shipped",
       "doc_count": 45,
       "first_activity": "2025-02-03T20:05:55.168Z",
       "last_activity": "2026-04-03T18:37:44.558Z",
@@ -2963,6 +3004,46 @@
       },
       "links": [
         {
+          "source_type": "github-pr",
+          "source_id": "DataDog/web-ui#287667",
+          "title": "feat(monitors): Posture.md settings page with pack-based policy editor",
+          "status": "Open",
+          "priority": null,
+          "url": "https://github.com/DataDog/web-ui/pull/287667"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/consul-config#234622",
+          "title": "Unblocking Just-Eat to 2000 log monitors",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/consul-config/pull/234622"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/integrations-internal-core#1692",
+          "title": "NOJIRA minor formatting of host monitors",
+          "status": "Closed",
+          "priority": null,
+          "url": "https://github.com/DataDog/integrations-internal-core/pull/1692"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/integrations-internal-core#716",
+          "title": " [MLOB-907] Add 3 Recommended Monitors for the LLM Observability Product",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/integrations-internal-core/pull/716"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/integrations-internal-core#724",
+          "title": "NPM Copy Updates for Recommended Monitors",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/integrations-internal-core/pull/724"
+        },
+        {
           "source_type": "jira",
           "source_id": "DAA-234",
           "title": "Automatic Detection for Services",
@@ -2990,7 +3071,7 @@
       "start_date": "2022-12-23T08:53:15.226Z",
       "end_date": null,
       "created_at": "2026-04-04T20:46:05.452098+00:00",
-      "updated_at": "2026-04-04T21:39:08.846467+00:00",
+      "updated_at": "2026-04-05T17:14:10.373317+00:00",
       "phase": "Planning",
       "doc_count": 27,
       "first_activity": "2022-12-23T08:53:15.226Z",
@@ -3048,7 +3129,7 @@
       "start_date": "2025-09-20T16:27:04.154Z",
       "end_date": null,
       "created_at": "2026-04-04T20:46:05.647979+00:00",
-      "updated_at": "2026-04-04T21:39:08.848729+00:00",
+      "updated_at": "2026-04-05T17:14:10.375371+00:00",
       "phase": "Planning",
       "doc_count": 10,
       "first_activity": "2025-09-20T16:27:04.154Z",
@@ -3080,8 +3161,8 @@
       "start_date": "2025-09-20T16:27:04.154Z",
       "end_date": null,
       "created_at": "2026-04-04T20:46:05.674617+00:00",
-      "updated_at": "2026-04-04T21:39:08.850654+00:00",
-      "phase": "Planning",
+      "updated_at": "2026-04-05T17:14:10.377369+00:00",
+      "phase": "Building",
       "doc_count": 11,
       "first_activity": "2025-09-20T16:27:04.154Z",
       "last_activity": "2026-04-03T18:37:44.558Z",
@@ -3101,7 +3182,24 @@
       "artifacts": {
         "reference": 11
       },
-      "links": []
+      "links": [
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/web-ui#289808",
+          "title": "feat(designbox): posture.md user flows",
+          "status": "Open",
+          "priority": null,
+          "url": "https://github.com/DataDog/web-ui/pull/289808"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/web-ui#290537",
+          "title": "feat(designbox): posture.md demo prototype",
+          "status": "Open",
+          "priority": null,
+          "url": "https://github.com/DataDog/web-ui/pull/290537"
+        }
+      ]
     },
     {
       "id": 30,
@@ -3113,8 +3211,8 @@
       "start_date": "2022-12-23T08:53:15.226Z",
       "end_date": null,
       "created_at": "2026-04-04T20:46:05.692794+00:00",
-      "updated_at": "2026-04-04T21:39:08.852701+00:00",
-      "phase": "Planning",
+      "updated_at": "2026-04-05T17:14:10.379152+00:00",
+      "phase": "Shipped",
       "doc_count": 19,
       "first_activity": "2022-12-23T08:53:15.226Z",
       "last_activity": "2026-04-03T18:37:44.558Z",
@@ -3142,7 +3240,48 @@
       "artifacts": {
         "reference": 19
       },
-      "links": []
+      "links": [
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/consul-config#248807",
+          "title": "Update analyzed_metrics_ia.ini",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/consul-config/pull/248807"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/consul-config#248808",
+          "title": "Update analyzed_metrics_ia.ini",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/consul-config/pull/248808"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/consul-config#248809",
+          "title": "Update analyzed_metrics_ia.ini",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/consul-config/pull/248809"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/consul-config#248810",
+          "title": "Update analyzed_metrics_ia.ini",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/consul-config/pull/248810"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/consul-config#248811",
+          "title": "Update analyzed_metrics_ia.ini",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/consul-config/pull/248811"
+        }
+      ]
     },
     {
       "id": 33,
@@ -3154,7 +3293,7 @@
       "start_date": "2023-02-06T14:56:11.073Z",
       "end_date": null,
       "created_at": "2026-04-04T20:46:05.735291+00:00",
-      "updated_at": "2026-04-04T21:39:08.854506+00:00",
+      "updated_at": "2026-04-05T17:14:10.380894+00:00",
       "phase": "Planning",
       "doc_count": 13,
       "first_activity": "2023-02-06T14:56:11.073Z",
@@ -3189,7 +3328,7 @@
       "start_date": "2025-09-05T13:28:30.887Z",
       "end_date": null,
       "created_at": "2026-04-04T20:46:05.791620+00:00",
-      "updated_at": "2026-04-04T21:39:08.856233+00:00",
+      "updated_at": "2026-04-05T17:14:10.382488+00:00",
       "phase": "Planning",
       "doc_count": 3,
       "first_activity": "2025-09-05T13:28:30.887Z",
@@ -3214,8 +3353,8 @@
       "start_date": "2025-06-01T15:32:50.801Z",
       "end_date": null,
       "created_at": "2026-04-04T20:46:05.028114+00:00",
-      "updated_at": "2026-04-04T21:39:08.858109+00:00",
-      "phase": "Planning",
+      "updated_at": "2026-04-05T17:14:10.384022+00:00",
+      "phase": "Shipped",
       "doc_count": 10,
       "first_activity": "2025-06-01T15:32:50.801Z",
       "last_activity": "2026-04-03T14:16:26.776Z",
@@ -3234,7 +3373,40 @@
       "artifacts": {
         "reference": 10
       },
-      "links": []
+      "links": [
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/dd-source#221865",
+          "title": "feat(alerting-mcp-server): Set up the Rapid service (LFMS-1)",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/dd-source/pull/221865"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/dd-source#258493",
+          "title": "feat(alerting-mcp-server): Structure the output of each tool (APAI-44)",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/dd-source/pull/258493"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/dd-source#266608",
+          "title": "feat(alerting-mcp-server): Retrieve metric metadata during description generation (APAI-49)",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/dd-source/pull/266608"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/dd-source#266787",
+          "title": "chore: rename GitHub team to `@DataDog/alerting-ai`",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/dd-source/pull/266787"
+        }
+      ]
     },
     {
       "id": 11,
@@ -3246,8 +3418,8 @@
       "start_date": "2023-02-06T14:56:11.073Z",
       "end_date": null,
       "created_at": "2026-04-04T20:46:05.077763+00:00",
-      "updated_at": "2026-04-04T21:39:08.859954+00:00",
-      "phase": "Planning",
+      "updated_at": "2026-04-05T17:14:10.385599+00:00",
+      "phase": "Shipped",
       "doc_count": 13,
       "first_activity": "2023-02-06T14:56:11.073Z",
       "last_activity": "2026-04-03T14:16:26.776Z",
@@ -3271,6 +3443,14 @@
       },
       "links": [
         {
+          "source_type": "github-pr",
+          "source_id": "DataDog/consul-config#178724",
+          "title": "Enabled feature for large customers",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/consul-config/pull/178724"
+        },
+        {
           "source_type": "jira",
           "source_id": "PL-2421",
           "title": "Monitor Onboarding",
@@ -3290,8 +3470,8 @@
       "start_date": "2023-02-06T14:56:11.073Z",
       "end_date": null,
       "created_at": "2026-04-04T20:46:05.550047+00:00",
-      "updated_at": "2026-04-04T21:39:08.861858+00:00",
-      "phase": "Planning",
+      "updated_at": "2026-04-05T17:14:10.387116+00:00",
+      "phase": "Building",
       "doc_count": 49,
       "first_activity": "2023-02-06T14:56:11.073Z",
       "last_activity": "2026-04-03T14:16:26.776Z",
@@ -3351,6 +3531,54 @@
       },
       "links": [
         {
+          "source_type": "github-pr",
+          "source_id": "DataDog/web-ui#279690",
+          "title": "feat(monitors): My Monitoring Posture page prototype",
+          "status": "Open",
+          "priority": null,
+          "url": "https://github.com/DataDog/web-ui/pull/279690"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/web-ui#289494",
+          "title": "feat(designbox): posture architecture diagrams for sharing",
+          "status": "Open",
+          "priority": null,
+          "url": "https://github.com/DataDog/web-ui/pull/289494"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/web-ui#289512",
+          "title": "feat(designbox): posture architecture prototypes",
+          "status": "Open",
+          "priority": null,
+          "url": "https://github.com/DataDog/web-ui/pull/289512"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/web-ui#290463",
+          "title": "feat(designbox): updated posture architecture diagram (2-layer)",
+          "status": "Open",
+          "priority": null,
+          "url": "https://github.com/DataDog/web-ui/pull/290463"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/web-ui#290482",
+          "title": "feat(designbox): posture diagram v3 (no Q2)",
+          "status": "Open",
+          "priority": null,
+          "url": "https://github.com/DataDog/web-ui/pull/290482"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/web-ui#290581",
+          "title": "feat(designbox): posture demo + create your own pack",
+          "status": "Open",
+          "priority": null,
+          "url": "https://github.com/DataDog/web-ui/pull/290581"
+        },
+        {
           "source_type": "jira",
           "source_id": "PL-2423",
           "title": "Monitor Coverage Insights",
@@ -3370,7 +3598,7 @@
       "start_date": "2025-10-15T13:32:10.715Z",
       "end_date": null,
       "created_at": "2026-04-04T20:46:05.754871+00:00",
-      "updated_at": "2026-04-04T21:39:08.863422+00:00",
+      "updated_at": "2026-04-05T17:14:10.388899+00:00",
       "phase": "Building",
       "doc_count": 14,
       "first_activity": "2025-10-15T13:32:10.715Z",
@@ -3431,7 +3659,7 @@
       "start_date": "2025-09-20T16:27:04.154Z",
       "end_date": null,
       "created_at": "2026-04-04T20:46:05.629215+00:00",
-      "updated_at": "2026-04-04T21:39:08.865216+00:00",
+      "updated_at": "2026-04-05T17:14:10.390788+00:00",
       "phase": "Planning",
       "doc_count": 9,
       "first_activity": "2025-09-20T16:27:04.154Z",
@@ -3462,8 +3690,8 @@
       "start_date": "2024-09-08T11:38:02.603Z",
       "end_date": null,
       "created_at": "2026-04-04T20:46:04.935638+00:00",
-      "updated_at": "2026-04-04T21:39:08.866890+00:00",
-      "phase": "Planning",
+      "updated_at": "2026-04-05T17:14:10.392656+00:00",
+      "phase": "Shipped",
       "doc_count": 17,
       "first_activity": "2024-09-08T11:38:02.603Z",
       "last_activity": "2026-03-31T13:38:25.801Z",
@@ -3489,7 +3717,80 @@
       "artifacts": {
         "reference": 17
       },
-      "links": []
+      "links": [
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/logs-backend#45849",
+          "title": "[LOI-88] Update Azure Network Pipeline with Grok Parsers ",
+          "status": "Closed",
+          "priority": null,
+          "url": "https://github.com/DataDog/logs-backend/pull/45849"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/logs-backend#45857",
+          "title": "[LOI-90] Add correct metric_id to bottomline integration.",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/logs-backend/pull/45857"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/logs-backend#47159",
+          "title": "[LOI-91] Update CrowdStrike Pipeline for 3PA",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/logs-backend/pull/47159"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/logs-backend#47883",
+          "title": "[LOI-96] [AWSC] Adding a log pipeline for Verified Access",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/logs-backend/pull/47883"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/logs-backend#51096",
+          "title": "[LOI-102] Add extra C# log property mapping",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/logs-backend/pull/51096"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/logs-backend#51273",
+          "title": "Martin.mccloskey/sci2 2749 update with nested pipeline",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/logs-backend/pull/51273"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/logs-backend#51308",
+          "title": "Update cloud trail integration",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/logs-backend/pull/51308"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/logs-backend#52173",
+          "title": "LOI-111 - crest_data_systems_sysdig integration",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/logs-backend/pull/52173"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/logs-backend#53099",
+          "title": "[LOI-113] - [logs][integration] Create Crest Anomali Threatstream",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/logs-backend/pull/53099"
+        }
+      ]
     },
     {
       "id": 2,
@@ -3501,8 +3802,8 @@
       "start_date": "2026-01-26T13:56:15.701Z",
       "end_date": null,
       "created_at": "2026-04-04T20:46:04.974494+00:00",
-      "updated_at": "2026-04-04T21:39:08.868766+00:00",
-      "phase": "Planning",
+      "updated_at": "2026-04-05T17:14:10.394757+00:00",
+      "phase": "Shipped",
       "doc_count": 2,
       "first_activity": "2026-01-26T13:56:15.701Z",
       "last_activity": "2026-03-27T10:17:47.359Z",
@@ -3513,7 +3814,128 @@
       "artifacts": {
         "reference": 2
       },
-      "links": []
+      "links": [
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/consul-config#252389",
+          "title": "Update monitor_grace_ui",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/consul-config/pull/252389"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/consul-config#252960",
+          "title": "Update monitor_grace_ui",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/consul-config/pull/252960"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/dogweb#124192",
+          "title": "Update CODEOWNERS",
+          "status": "Closed",
+          "priority": null,
+          "url": "https://github.com/DataDog/dogweb/pull/124192"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/dogweb#95157",
+          "title": "Update MS 365 doc to add new log sources",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/dogweb/pull/95157"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/integrations-core#20382",
+          "title": "Create cmd_latency.json",
+          "status": "Closed",
+          "priority": null,
+          "url": "https://github.com/DataDog/integrations-core/pull/20382"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/integrations-core#20383",
+          "title": "Update manifest.json",
+          "status": "Closed",
+          "priority": null,
+          "url": "https://github.com/DataDog/integrations-core/pull/20383"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/integrations-internal-core#1512",
+          "title": "Update system_high_network_rcvd.json",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/integrations-internal-core/pull/1512"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/integrations-internal-core#1514",
+          "title": "Update system_high_network_sent.json",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/integrations-internal-core/pull/1514"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/integrations-internal-core#1515",
+          "title": "Update system_low_mem_space.json",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/integrations-internal-core/pull/1515"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/integrations-internal-core#1516",
+          "title": "Update system_host_ok.json",
+          "status": "Closed",
+          "priority": null,
+          "url": "https://github.com/DataDog/integrations-internal-core/pull/1516"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/integrations-core#20507",
+          "title": "Small formatting change",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/integrations-core/pull/20507"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/integrations-internal-core#2532",
+          "title": "Update system_high_disk_usage.json",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/integrations-internal-core/pull/2532"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/logs-backend#50842",
+          "title": "[LOI-97] Crest Data Systems Netskope Logs Integration ",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/logs-backend/pull/50842"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/logs-backend#52166",
+          "title": "LOI-109 crest_data_systems_pfsense integration",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/logs-backend/pull/52166"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/logs-backend#52169",
+          "title": "LOI-110 - crest-data-systems-cisco-asa integration",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/logs-backend/pull/52169"
+        }
+      ]
     },
     {
       "id": 12,
@@ -3525,7 +3947,7 @@
       "start_date": "2025-10-29T13:53:29.076Z",
       "end_date": null,
       "created_at": "2026-04-04T20:46:05.147392+00:00",
-      "updated_at": "2026-04-04T21:39:08.870689+00:00",
+      "updated_at": "2026-04-05T17:14:10.396637+00:00",
       "phase": "Planning",
       "doc_count": 15,
       "first_activity": "2025-10-29T13:53:29.076Z",
@@ -3562,8 +3984,8 @@
       "start_date": "2025-10-29T13:53:29.076Z",
       "end_date": null,
       "created_at": "2026-04-04T20:46:05.539933+00:00",
-      "updated_at": "2026-04-04T21:39:08.872401+00:00",
-      "phase": "Planning",
+      "updated_at": "2026-04-05T17:14:10.398471+00:00",
+      "phase": "Shipped",
       "doc_count": 6,
       "first_activity": "2025-10-29T13:53:29.076Z",
       "last_activity": "2026-03-26T19:54:17.010Z",
@@ -3578,7 +4000,176 @@
       "artifacts": {
         "reference": 6
       },
-      "links": []
+      "links": [
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/consul-config#248988",
+          "title": "Monitor quality data on Metabase",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/consul-config/pull/248988"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/consul-config#294073",
+          "title": "Update monitor_user_template_api",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/consul-config/pull/294073"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/consul-config#294197",
+          "title": "Update monitor_user_template_api",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/consul-config/pull/294197"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/consul-config#296770",
+          "title": "Update monitor_user_template_api",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/consul-config/pull/296770"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/documentation#24711",
+          "title": "Update monitor_api_options.md",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/documentation/pull/24711"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/consul-config#233546",
+          "title": "[prod] khamamatsu0927 raise the monitor limit to 2000 org: 351761, 787478",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/consul-config/pull/233546"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/consul-config#282938",
+          "title": "Syncing integration monitor_quality on staging",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/consul-config/pull/282938"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/consul-config#283083",
+          "title": "Syncing integration monitor_quality on staging",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/consul-config/pull/283083"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/consul-config#283325",
+          "title": "Syncing integration monitor_quality on prod in us1.prod.dog",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/consul-config/pull/283325"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/consul-config#283326",
+          "title": "Syncing integration monitor_quality on prod in eu1.prod.dog",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/consul-config/pull/283326"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/consul-config#283327",
+          "title": "Syncing integration monitor_quality on prod in us3.prod.dog",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/consul-config/pull/283327"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/consul-config#283328",
+          "title": "Syncing integration monitor_quality on prod in us1.fed.dog",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/consul-config/pull/283328"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/consul-config#283329",
+          "title": "Syncing integration monitor_quality on prod in us5.prod.dog",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/consul-config/pull/283329"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/consul-config#283330",
+          "title": "Syncing integration monitor_quality on prod in ap1.prod.dog",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/consul-config/pull/283330"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/datadog-api-spec#2974",
+          "title": "Add monitor to restriction policy api public spec",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/datadog-api-spec/pull/2974"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/integrations-internal-core#1506",
+          "title": "Improving message for high cpu host monitor",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/integrations-internal-core/pull/1506"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/integrations-internal-core#1508",
+          "title": "Improving the message of the High Disk Latency monitor",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/integrations-internal-core/pull/1508"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/integrations-internal-core#1509",
+          "title": "Improving High Disk Usage monitor's message",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/integrations-internal-core/pull/1509"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/integrations-internal-core#1511",
+          "title": "Improving High Load Monitor message",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/integrations-internal-core/pull/1511"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/integrations-internal-core#2918",
+          "title": "Add $team template variable to APM monitor templates",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/integrations-internal-core/pull/2918"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/web-ui#154892",
+          "title": "[MA-5653] add noisy monitor component in monitor quality page",
+          "status": "Closed",
+          "priority": null,
+          "url": "https://github.com/DataDog/web-ui/pull/154892"
+        }
+      ]
     },
     {
       "id": 32,
@@ -3590,8 +4181,8 @@
       "start_date": "2025-11-06T10:22:26.038Z",
       "end_date": null,
       "created_at": "2026-04-04T20:46:05.728269+00:00",
-      "updated_at": "2026-04-04T21:39:08.874048+00:00",
-      "phase": "Planning",
+      "updated_at": "2026-04-05T17:14:10.400217+00:00",
+      "phase": "Shipped",
       "doc_count": 4,
       "first_activity": "2025-11-06T10:22:26.038Z",
       "last_activity": "2026-03-26T19:54:17.010Z",
@@ -3604,7 +4195,80 @@
       "artifacts": {
         "reference": 4
       },
-      "links": []
+      "links": [
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/consul-config#177958",
+          "title": "Enable beta feature for new orgs",
+          "status": "Closed",
+          "priority": null,
+          "url": "https://github.com/DataDog/consul-config/pull/177958"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/consul-config#178408",
+          "title": "Enable feature for Exxon Mobil",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/consul-config/pull/178408"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/consul-config#178727",
+          "title": "Capucine.marteau/enable feature for metro digital and delivery hero",
+          "status": "Closed",
+          "priority": null,
+          "url": "https://github.com/DataDog/consul-config/pull/178727"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/consul-config#178903",
+          "title": "Enable feature for org 510093",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/consul-config/pull/178903"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/consul-config#179288",
+          "title": "Enable feature for org 38725",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/consul-config/pull/179288"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/consul-config#266274",
+          "title": "Add Mabuto to enabled orgs on disable_log_samples",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/consul-config/pull/266274"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/consul-config#266716",
+          "title": "Disable_log_samples for Kroger",
+          "status": "Closed",
+          "priority": null,
+          "url": "https://github.com/DataDog/consul-config/pull/266716"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/consul-config#266717",
+          "title": "disable_log_samples_for_kroger",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/consul-config/pull/266717"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/consul-config#267118",
+          "title": "Adding new org to the private beta",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/consul-config/pull/267118"
+        }
+      ]
     },
     {
       "id": 35,
@@ -3616,7 +4280,7 @@
       "start_date": "2025-10-07T19:03:43.678Z",
       "end_date": null,
       "created_at": "2026-04-04T20:46:05.776270+00:00",
-      "updated_at": "2026-04-04T21:39:08.875533+00:00",
+      "updated_at": "2026-04-05T17:14:10.401732+00:00",
       "phase": "Planning",
       "doc_count": 10,
       "first_activity": "2025-10-07T19:03:43.678Z",
@@ -3636,7 +4300,16 @@
       "artifacts": {
         "reference": 10
       },
-      "links": []
+      "links": [
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/logs-backend#46985",
+          "title": "[LOI-92] Sidekiq Grok Parser Update - Change class matcher from word to notSpace",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/logs-backend/pull/46985"
+        }
+      ]
     },
     {
       "id": 21,
@@ -3648,7 +4321,7 @@
       "start_date": "2024-12-04T14:49:18.542Z",
       "end_date": null,
       "created_at": "2026-04-04T20:46:05.501740+00:00",
-      "updated_at": "2026-04-04T20:46:05.501740+00:00",
+      "updated_at": "2026-04-05T17:14:10.403380+00:00",
       "phase": "Planning",
       "doc_count": 19,
       "first_activity": "2024-12-04T14:49:18.542Z",
@@ -3689,7 +4362,7 @@
       "start_date": "2025-12-11T22:44:02.003Z",
       "end_date": null,
       "created_at": "2026-04-04T20:46:05.047475+00:00",
-      "updated_at": "2026-04-04T20:46:05.047475+00:00",
+      "updated_at": "2026-04-05T17:14:10.405043+00:00",
       "phase": "Planning",
       "doc_count": 4,
       "first_activity": "2025-12-11T22:44:02.003Z",
@@ -3715,7 +4388,7 @@
       "start_date": "2025-09-04T12:05:28.529Z",
       "end_date": null,
       "created_at": "2026-04-04T20:46:04.996382+00:00",
-      "updated_at": "2026-04-04T20:46:04.996382+00:00",
+      "updated_at": "2026-04-05T17:14:10.406610+00:00",
       "phase": "Planning",
       "doc_count": 3,
       "first_activity": "2025-09-04T12:05:28.529Z",
@@ -3740,7 +4413,7 @@
       "start_date": "2024-11-28T09:32:56.650Z",
       "end_date": null,
       "created_at": "2026-04-04T20:46:04.980746+00:00",
-      "updated_at": "2026-04-04T20:46:04.980746+00:00",
+      "updated_at": "2026-04-05T17:14:10.408352+00:00",
       "phase": "Planning",
       "doc_count": 5,
       "first_activity": "2024-11-28T09:32:56.650Z",
@@ -3767,8 +4440,8 @@
       "start_date": "2025-09-28T16:29:24.203Z",
       "end_date": null,
       "created_at": "2026-04-04T20:46:05.003629+00:00",
-      "updated_at": "2026-04-04T20:46:05.003629+00:00",
-      "phase": "Planning",
+      "updated_at": "2026-04-05T17:14:10.410315+00:00",
+      "phase": "Building",
       "doc_count": 14,
       "first_activity": "2025-09-28T16:29:24.203Z",
       "last_activity": "2026-03-04T19:42:12.692Z",
@@ -3828,7 +4501,7 @@
       "start_date": "2022-12-23T08:53:15.226Z",
       "end_date": null,
       "created_at": "2026-04-04T20:46:05.444614+00:00",
-      "updated_at": "2026-04-04T20:46:05.444614+00:00",
+      "updated_at": "2026-04-05T17:14:10.412097+00:00",
       "phase": "Planning",
       "doc_count": 4,
       "first_activity": "2022-12-23T08:53:15.226Z",
@@ -3854,8 +4527,8 @@
       "start_date": "2025-11-10T16:08:49.368Z",
       "end_date": null,
       "created_at": "2026-04-04T20:46:05.532079+00:00",
-      "updated_at": "2026-04-04T20:46:05.532079+00:00",
-      "phase": "Planning",
+      "updated_at": "2026-04-05T17:14:10.413965+00:00",
+      "phase": "Shipped",
       "doc_count": 4,
       "first_activity": "2025-11-10T16:08:49.368Z",
       "last_activity": "2026-02-13T17:48:48.470Z",
@@ -3868,7 +4541,32 @@
       "artifacts": {
         "reference": 4
       },
-      "links": []
+      "links": [
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/consul-config#245115",
+          "title": "Add monitor quality data to Analyzed Metrics ",
+          "status": "Closed",
+          "priority": null,
+          "url": "https://github.com/DataDog/consul-config/pull/245115"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/dd-source#193775",
+          "title": "[origin] Add new origins for Otel, Agentless and Monitor Quality",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/dd-source/pull/193775"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/integrations-internal-core#2801",
+          "title": "feat(apm_monitor): Create error rate, latency, and low traffic monitors covering RED metrics (MOPU-293)",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/integrations-internal-core/pull/2801"
+        }
+      ]
     },
     {
       "id": 28,
@@ -3880,7 +4578,7 @@
       "start_date": "2025-09-29T11:53:22.869Z",
       "end_date": null,
       "created_at": "2026-04-04T20:46:05.665241+00:00",
-      "updated_at": "2026-04-04T20:46:05.665241+00:00",
+      "updated_at": "2026-04-05T17:14:10.415669+00:00",
       "phase": "Planning",
       "doc_count": 5,
       "first_activity": "2025-09-29T11:53:22.869Z",
@@ -3907,7 +4605,7 @@
       "start_date": "2025-12-01T14:51:36.446Z",
       "end_date": null,
       "created_at": "2026-04-04T20:46:05.068348+00:00",
-      "updated_at": "2026-04-04T20:46:05.068348+00:00",
+      "updated_at": "2026-04-05T17:14:10.417230+00:00",
       "phase": "Planning",
       "doc_count": 1,
       "first_activity": "2025-12-01T14:51:36.446Z",
@@ -3930,7 +4628,7 @@
       "start_date": "2022-12-23T08:53:15.226Z",
       "end_date": null,
       "created_at": "2026-04-04T20:46:05.056113+00:00",
-      "updated_at": "2026-04-04T20:46:05.056113+00:00",
+      "updated_at": "2026-04-05T17:14:10.418649+00:00",
       "phase": "Planning",
       "doc_count": 2,
       "first_activity": "2022-12-23T08:53:15.226Z",
@@ -3954,8 +4652,8 @@
       "start_date": "2023-05-10T14:01:11.419Z",
       "end_date": null,
       "created_at": "2026-04-04T20:46:05.283866+00:00",
-      "updated_at": "2026-04-04T20:46:05.283866+00:00",
-      "phase": "Planning",
+      "updated_at": "2026-04-05T17:14:10.420359+00:00",
+      "phase": "Shipped",
       "doc_count": 3,
       "first_activity": "2023-05-10T14:01:11.419Z",
       "last_activity": "2025-09-01T10:10:09.233Z",
@@ -3967,7 +4665,208 @@
       "artifacts": {
         "reference": 3
       },
-      "links": []
+      "links": [
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/consul-config#178199",
+          "title": "Update logs_reference_table_filter",
+          "status": "Closed",
+          "priority": null,
+          "url": "https://github.com/DataDog/consul-config/pull/178199"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/consul-config#180659",
+          "title": "Update logs_reference_table_filter",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/consul-config/pull/180659"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/consul-config#180836",
+          "title": "Removed TR and added Moneylion",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/consul-config/pull/180836"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/corp-hugo#13019",
+          "title": "Update blog post to include log source",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/corp-hugo/pull/13019"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/documentation#17450",
+          "title": "Change SDS pictures to align with new UI",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/documentation/pull/17450"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/documentation#17451",
+          "title": "Add new pictures of SDS to align with new UI",
+          "status": "Closed",
+          "priority": null,
+          "url": "https://github.com/DataDog/documentation/pull/17451"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/documentation#17452",
+          "title": "Update pictures on SDS public documentation",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/documentation/pull/17452"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/documentation#24407",
+          "title": "Update _index.md for GRACE migration",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/documentation/pull/24407"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/dogweb#94297",
+          "title": "Capucine/logs",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/dogweb/pull/94297"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/dogweb#94369",
+          "title": "Update custom link",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/dogweb/pull/94369"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/dogweb#94563",
+          "title": "Update custom link to make it a relative URL",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/dogweb/pull/94563"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/dogweb#95682",
+          "title": "Add hyperlinks to log sources",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/dogweb/pull/95682"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/integrations-internal-core#1193",
+          "title": "Capucine marteau",
+          "status": "Closed",
+          "priority": null,
+          "url": "https://github.com/DataDog/integrations-internal-core/pull/1193"
+        },
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/integrations-internal-core#1216",
+          "title": "Added metric to check before autoinstall, so that it works",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/integrations-internal-core/pull/1216"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/consul-config#178023",
+          "title": "Update logs_reference_table_filter",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/consul-config/pull/178023"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/datadog-api-spec#3056",
+          "title": "Remove reference to locked",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/datadog-api-spec/pull/3056"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/documentation#24911",
+          "title": "Remove locked info and add Restriction policies api",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/documentation/pull/24911"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/integrations-internal-core#488",
+          "title": "[APMTI-2422] Create APM Running Spans integration",
+          "status": "Closed",
+          "priority": null,
+          "url": "https://github.com/DataDog/integrations-internal-core/pull/488"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/logs-backend#45986",
+          "title": "[LOI-89] Update backend_only flags for 2 integrations that have not been installed in a long time",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/logs-backend/pull/45986"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/logs-backend#47337",
+          "title": "Add temporal integration logs pipeline",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/logs-backend/pull/47337"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/logs-backend#50506",
+          "title": "SCI2-2718 - add meraki pipeline updates",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/logs-backend/pull/50506"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/logs-backend#50527",
+          "title": "[LOI-106] Update CloudFlare Pipeline",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/logs-backend/pull/50527"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/logs-backend#50800",
+          "title": "[LO1-112] Create 1Password Logs Pipeline",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/logs-backend/pull/50800"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/logs-backend#51976",
+          "title": "[LOI-115] Change PHP's default logs pipeline",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/logs-backend/pull/51976"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/logs-backend#52727",
+          "title": "Add a log pipeline for the TorchServe integration",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/logs-backend/pull/52727"
+        }
+      ]
     },
     {
       "id": 16,
@@ -3979,7 +4878,7 @@
       "start_date": "2020-06-10T22:20:45.295Z",
       "end_date": null,
       "created_at": "2026-04-04T20:46:05.434064+00:00",
-      "updated_at": "2026-04-04T20:46:05.434064+00:00",
+      "updated_at": "2026-04-05T17:14:10.421867+00:00",
       "phase": "Planning",
       "doc_count": 4,
       "first_activity": "2020-06-10T22:20:45.295Z",
@@ -4005,7 +4904,7 @@
       "start_date": "2025-02-13T14:13:21.138Z",
       "end_date": null,
       "created_at": "2026-04-04T20:46:04.991383+00:00",
-      "updated_at": "2026-04-04T20:46:04.991383+00:00",
+      "updated_at": "2026-04-05T17:14:10.423334+00:00",
       "phase": "Planning",
       "doc_count": 2,
       "first_activity": "2025-02-13T14:13:21.138Z",
@@ -4029,7 +4928,7 @@
       "start_date": "2025-07-02T12:44:53.795Z",
       "end_date": null,
       "created_at": "2026-04-04T20:46:05.644664+00:00",
-      "updated_at": "2026-04-04T20:46:05.644664+00:00",
+      "updated_at": "2026-04-05T17:14:10.425029+00:00",
       "phase": "Planning",
       "doc_count": 1,
       "first_activity": "2025-07-02T12:44:53.795Z",
@@ -4052,8 +4951,8 @@
       "start_date": "2023-04-17T09:33:15.700Z",
       "end_date": null,
       "created_at": "2026-04-04T20:46:05.723668+00:00",
-      "updated_at": "2026-04-04T20:46:05.723668+00:00",
-      "phase": "Planning",
+      "updated_at": "2026-04-05T17:14:10.426540+00:00",
+      "phase": "Shipped",
       "doc_count": 2,
       "first_activity": "2023-04-17T09:33:15.700Z",
       "last_activity": "2025-06-01T15:32:50.801Z",
@@ -4064,7 +4963,24 @@
       "artifacts": {
         "reference": 2
       },
-      "links": []
+      "links": [
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/logs-backend#49316",
+          "title": "added 7 new rules to Sensitive Data Scanner",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/logs-backend/pull/49316"
+        },
+        {
+          "source_type": "github-review",
+          "source_id": "DataDog/logs-backend#49316",
+          "title": "added 7 new rules to Sensitive Data Scanner",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/logs-backend/pull/49316"
+        }
+      ]
     },
     {
       "id": 20,
@@ -4076,7 +4992,7 @@
       "start_date": "2024-11-28T09:32:56.650Z",
       "end_date": null,
       "created_at": "2026-04-04T20:46:05.498588+00:00",
-      "updated_at": "2026-04-04T20:46:05.498588+00:00",
+      "updated_at": "2026-04-05T17:14:10.428056+00:00",
       "phase": "Planning",
       "doc_count": 1,
       "first_activity": "2024-11-28T09:32:56.650Z",
@@ -4099,8 +5015,8 @@
       "start_date": "2023-05-10T14:01:11.419Z",
       "end_date": null,
       "created_at": "2026-04-04T20:46:05.441617+00:00",
-      "updated_at": "2026-04-04T20:46:05.441617+00:00",
-      "phase": "Planning",
+      "updated_at": "2026-04-05T17:14:10.429440+00:00",
+      "phase": "Shipped",
       "doc_count": 1,
       "first_activity": "2023-05-10T14:01:11.419Z",
       "last_activity": "2023-05-10T14:01:11.419Z",
@@ -4110,7 +5026,23 @@
       "artifacts": {
         "reference": 1
       },
-      "links": []
+      "links": [
+        {
+          "source_type": "github-pr",
+          "source_id": "DataDog/logs-backend#49853",
+          "title": "add US to the name of country specific rules",
+          "status": "Merged",
+          "priority": null,
+          "url": "https://github.com/DataDog/logs-backend/pull/49853"
+        }
+      ]
+    }
+  ],
+  "summaries": [
+    {
+      "start": "2026-03-06",
+      "end": "2026-04-05",
+      "text": "## Work Update: Mar 6 \u2013 Apr 5, 2026\n\n### Datadog-Managed Monitors (Building)\n- Finalized the core product spec for Datadog-Managed Monitors \u2014 self-improving detection with zero setup, covering automatic monitor creation, RED metrics, and threshold tuning\n- Published the Confluence preview doc and the Feature Announcement for the Monitors Side Panel (auto-onboarding for K8s pods, host CPU/memory, APM errors)\n- Wrote the \"Bits Monitors\" proposal: deterministic monitor packs with context-aware detection, built on MCP tools and a coverage model\n- Kicked off design partner feedback sessions \u2014 incorporated Ops Manager recommendations and signal-first UX direction\n\n### DASH Conference Prep (Planning)\n- Designed the Suggested Demo Flow for the DASH theater talk: posture.md onboarding, Software Catalog integration, and Bits Monitors showcase\n- Aligned cross-team on the AI detection narrative in \"Reconciling the AI detection initiatives\" \u2014 unified Triage Agent, Posture Agent, and managed monitors under one story\n- Multiple Automatic Detection syncs (Mar 10, 24) to coordinate demo scope and Q2 deliverables\n\n### Q2 OKR Planning & Strategy\n- Drafted and pitched Q2 OKRs: AI-native monitoring workflows, monitorless detection, posture.md, MCP tooling, and incident prediction\n- 1:1s with Omri and Phillip to align on detection OKRs, alerting platform AI roadmap, and Terraform integration priorities\n- Key decision: posture.md and living runbook become the connective tissue between managed monitors and customer governance\n\n### Monitoring Posture & Coverage\n- Deep customer research on monitoring posture: interviewed teams about enterprise standards, Terraform-based monitoring, and infrastructure defaults\n- Defined the Posture Agent concept (posture.md + monitor drift detection + living runbook) in a dedicated spec\n- Built the Monitoring Posture Skill for MCP: coverage assessment, quality scoring, and gap detection tooling\n\n### AI Teaching & Education\n- Prepared ESSEC AI course materials: intro lecture on AI architecture, RAG, fine-tuning, and responsible enterprise AI implementation\n- Created the teaching slide deck on responsible AI implementation in a business context\n\n### Other\n- Wrote a proposal for rethinking the AI code review system: human-in-the-loop oversight, IDE-integrated review, and feedback loop tracking\n- Did an astrology chart reading for Lisa (because life is not just monitors)\n\n---\n**Focus areas for the coming weeks:**\n1. Ship the Managed Monitors preview and collect design partner feedback\n2. Lock the DASH demo flow and rehearse the theater talk\n3. Land Q2 OKRs with cross-team buy-in on posture.md and MCP tooling\n"
     }
   ]
 }

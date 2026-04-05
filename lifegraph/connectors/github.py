@@ -1,23 +1,32 @@
-"""GitHub connector — fetches PRs and issues, stores them as project_links."""
+"""GitHub connector — fetches PRs, issues, and reviews for the authenticated user."""
 
 import requests
 
-from lifegraph.config import GITHUB_TOKEN, GITHUB_REPOS, GITHUB_REPO_PROJECT_MAP
+from lifegraph.config import GITHUB_TOKEN, GITHUB_REPO_PROJECT_MAP
 from lifegraph.connectors.base import BaseConnector
-from lifegraph.db import get_project_by_name, upsert_project_link
+from lifegraph.db import get_all_projects, get_project_by_name, upsert_project_link
+
+API = "https://api.github.com"
 
 
-def _gh_status(item: dict, is_pr: bool) -> str:
-    if is_pr and item.get("merged_at"):
+def _gh_status(item: dict) -> str:
+    if item.get("pull_request") and item.get("pull_request", {}).get("merged_at"):
         return "Merged"
     return "Open" if item["state"] == "open" else "Closed"
+
+
+def _repo_from_url(url: str) -> str:
+    """Extract 'owner/repo' from a GitHub API URL."""
+    # https://api.github.com/repos/owner/repo -> owner/repo
+    parts = url.rstrip("/").split("/")
+    return f"{parts[-2]}/{parts[-1]}"
 
 
 class GitHubConnector(BaseConnector):
     def __init__(self):
         self.token = GITHUB_TOKEN
-        self.repos = [r.strip() for r in GITHUB_REPOS.split(",") if r.strip()]
         self.session = None
+        self.username = None
 
     def authenticate(self):
         if not self.token:
@@ -30,13 +39,13 @@ class GitHubConnector(BaseConnector):
             "Authorization": f"Bearer {self.token}",
             "Accept": "application/vnd.github+json",
         })
-        # Validate token
-        resp = self.session.get("https://api.github.com/user")
+        resp = self.session.get(f"{API}/user")
         resp.raise_for_status()
-        return resp.json()["login"]
+        self.username = resp.json()["login"]
+        return self.username
 
     def list_documents(self) -> list[dict]:
-        return []  # GitHub items go to project_links, not documents
+        return []
 
     def fetch_content(self, doc_id: str) -> str:
         return ""
@@ -46,61 +55,95 @@ class GitHubConnector(BaseConnector):
             self.authenticate()
 
         count = 0
-        for repo in self.repos:
-            project_name = GITHUB_REPO_PROJECT_MAP.get(repo)
-            project = get_project_by_name(project_name) if project_name else None
-            if not project:
-                print(f"  Skipping {repo}: no project mapping (set GITHUB_REPO_PROJECT_MAP)")
-                continue
 
-            count += self._sync_repo(repo, project["id"])
-        return count
+        # 1. PRs authored
+        print("  Fetching your PRs...")
+        prs = self._search(f"author:{self.username} type:pr sort:updated")
+        for item in prs:
+            count += self._store_item(item, "github-pr")
+        print(f"    {len(prs)} PRs found")
 
-    def _sync_repo(self, repo: str, project_id: int) -> int:
-        count = 0
+        # 2. Issues authored
+        print("  Fetching your issues...")
+        issues = self._search(f"author:{self.username} type:issue sort:updated")
+        for item in issues:
+            count += self._store_item(item, "github-issue")
+        print(f"    {len(issues)} issues found")
 
-        # Fetch PRs
-        for item in self._paginate(f"https://api.github.com/repos/{repo}/pulls", {"state": "all"}):
-            upsert_project_link(
-                project_id=project_id,
-                url=item["html_url"],
-                source_type="github-pr",
-                source_id=f"{repo}#{item['number']}",
-                title=item["title"],
-                status=_gh_status(item, is_pr=True),
-                assignee=(item.get("assignee") or {}).get("login"),
-                created_at=item["created_at"],
-            )
-            count += 1
-
-        # Fetch issues (excluding PRs — GitHub API returns PRs as issues too)
-        for item in self._paginate(f"https://api.github.com/repos/{repo}/issues", {"state": "all"}):
-            if item.get("pull_request"):
-                continue  # skip PRs already fetched above
-            upsert_project_link(
-                project_id=project_id,
-                url=item["html_url"],
-                source_type="github-issue",
-                source_id=f"{repo}#{item['number']}",
-                title=item["title"],
-                status=_gh_status(item, is_pr=False),
-                assignee=(item.get("assignee") or {}).get("login"),
-                created_at=item["created_at"],
-            )
-            count += 1
+        # 3. PRs you reviewed
+        print("  Fetching PRs you reviewed...")
+        reviews = self._search(f"reviewed-by:{self.username} type:pr sort:updated")
+        for item in reviews:
+            count += self._store_item(item, "github-review")
+        print(f"    {len(reviews)} reviews found")
 
         return count
 
-    def _paginate(self, url: str, params: dict) -> list[dict]:
-        """Paginate through GitHub API results."""
-        params = {**params, "per_page": 100, "page": 1}
-        all_items = []
-        while True:
-            resp = self.session.get(url, params=params)
-            resp.raise_for_status()
-            items = resp.json()
-            if not items:
+    def _search(self, query: str, max_pages: int = 5) -> list[dict]:
+        """Search GitHub issues/PRs using the search API."""
+        items = []
+        page = 1
+        while page <= max_pages:
+            resp = self.session.get(f"{API}/search/issues", params={
+                "q": query, "per_page": 100, "page": page,
+            })
+            if resp.status_code == 403:
+                print(f"    Rate limited, stopping at {len(items)} results")
                 break
-            all_items.extend(items)
-            params["page"] += 1
-        return all_items
+            resp.raise_for_status()
+            data = resp.json()
+            items.extend(data.get("items", []))
+            if len(items) >= data.get("total_count", 0):
+                break
+            page += 1
+        return items
+
+    def _store_item(self, item: dict, source_type: str) -> int:
+        """Store a GitHub item as a project_link. Returns 1 if stored, 0 if skipped."""
+        repo = _repo_from_url(item["repository_url"])
+        source_id = f"{repo}#{item['number']}"
+
+        # Find matching project
+        project_id = self._match_project(repo, item)
+        if not project_id:
+            return 0
+
+        upsert_project_link(
+            project_id=project_id,
+            url=item["html_url"],
+            source_type=source_type,
+            source_id=source_id,
+            title=item["title"],
+            status=_gh_status(item),
+            assignee=(item.get("assignee") or {}).get("login"),
+            created_at=item["created_at"],
+        )
+        return 1
+
+    def _match_project(self, repo: str, item: dict) -> int | None:
+        """Try to match a GitHub item to a LifeGraph project."""
+        # 1. Explicit mapping from config
+        project_name = GITHUB_REPO_PROJECT_MAP.get(repo)
+        if project_name:
+            p = get_project_by_name(project_name)
+            if p:
+                return p["id"]
+
+        # 2. Fuzzy match: check if any project name appears in the repo name,
+        #    PR title, or labels
+        text = f"{repo} {item['title']} {' '.join(l['name'] for l in item.get('labels', []))}".lower()
+        projects = get_all_projects()
+        best = None
+        best_score = 0
+        for p in projects:
+            # Match keywords from project name
+            keywords = [w.lower() for w in p["name"].split() if len(w) > 3]
+            score = sum(1 for kw in keywords if kw in text)
+            if score > best_score:
+                best_score = score
+                best = p
+
+        if best and best_score >= 1:
+            return best["id"]
+
+        return None

@@ -122,7 +122,8 @@
       user-select: none;
     }
     .cat-filter:hover { border-color: #3a3a5a; }
-    .cat-filter.hidden { opacity: 0.3; text-decoration: line-through; }
+    .cat-filter.active { border-color: #6366f1; color: #fff; background: #12122a; }
+    .cat-filter.dimmed { opacity: 0.3; }
     .cat-filter .cf-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
 
     /* Overview panel */
@@ -218,7 +219,15 @@
       display: flex; align-items: center; gap: 10px;
       margin-bottom: 14px; padding-bottom: 8px;
       border-bottom: 1px solid #1a1a2a;
+      cursor: pointer; user-select: none;
     }
+    .report-cat-header:hover { background: rgba(255,255,255,0.02); border-radius: 8px; }
+    .report-cat-header .collapse-arrow {
+      font-size: 10px; color: #555; transition: transform 0.2s; margin-left: 4px;
+    }
+    .report-cat-header .collapse-arrow.collapsed { transform: rotate(-90deg); }
+    .collapsible-body { overflow: hidden; transition: max-height 0.3s ease; }
+    .collapsible-body.collapsed { max-height: 0 !important; }
     .report-cat-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
     .report-cat-name { font-size: 16px; font-weight: 600; color: #ddd; }
     .report-cat-count { font-size: 12px; color: #555; margin-left: auto; }
@@ -267,7 +276,13 @@
       font-size: 13px; font-weight: 600; text-transform: uppercase;
       letter-spacing: 1px; margin-bottom: 14px; padding-bottom: 8px;
       border-bottom: 1px solid #1a1a2a;
+      cursor: pointer; user-select: none;
     }
+    .project-cat-title:hover { background: rgba(255,255,255,0.02); border-radius: 8px; }
+    .project-cat-title .collapse-arrow {
+      font-size: 10px; color: #555; transition: transform 0.2s; margin-left: 4px;
+    }
+    .project-cat-title .collapse-arrow.collapsed { transform: rotate(-90deg); }
     .project-cat-title .pct-dot { width: 10px; height: 10px; border-radius: 50%; }
     .project-cat-title .pct-count { font-weight: 400; color: #555; margin-left: auto; font-size: 11px; }
     .project-grid {
@@ -488,6 +503,7 @@
     let docMap = {};
     let currentView = 'graph';
     const hiddenCategories = new Set();
+    const selectedCategories = new Set();  // empty = show all, non-empty = show only these
 
     const width = window.innerWidth;
     const height = window.innerHeight;
@@ -571,12 +587,24 @@
     }
 
     function toggleCatFilter(cat) {
-      if (hiddenCategories.has(cat)) {
-        hiddenCategories.delete(cat);
+      // Multi-select: toggle this category on/off
+      if (selectedCategories.has(cat)) {
+        selectedCategories.delete(cat);
       } else {
-        hiddenCategories.add(cat);
+        selectedCategories.add(cat);
       }
-      document.getElementById('cf-' + cat).classList.toggle('hidden', hiddenCategories.has(cat));
+      // Rebuild hiddenCategories: if any selected, hide all others
+      hiddenCategories.clear();
+      if (selectedCategories.size > 0) {
+        const allCats = [...new Set(graphData.nodes.map(n => n.category))];
+        allCats.forEach(c => { if (!selectedCategories.has(c)) hiddenCategories.add(c); });
+      }
+      // Update chip styles
+      document.querySelectorAll('.cat-filter').forEach(el => {
+        const c = el.id.replace('cf-', '');
+        el.classList.toggle('active', selectedCategories.has(c));
+        el.classList.toggle('dimmed', selectedCategories.size > 0 && !selectedCategories.has(c));
+      });
       refreshCurrentView();
     }
 
@@ -585,6 +613,15 @@
       if (currentView === 'graph') { if (simulation) simulation.stop(); render(); }
       else if (currentView === 'timeline') { renderTimeline(); }
       else if (currentView === 'report') { updateReport(); }
+      else if (currentView === 'projects') { renderProjects(); }
+    }
+
+    function toggleSection(id) {
+      const body = document.getElementById(id);
+      const arrow = document.querySelector(`[data-toggle="${id}"]`);
+      if (!body) return;
+      body.classList.toggle('collapsed');
+      if (arrow) arrow.classList.toggle('collapsed');
     }
 
     function isNodeVisible(n) { return !hiddenCategories.has(n.category); }
@@ -842,7 +879,8 @@
       // Sort categories by total docs
       const sorted = Object.entries(cats).sort((a, b) => b[1].totalDocs - a[1].totalDocs);
 
-      document.getElementById('overviewContent').innerHTML = sorted.map(([cat, data]) => {
+      document.getElementById('overviewContent').innerHTML = sorted.map(([cat, data], i) => {
+        const sid = 'ov-' + i;
         const topTopics = data.topics
           .sort((a, b) => b.doc_count - a.doc_count)
           .slice(0, 4)
@@ -850,13 +888,16 @@
           .join(', ');
 
         return `
-          <div class="overview-cat" onclick="highlightCategory('${cat}')">
-            <div class="cat-header">
+          <div class="overview-cat">
+            <div class="cat-header" onclick="toggleSection('${sid}')" style="cursor:pointer">
+              <span class="collapse-arrow collapsed" data-toggle="${sid}" style="font-size:9px;color:#555;transition:transform 0.2s">&#9660;</span>
               <div class="cat-dot" style="background:${catColors[cat]}"></div>
               <div class="cat-name">${catLabels[cat] || cat}</div>
               <div class="cat-count">${data.totalDocs} docs</div>
             </div>
-            <div class="cat-topics">${topTopics}</div>
+            <div id="${sid}" class="collapsible-body collapsed" style="max-height:400px">
+              <div class="cat-topics" style="margin-top:6px">${topTopics}</div>
+            </div>
           </div>`;
       }).join('');
     }
@@ -1356,6 +1397,7 @@
       const categorizedDocs = new Set();
 
       let html = '';
+      let sectionIdx = 0;
       catOrder.forEach(cat => {
         const nodes = catGroups[cat];
         if (!nodes || !nodes.length) return;
@@ -1395,25 +1437,31 @@
 
         if (!seenInCat.size) return;
 
+        const sid = 'rpt-' + (sectionIdx++);
         html += `<div class="report-category">
-          <div class="report-cat-header">
+          <div class="report-cat-header" onclick="toggleSection('${sid}')">
+            <span class="collapse-arrow collapsed" data-toggle="${sid}">&#9660;</span>
             <div class="report-cat-dot" style="background:${catColors[cat]}"></div>
             <div class="report-cat-name">${catLabels[cat] || cat}</div>
             <div class="report-cat-count">${seenInCat.size} docs</div>
-          </div>`;
+          </div>
+          <div id="${sid}" class="collapsible-body collapsed" style="max-height:2000px">`;
         html += clusterHtmlParts.join('');
-        html += `</div>`;
+        html += `</div></div>`;
       });
 
       // Uncategorized docs
       const uncategorized = docs.filter(d => !categorizedDocs.has(d.id));
       if (uncategorized.length) {
+        const sid = 'rpt-' + (sectionIdx++);
         html += `<div class="report-category">
-          <div class="report-cat-header">
+          <div class="report-cat-header" onclick="toggleSection('${sid}')">
+            <span class="collapse-arrow collapsed" data-toggle="${sid}">&#9660;</span>
             <div class="report-cat-dot" style="background:#6b7280"></div>
             <div class="report-cat-name">Uncategorized</div>
             <div class="report-cat-count">${uncategorized.length} docs</div>
           </div>
+          <div id="${sid}" class="collapsible-body collapsed" style="max-height:2000px">
           <div class="report-cluster">`;
         uncategorized.forEach(doc => {
           const date = doc.created_at ? new Date(doc.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
@@ -1424,7 +1472,7 @@
             <div class="doc-date">${date}</div>
           </div>`;
         });
-        html += `</div></div>`;
+        html += `</div></div></div>`;
       }
 
       document.getElementById('reportContent').innerHTML = html;
@@ -1457,143 +1505,96 @@
       const startStr = startDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
       const endStr = endDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
 
-      // Filter docs in date range
+      // Count docs in range
       const periodDocs = graphData.documents.filter(d => {
         if (!d.created_at) return false;
         const date = new Date(d.created_at);
         return date >= startDate && date <= endDate;
       });
-      const periodDocIds = new Set(periodDocs.map(d => d.id));
 
-      // Find projects with activity in this period
-      const activeProjects = (graphData.projects || []).map(p => {
-        const docs = (p.doc_ids || []).filter(id => periodDocIds.has(id))
-          .map(id => docMap[id]).filter(Boolean)
-          .sort((a, b) => (b.created_at || '').localeCompare(a.created_at || ''));
+      document.getElementById('reportSub').textContent = `${startStr} - ${endStr} (${periodDocs.length} documents)`;
 
-        // Group docs by source
-        const bySrc = {};
-        docs.forEach(d => {
-          if (!bySrc[d.source]) bySrc[d.source] = [];
-          bySrc[d.source].push(d);
-        });
+      // Check for cached AI summary
+      const cached = (graphData.summaries || []).find(s =>
+        s.start === toLocalDateStr(startDate) && s.end === toLocalDateStr(endDate)
+      );
 
-        // Links (Jira/GitHub) — filter by created_at if available, else include all
-        const links = (p.links || []).filter(l => {
-          if (!l.created_at) return true;  // include if no date
-          const d = new Date(l.created_at);
-          return d >= startDate && d <= endDate;
-        });
-
-        const linksByType = {};
-        links.forEach(l => {
-          const t = l.source_type;
-          if (!linksByType[t]) linksByType[t] = [];
-          linksByType[t].push(l);
-        });
-
-        return { ...p, periodDocs: docs, bySrc, links, linksByType, docCount: docs.length };
-      }).filter(p => p.docCount > 0 || p.links.length > 0)
-        .sort((a, b) => b.docCount - a.docCount);
-
-      document.getElementById('reportSub').textContent = `${startStr} - ${endStr} (${periodDocs.length} documents across ${activeProjects.length} projects)`;
-
-      if (!activeProjects.length) {
-        document.getElementById('reportContent').innerHTML = '<div class="report-empty">No project activity in this period.</div>';
-        lastSummaryMarkdown = '';
+      if (cached) {
+        document.getElementById('reportContent').innerHTML =
+          `<div class="ai-summary">${markdownToHtml(cached.text)}</div>`;
+        lastSummaryMarkdown = cached.text;
         return;
       }
 
-      // Build HTML and Markdown simultaneously
-      let html = '';
-      let md = `## Update: ${startStr} – ${endStr}\n\n`;
+      // No cached summary — show generate button
+      const sinceArg = toLocalDateStr(startDate);
+      const untilArg = toLocalDateStr(endDate);
 
-      // Totals for summary
-      let totalDocs = 0;
-      let totalTickets = 0;
+      document.getElementById('reportContent').innerHTML = `
+        <div style="text-align:center; padding:60px 20px;">
+          <div style="font-size:36px; margin-bottom:16px; opacity:0.5;">&#9998;</div>
+          <div style="font-size:16px; color:#ddd; margin-bottom:8px;">Generate an AI summary</div>
+          <div style="font-size:13px; color:#666; margin-bottom:24px; max-width:460px; margin-left:auto; margin-right:auto;">
+            Claude will analyze your ${periodDocs.length} documents and tickets from this period
+            and write a concise work update grouped by project.
+          </div>
+          <button id="generateSummaryBtn" onclick="generateSummary('${sinceArg}', '${untilArg}')"
+            style="padding:12px 28px; border-radius:14px; border:1px solid #6366f1; background:#12122a;
+            color:#a78bfa; font-size:14px; font-weight:600; cursor:pointer; font-family:inherit;
+            transition:all 0.2s;">
+            Generate Summary
+          </button>
+          <div id="summaryStatus" style="font-size:12px; color:#555; margin-top:16px; min-height:20px;"></div>
+        </div>`;
+      lastSummaryMarkdown = '';
+    }
 
-      activeProjects.forEach(p => {
-        const phase = p.phase ? `<span class="pc-phase pp-${p.phase.toLowerCase()}" style="display:inline-block;margin-left:8px">${p.phase}</span>` : '';
-        const phaseMd = p.phase ? ` (${p.phase})` : '';
+    function markdownToHtml(md) {
+      // Minimal markdown -> HTML for summaries
+      return md
+        .replace(/^### (.+)$/gm, '<h3 style="font-size:16px;font-weight:600;color:#ddd;margin:20px 0 8px;">$1</h3>')
+        .replace(/^## (.+)$/gm, '<h2 style="font-size:18px;font-weight:700;color:#fff;margin:24px 0 12px;">$1</h2>')
+        .replace(/^\*\*(.+?)\*\*$/gm, '<div style="font-size:14px;font-weight:600;color:#ccc;margin:16px 0 6px;">$1</div>')
+        .replace(/\*\*(.+?)\*\*/g, '<strong style="color:#ddd">$1</strong>')
+        .replace(/^- (.+)$/gm, '<div style="padding:4px 0 4px 16px;font-size:13px;color:#aaa;border-left:2px solid #1e1e2e;margin:4px 0;">$1</div>')
+        .replace(/^---$/gm, '<hr style="border:none;border-top:1px solid #1e1e2e;margin:20px 0;">')
+        .replace(/`([^`]+)`/g, '<code style="background:#1e1e2e;padding:2px 6px;border-radius:4px;font-size:12px;color:#a78bfa">$1</code>')
+        .replace(/\n\n/g, '<br>');
+    }
 
-        html += `<div class="report-category">
-          <div class="report-cat-header" style="cursor:pointer" onclick="openProjectSidebar(${p.id})">
-            <div class="report-cat-dot" style="background:${catColors[p.category]}"></div>
-            <div class="report-cat-name">${p.name}${phase}</div>
-            <div class="report-cat-count">${p.docCount} docs${p.links.length ? ', ' + p.links.length + ' tickets' : ''}</div>
-          </div>`;
+    async function generateSummary(start, end) {
+      const btn = document.getElementById('generateSummaryBtn');
+      const status = document.getElementById('summaryStatus');
+      btn.disabled = true;
+      btn.style.opacity = '0.5';
+      btn.textContent = 'Generating...';
+      status.textContent = 'Claude is analyzing your work — this may take 15-30 seconds...';
+      status.style.color = '#a78bfa';
 
-        md += `### ${p.name}${phaseMd}\n`;
+      try {
+        const resp = await fetch('/api/summary', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ start, end }),
+        });
+        const data = await resp.json();
+        if (!resp.ok) throw new Error(data.error || 'Server error');
 
-        // Documents grouped by source
-        const srcLabels = { google_docs: 'Google Docs', 'google-docs': 'Google Docs', 'google-slides': 'Slides', confluence: 'Confluence', slack: 'Slack' };
-        for (const [src, srcDocs] of Object.entries(p.bySrc)) {
-          const label = srcLabels[src] || src;
-          html += `<div class="report-cluster">
-            <div class="report-cluster-name" style="color:#888">${label} (${srcDocs.length})</div>`;
-          md += `- **${label}:** `;
+        // Reload graph.json to get the cached summary
+        const gResp = await fetch('graph.json?t=' + Date.now());
+        graphData = await gResp.json();
 
-          const titles = [];
-          srcDocs.forEach(doc => {
-            const date = doc.created_at ? new Date(doc.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
-            const url = doc.source_url || '#';
-            html += `<div class="report-doc" onclick="window.open('${url}', '_blank')">
-              <div class="doc-title">${doc.title}</div>
-              <div class="doc-source">${src}</div>
-              <div class="doc-date">${date}</div>
-            </div>`;
-            titles.push(doc.title);
-            totalDocs++;
-          });
-          md += titles.join(', ') + '\n';
-          html += `</div>`;
-        }
-
-        // Jira / GitHub links
-        for (const [type, items] of Object.entries(p.linksByType)) {
-          const typeLabel = type === 'jira' ? 'Jira' : type === 'github-pr' ? 'GitHub PRs' : type === 'github-issue' ? 'GitHub Issues' : type;
-
-          // Group by status
-          const byStatus = {};
-          items.forEach(l => {
-            const s = l.status || 'Unknown';
-            if (!byStatus[s]) byStatus[s] = [];
-            byStatus[s].push(l);
-          });
-
-          html += `<div class="report-cluster">
-            <div class="report-cluster-name" style="color:#60a5fa">${typeLabel} (${items.length})</div>`;
-
-          const statusParts = [];
-          for (const [status, sItems] of Object.entries(byStatus)) {
-            const statusColor = (status === 'Done' || status === 'Merged') ? '#4ade80' : (status === 'In Progress' || status === 'Open') ? '#60a5fa' : '#888';
-            sItems.forEach(l => {
-              html += `<div class="report-doc" onclick="window.open('${l.url}', '_blank')">
-                <div class="doc-title" style="display:flex;align-items:center;gap:6px">
-                  <span style="color:${statusColor};font-size:10px;font-weight:600">${status}</span>
-                  ${l.source_id} — ${l.title}
-                </div>
-                <div class="doc-source">${type}</div>
-              </div>`;
-            });
-            statusParts.push(`${sItems.length} ${status}`);
-            totalTickets += sItems.length;
-          }
-          md += `- **${typeLabel}:** ${statusParts.join(', ')}\n`;
-          html += `</div>`;
-        }
-
-        html += `</div>`;
-        md += '\n';
-      });
-
-      // Bottom summary
-      md += `---\n**Total:** ${totalDocs} documents across ${activeProjects.length} projects`;
-      if (totalTickets) md += `, ${totalTickets} tickets`;
-      md += '\n';
-
-      lastSummaryMarkdown = md;
-      document.getElementById('reportContent').innerHTML = html;
+        // Re-render — the summary is now cached
+        const startDate = new Date(start);
+        const endDate = new Date(end);
+        renderUpdateSummary(startDate, endDate);
+      } catch (err) {
+        status.textContent = 'Error: ' + err.message;
+        status.style.color = '#f87171';
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        btn.textContent = 'Retry';
+      }
     }
 
     function copySummary() {
@@ -1640,16 +1641,20 @@
       });
 
       let html = '';
+      let projSecIdx = 0;
       catOrder.forEach(cat => {
         const projs = catGroups[cat];
         if (!projs || !projs.length) return;
 
+        const sid = 'prj-' + (projSecIdx++);
         html += `<div class="project-cat-section">
-          <div class="project-cat-title">
+          <div class="project-cat-title" onclick="toggleSection('${sid}')">
+            <span class="collapse-arrow collapsed" data-toggle="${sid}">&#9660;</span>
             <div class="pct-dot" style="background:${catColors[cat]}"></div>
             <span style="color:${catColors[cat]}">${catLabels[cat] || cat}</span>
             <span class="pct-count">${projs.length} projects</span>
           </div>
+          <div id="${sid}" class="collapsible-body collapsed" style="max-height:4000px">
           <div class="project-grid">`;
 
         projs.forEach(p => {
@@ -1685,7 +1690,7 @@
           </div>`;
         });
 
-        html += `</div></div>`;
+        html += `</div></div></div>`;
       });
 
       document.getElementById('projectsContent').innerHTML = html;

@@ -472,11 +472,16 @@ def build_clustered_graph(min_edge_weight: int = 2) -> dict:
 
     conn.close()
 
+    # Cached AI summaries
+    from lifegraph.db import get_all_summaries
+    summaries = get_all_summaries()
+
     return {
         "nodes": sorted(nodes, key=lambda x: -x["doc_count"]),
         "edges": edges,
         "documents": documents,
         "projects": projects,
+        "summaries": summaries,
     }
 
 

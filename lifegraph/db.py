@@ -127,6 +127,7 @@ def init_db():
         pass  # FTS5 not available — search will fall back to LIKE
     # Migrations
     _migrate_projects_phase(conn)
+    _migrate_summaries(conn)
     conn.commit()
     conn.close()
 
@@ -510,6 +511,43 @@ def search_projects(query: str = None, status: str = None) -> list[dict]:
 
 
 # ── Phase / heuristics ────────────────────────────────────
+
+
+def _migrate_summaries(conn):
+    """Create summaries table if missing."""
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS summaries (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            start_date TEXT NOT NULL,
+            end_date TEXT NOT NULL,
+            text TEXT NOT NULL,
+            created_at TEXT NOT NULL,
+            UNIQUE(start_date, end_date)
+        )
+    """)
+
+
+def save_summary(start_date: str, end_date: str, text: str):
+    now = datetime.now(timezone.utc).isoformat()
+    conn = get_connection()
+    conn.execute(
+        """INSERT INTO summaries (start_date, end_date, text, created_at)
+           VALUES (?, ?, ?, ?)
+           ON CONFLICT(start_date, end_date) DO UPDATE SET
+               text = excluded.text, created_at = excluded.created_at""",
+        (start_date, end_date, text, now),
+    )
+    conn.commit()
+    conn.close()
+
+
+def get_all_summaries() -> list[dict]:
+    conn = get_connection()
+    rows = conn.execute(
+        "SELECT start_date, end_date, text FROM summaries ORDER BY created_at DESC"
+    ).fetchall()
+    conn.close()
+    return [{"start": r["start_date"], "end": r["end_date"], "text": r["text"]} for r in rows]
 
 
 def update_project_phase(project_id: int, phase: str):

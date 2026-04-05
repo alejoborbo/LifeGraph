@@ -98,14 +98,11 @@ def sync_slack(channel):
 
 
 @sync.command("github")
-@click.option("--repo", default=None, help="Sync a single repo (owner/repo) instead of all configured.")
-def sync_github(repo):
-    """Fetch PRs and issues from GitHub repos."""
+def sync_github():
+    """Fetch your PRs, issues, and reviews from GitHub."""
     from lifegraph.connectors.github import GitHubConnector
 
     connector = GitHubConnector()
-    if repo:
-        connector.repos = [repo]
     click.echo("Authenticating with GitHub...")
     try:
         user = connector.authenticate()
@@ -114,9 +111,9 @@ def sync_github(repo):
         click.echo(f"Error: {e}", err=True)
         raise SystemExit(1)
 
-    click.echo(f"Syncing {len(connector.repos)} repo(s)...")
+    click.echo("Syncing your GitHub activity...")
     count = connector.sync()
-    click.echo(f"Done! Synced {count} PR(s)/issue(s).")
+    click.echo(f"Done! Linked {count} item(s) to projects.")
 
 
 @cli.command()
@@ -404,6 +401,44 @@ def set_status(name, status):
         p = matches[0]
     update_project_status(p["id"], status)
     click.echo(f"Updated '{p['name']}' -> {status}")
+
+
+@cli.command()
+@click.option("--port", default=8042, help="Port to serve on.")
+def serve(port):
+    """Start the local LifeGraph web server."""
+    from lifegraph.server import main
+    main(port=port)
+
+
+@cli.command()
+@click.option("--days", default=7, help="Number of days to look back.")
+@click.option("--since", "since_date", default=None, help="Start date (YYYY-MM-DD).")
+@click.option("--until", "until_date", default=None, help="End date (YYYY-MM-DD).")
+@click.option("--copy", is_flag=True, help="Copy the result to clipboard.")
+def summary(days, since_date, until_date, copy):
+    """Generate an AI-powered summary of your recent work."""
+    from datetime import datetime, timedelta
+    from lifegraph.summarizer import generate_summary
+
+    if since_date:
+        start = since_date
+    else:
+        start = (datetime.now() - timedelta(days=days)).strftime("%Y-%m-%d")
+    end = until_date or datetime.now().strftime("%Y-%m-%d")
+
+    click.echo(f"Generating summary for {start} to {end}...")
+    result = generate_summary(start, end)
+    click.echo()
+    click.echo(result)
+
+    if copy:
+        try:
+            import subprocess
+            subprocess.run(["pbcopy"], input=result.encode(), check=True)
+            click.echo("\n(Copied to clipboard)")
+        except Exception:
+            pass
 
 
 @cli.command()
