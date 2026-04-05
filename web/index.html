@@ -1250,26 +1250,8 @@
         const sf = searchSourceFilter;
         if (q.length < 2 && sf === 'all') { results.classList.remove('visible'); return; }
 
-        // Source-only browse (no query needed) — search all docs including others'
-        if (q.length < 2 && sf !== 'all') {
-          let browseDocs = (graphData.allDocuments || graphData.documents).filter(d => d.source === sf)
-            .sort((a, b) => (b.created_at || '').localeCompare(a.created_at || ''))
-            .slice(0, 15);
-          if (!browseDocs.length) { results.innerHTML = '<div class="result-section">No documents</div>'; results.classList.add('visible'); return; }
-          const activeChip = document.querySelector('#search .filter-chip.active');
-          const label = activeChip ? activeChip.textContent : sf;
-          let html = `<div class="result-section">${label} (${browseDocs.length})</div>`;
-          html += browseDocs.map(d => {
-            const date = d.created_at ? d.created_at.split('T')[0] : '';
-            return `<div class="result-item" onclick="window.open('${d.source_url || '#'}', '_blank')">
-              ${d.title}
-              <div class="result-snippet">${date}${d.snippet ? ' — ' + d.snippet.slice(0, 80) : ''}</div>
-            </div>`;
-          }).join('');
-          results.innerHTML = html;
-          results.classList.add('visible');
-          return;
-        }
+        // Source-only filter (no query) — just filter the graph, no dropdown
+        if (q.length < 2 && sf !== 'all') { results.classList.remove('visible'); return; }
 
         // Handle status: prefix — show matching projects
         if (q.startsWith('status:')) {
