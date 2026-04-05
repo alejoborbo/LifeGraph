@@ -27,11 +27,21 @@ Open this folder in **Claude Code** and say:
 > **Set up my graph**
 
 That's it. Claude will:
-1. Fetch your Google Docs via the Google Workspace MCP
-2. Fetch your Confluence pages via the Atlassian MCP
-3. Extract topics, build the graph, and open the UI
+1. Fetch your **Google Docs** via the Google Workspace MCP
+2. Fetch your **Confluence pages** via the Atlassian MCP
+3. Fetch your **Jira issues** via the Atlassian MCP
+4. Fetch your **GitHub PRs/issues** via the `gh` CLI (if installed)
+5. Extract topics, build the graph, and open the UI
 
 Click the **People** tab to see who across DD is working on the same topics as you.
+
+| Source | How it works | Setup needed |
+|--------|-------------|--------------|
+| Google Docs | Google Workspace MCP | None |
+| Confluence | Atlassian MCP | None |
+| Jira | Atlassian MCP | None |
+| GitHub | `gh` CLI | `gh auth login` (most already have it) |
+| Slack | Bot token | Manual ([see below](#slack)) |
 
 ---
 

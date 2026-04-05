@@ -10,6 +10,7 @@ This avoids needing API tokens or OAuth — the MCPs handle auth.
 import json
 import html
 import re
+import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -88,6 +89,108 @@ def ingest_confluence():
     return count
 
 
+def ingest_jira():
+    """Ingest Jira issues from MCP output."""
+    path = OUTPUT_DIR / "jira_issues.json"
+    if not path.exists():
+        return 0
+
+    from lifegraph.db import get_all_projects, create_project, upsert_project_link
+    from lifegraph.models import Project
+
+    issues = json.loads(path.read_text())
+    count = 0
+    for issue in issues:
+        key = issue.get("key", "")
+        title = issue.get("title", issue.get("summary", ""))
+        status = issue.get("status", "")
+        priority = issue.get("priority", "")
+        assignee = issue.get("assignee", "")
+        url = issue.get("url", "")
+        project_name = issue.get("project_name", issue.get("project", ""))
+        created_at = issue.get("created_at", issue.get("created", ""))
+
+        # Find or create a matching LifeGraph project
+        from lifegraph.db import get_project_by_name
+        project = get_project_by_name(project_name)
+        if not project:
+            # Try fuzzy match
+            projects = get_all_projects()
+            matches = [p for p in projects if project_name.lower() in p["name"].lower()
+                       or any(w.lower() in p["name"].lower() for w in project_name.split() if len(w) > 3)]
+            if matches:
+                project = matches[0]
+
+        if not project:
+            continue
+
+        upsert_project_link(
+            project_id=project["id"],
+            url=url,
+            source_type="jira",
+            source_id=key,
+            title=title,
+            status=status,
+            priority=priority,
+            assignee=assignee,
+            created_at=created_at,
+        )
+        count += 1
+        print(f"  [jira] {key}: {title[:50]}")
+    return count
+
+
+def ingest_github():
+    """Sync GitHub via `gh` CLI if available (no token config needed)."""
+    # Check if gh CLI is available and authenticated
+    try:
+        result = subprocess.run(
+            ["gh", "auth", "status"], capture_output=True, text=True, timeout=5
+        )
+        if result.returncode != 0:
+            return 0
+    except (FileNotFoundError, subprocess.TimeoutExpired):
+        return 0
+
+    # Get username
+    result = subprocess.run(
+        ["gh", "api", "user", "--jq", ".login"], capture_output=True, text=True, timeout=10
+    )
+    if result.returncode != 0:
+        return 0
+    username = result.stdout.strip()
+    if not username:
+        return 0
+
+    print(f"  [github] Authenticated as {username}")
+
+    # Get token and use the existing GitHub connector
+    token_result = subprocess.run(
+        ["gh", "auth", "token"], capture_output=True, text=True, timeout=5
+    )
+    if token_result.returncode != 0:
+        return 0
+
+    import os
+    os.environ["GITHUB_TOKEN"] = token_result.stdout.strip()
+
+    # Reload config and run connector
+    import importlib
+    import lifegraph.config
+    lifegraph.config.GITHUB_TOKEN = token_result.stdout.strip()
+
+    from lifegraph.connectors.github import GitHubConnector
+    connector = GitHubConnector()
+    try:
+        connector.authenticate()
+        count = connector.sync()
+        print(f"  [github] Linked {count} items to projects")
+        return count
+    except Exception as e:
+        print(f"  [github] Error: {e}")
+        return 0
+
+
 def main():
     init_db()
     OUTPUT_DIR.mkdir(exist_ok=True)
@@ -95,13 +198,15 @@ def main():
     total = 0
     total += ingest_google_docs()
     total += ingest_confluence()
+    total += ingest_jira()
+    total += ingest_github()
 
     if total == 0:
         print("No MCP output files found in scripts/mcp_output/")
         print("Ask Claude Code to fetch your docs and save them there.")
         print("See README.md for the quick start guide.")
     else:
-        print(f"\nSynced {total} documents from MCP output.")
+        print(f"\nSynced {total} items from MCP output + GitHub.")
         print("DB status:", count_documents_by_source())
         print("\nNext steps:")
         print("  lifegraph extract      # Extract topics with Claude")
