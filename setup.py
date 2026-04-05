@@ -9,6 +9,8 @@ setup(
         "google-auth-oauthlib",
         "click",
         "python-dotenv",
+        "anthropic>=0.39.0",
+        "requests>=2.31.0",
     ],
     entry_points={
         "console_scripts": [

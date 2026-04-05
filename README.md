@@ -130,19 +130,36 @@ GITHUB_REPO_PROJECT_MAP={"DataDog/web-ui": "Monitoring Posture & Coverage"}
 ```
 </details>
 
-### 4. Build the graph
+### 4. Sync, extract, visualize
 
 ```bash
+# Sync at least one source first (pick any)
+lifegraph sync google-docs
+# or: lifegraph sync confluence
+# or: lifegraph sync slack
+# or: lifegraph sync github
+
 # Extract topics from all documents using Claude
 lifegraph extract
+
+# Create projects from topic clusters
+python scripts/seed_projects.py
+
+# Auto-detect project phases (Planning/Building/Shipped)
+lifegraph compute-phases
 
 # Build the knowledge graph
 lifegraph graph
 
-# Start the local server
+# Rebuild full-text search index
+lifegraph rebuild-fts
+
+# Start the local server and open the UI
 lifegraph serve
 # Open http://localhost:8042
 ```
+
+You can re-run these commands anytime to pull in new data. Each `sync` is incremental — it only adds or updates changed documents.
 
 ### 5. Explore
 

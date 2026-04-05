@@ -546,8 +546,15 @@
     };
 
     async function init() {
-      const resp = await fetch('graph.json');
+      let resp = await fetch('graph.json');
+      if (!resp.ok) resp = await fetch('graph.empty.json');
       graphData = await resp.json();
+      if (!graphData.nodes || !graphData.nodes.length) {
+        document.getElementById('headerSub').textContent = 'No data yet — run: lifegraph sync google-docs && lifegraph extract && lifegraph graph';
+      }
+      graphData.documents = graphData.documents || [];
+      graphData.projects = graphData.projects || [];
+      graphData.summaries = graphData.summaries || [];
       graphData.documents.forEach(d => docMap[d.id] = d);
 
       document.getElementById('headerSub').textContent = `Knowledge graph of ${graphData.documents.length} documents`;
