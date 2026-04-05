@@ -1055,9 +1055,27 @@
       const results = document.getElementById('searchResults');
       input.addEventListener('input', () => {
         let q = input.value.toLowerCase().trim();
-        if (q.length < 2) { results.classList.remove('visible'); return; }
-
         const sf = searchSourceFilter;
+        if (q.length < 2 && sf === 'all') { results.classList.remove('visible'); return; }
+
+        // Source-only browse (no query needed)
+        if (q.length < 2 && sf !== 'all') {
+          let browseDocs = graphData.documents.filter(d => d.source === sf)
+            .sort((a, b) => (b.created_at || '').localeCompare(a.created_at || ''))
+            .slice(0, 15);
+          if (!browseDocs.length) { results.innerHTML = '<div class="result-section">No documents</div>'; results.classList.add('visible'); return; }
+          let html = `<div class="result-section">${btn ? btn.textContent : sf} (${browseDocs.length})</div>`;
+          html += browseDocs.map(d => {
+            const date = d.created_at ? d.created_at.split('T')[0] : '';
+            return `<div class="result-item" onclick="window.open('${d.source_url || '#'}', '_blank')">
+              ${d.title}
+              <div class="result-snippet">${date}${d.snippet ? ' — ' + d.snippet.slice(0, 80) : ''}</div>
+            </div>`;
+          }).join('');
+          results.innerHTML = html;
+          results.classList.add('visible');
+          return;
+        }
 
         // Handle status: prefix — show matching projects
         if (q.startsWith('status:')) {
