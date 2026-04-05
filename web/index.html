@@ -1200,8 +1200,46 @@
       document.querySelectorAll('#search .filter-chip').forEach(c => c.classList.remove('active'));
       btn.classList.add('active');
       searchSourceFilter = btn.dataset.source;
-      // Re-trigger search
+
+      // Apply source filter to the graph
+      applySourceFilter(searchSourceFilter);
+
+      // Re-trigger search if there's a query
       document.getElementById('searchInput').dispatchEvent(new Event('input'));
+    }
+
+    function applySourceFilter(source) {
+      if (currentView === 'graph') {
+        if (source === 'all') {
+          // Reset: show everything
+          g.selectAll('g > g').attr('opacity', 1);
+          g.selectAll('.node-label').attr('opacity', d => d && d.doc_count >= 5 ? 0.9 : 0);
+          linkEls.attr('stroke-opacity', 0.08);
+        } else {
+          // Find which doc IDs match this source
+          const sourceDocs = new Set(
+            (graphData.allDocuments || graphData.documents)
+              .filter(d => d.source === source)
+              .map(d => d.id)
+          );
+          // Build node -> all doc IDs lookup (unfiltered)
+          const nodeAllDocs = {};
+          (graphData.allNodes || graphData.nodes || []).forEach(n => { nodeAllDocs[n.id] = n.doc_ids || []; });
+          // Highlight nodes that have at least one doc from this source
+          g.selectAll('g > g').each(function(d) {
+            if (!d) return;
+            const allDocIds = nodeAllDocs[d.id] || d.doc_ids || [];
+            const hasSource = allDocIds.some(id => sourceDocs.has(id));
+            d3.select(this).attr('opacity', hasSource ? 1 : 0.08);
+            d3.select(this).select('.node-label').attr('opacity', hasSource ? 1 : 0);
+          });
+          linkEls.attr('stroke-opacity', 0.02);
+        }
+      } else if (currentView === 'timeline') {
+        renderTimeline();
+      } else if (currentView === 'report') {
+        updateReport();
+      }
     }
 
     function setupSearch() {
