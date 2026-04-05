@@ -13,7 +13,54 @@ Build a knowledge graph from everything you work on — Google Docs, Confluence,
 5. **Search** everything with full-text search across all sources
 6. **Generate AI summaries** of your work for any time period
 
-## Quick start
+## Quick start for Datadog employees
+
+If you're at DD, you already have access to the Google Workspace and Atlassian MCP servers via Claude Code. No GCP project, no API tokens, no OAuth needed.
+
+### 1. Install
+
+```bash
+git clone https://github.com/capmann/LifeGraph.git
+cd LifeGraph
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e .
+```
+
+### 2. Fetch your docs via MCP
+
+Open Claude Code in this repo and paste:
+
+> Fetch all my Google Docs and Confluence pages for LifeGraph. Use the Google Workspace MCP to search my docs (`mimeType = 'application/vnd.google-apps.document'`, max 100), read each one, and save to `scripts/mcp_output/google_docs.json`. Then use the Atlassian MCP to search my Confluence pages (`type = page AND contributor = currentUser()`, max 100), get each page body, and save to `scripts/mcp_output/confluence_pages.json`. See `scripts/fetch_my_docs.md` for the exact format.
+
+Claude will use the MCPs to pull everything and save JSON files.
+
+### 3. Sync, extract, visualize
+
+```bash
+python scripts/sync_mcp.py            # Import MCP results into DB
+lifegraph extract                      # Extract topics with Claude
+lifegraph graph                        # Build the knowledge graph
+lifegraph serve                        # Open http://localhost:8042
+```
+
+### 4. Discover who's working on similar topics
+
+```bash
+# In Claude Code, ask it to search Confluence for pages related to your topics
+# and save them with author info — or run:
+lifegraph sync confluence-discover     # Needs CONFLUENCE_* env vars
+```
+
+Then click the **People** tab in the UI to see who across DD is writing about the same things you are.
+
+### 5. Keep it updated
+
+Re-run step 2-3 anytime, or set up the GitHub Action for daily auto-sync (see below).
+
+---
+
+## Full setup (non-Datadog / manual)
 
 ### 1. Install
 
@@ -163,12 +210,13 @@ You can re-run these commands anytime to pull in new data. Each `sync` is increm
 
 ### 5. Explore
 
-The web UI has 5 views:
+The web UI has 6 views:
 
 - **Graph** — Interactive force-directed graph of topic clusters. Click nodes to see documents, hover to highlight connections. Use category filters (top-right) to focus on specific areas — click multiple to combine.
 - **Timeline** — Documents plotted by date and topic.
 - **Report** — Documents grouped by topic category for a date range. Sections are collapsible. Switch to **Summary** mode and click **Generate Summary** to get an AI-written work update.
 - **Projects** — Card grid of all projects with status badges, phase indicators (Planning/Building/Shipped), doc counts, Jira tickets, and GitHub items. Filter by status or phase.
+- **People** — Discover who else is working on similar topics. Shows other authors from Confluence who share topics with your graph, sorted by overlap. Click a person to see their docs. Great for breaking silos.
 - **Overview** — Compact category breakdown with top topics.
 
 ## CLI reference
@@ -178,6 +226,7 @@ The web UI has 5 views:
 | `lifegraph auth` | Authenticate with Google |
 | `lifegraph sync google-docs` | Fetch all your Google Docs |
 | `lifegraph sync confluence` | Fetch Confluence pages |
+| `lifegraph sync confluence-discover` | Discover Confluence pages by others related to your topics |
 | `lifegraph sync slack` | Fetch Slack threads as documents |
 | `lifegraph sync github` | Fetch your PRs, issues, and reviews |
 | `lifegraph extract` | Extract topics using Claude |

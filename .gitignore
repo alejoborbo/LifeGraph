@@ -21,6 +21,7 @@ token.json
 # Personal data
 manifest.json
 web/graph.json
+scripts/mcp_output/
 
 # Temp
 tmp_mcp_results/
