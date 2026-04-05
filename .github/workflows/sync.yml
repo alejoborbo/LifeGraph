@@ -1,0 +1,123 @@
+name: Sync & Deploy
+
+on:
+  schedule:
+    - cron: '0 6 * * *'  # Daily at 6am UTC
+  workflow_dispatch:       # Manual trigger from GitHub UI
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main (code)
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: code
+
+      - name: Checkout gh-pages (data + site)
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: site
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          cd code
+          pip install -e .
+
+      - name: Restore database from gh-pages
+        run: |
+          if [ -f site/lifegraph.db ]; then
+            cp site/lifegraph.db code/lifegraph.db
+            echo "Restored existing database"
+          else
+            echo "No existing database — starting fresh"
+          fi
+
+      - name: Sync Google Docs
+        if: env.GOOGLE_TOKEN_JSON != ''
+        working-directory: code
+        env:
+          GOOGLE_TOKEN_JSON: ${{ secrets.GOOGLE_TOKEN_JSON }}
+          GOOGLE_CREDENTIALS_JSON: ${{ secrets.GOOGLE_CREDENTIALS_JSON }}
+        run: |
+          echo "$GOOGLE_CREDENTIALS_JSON" > credentials.json
+          echo "$GOOGLE_TOKEN_JSON" > token.json
+          lifegraph sync google-docs || echo "Google Docs sync failed — skipping"
+
+      - name: Sync Confluence
+        if: env.CONFLUENCE_URL != ''
+        working-directory: code
+        env:
+          CONFLUENCE_URL: ${{ secrets.CONFLUENCE_URL }}
+          CONFLUENCE_EMAIL: ${{ secrets.CONFLUENCE_EMAIL }}
+          CONFLUENCE_API_TOKEN: ${{ secrets.CONFLUENCE_API_TOKEN }}
+          CONFLUENCE_SPACE_KEY: ${{ secrets.CONFLUENCE_SPACE_KEY }}
+        run: lifegraph sync confluence || echo "Confluence sync failed — skipping"
+
+      - name: Sync Slack
+        if: env.SLACK_TOKEN != ''
+        working-directory: code
+        env:
+          SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
+          SLACK_CHANNELS: ${{ secrets.SLACK_CHANNELS }}
+          SLACK_WORKSPACE_URL: ${{ secrets.SLACK_WORKSPACE_URL }}
+        run: lifegraph sync slack || echo "Slack sync failed — skipping"
+
+      - name: Sync GitHub
+        working-directory: code
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_SYNC_TOKEN }}
+        run: |
+          if [ -n "$GITHUB_TOKEN" ]; then
+            lifegraph sync github || echo "GitHub sync failed — skipping"
+          else
+            echo "No GH_SYNC_TOKEN — skipping GitHub sync"
+          fi
+
+      - name: Extract topics
+        working-directory: code
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: lifegraph extract --limit 20  # Process up to 20 new docs per run
+
+      - name: Seed projects & compute phases
+        working-directory: code
+        run: |
+          python scripts/seed_projects.py
+          lifegraph compute-phases
+
+      - name: Build graph
+        working-directory: code
+        run: |
+          lifegraph graph
+          lifegraph rebuild-fts
+
+      - name: Deploy to gh-pages
+        working-directory: site
+        run: |
+          # Copy updated files
+          cp ../code/web/index.html index.html
+          cp ../code/web/graph.json graph.json
+          cp ../code/web/graph.empty.json graph.empty.json
+          cp ../code/lifegraph.db lifegraph.db
+
+          # Commit and push
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --staged --quiet; then
+            echo "No changes to deploy"
+          else
+            git commit -m "Auto-sync: $(date -u '+%Y-%m-%d %H:%M') UTC"
+            git push
+          fi

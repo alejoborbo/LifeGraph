@@ -196,6 +196,28 @@ The web UI has 5 views:
 | `lifegraph status` | Show document counts by source |
 | `lifegraph rebuild-fts` | Rebuild full-text search index |
 
+## Auto-sync with GitHub Actions
+
+A GitHub Action runs daily at 6am UTC to sync all sources, extract topics, rebuild the graph, and redeploy to GitHub Pages. You can also trigger it manually from the Actions tab.
+
+To enable it, add these secrets in your repo (**Settings > Secrets and variables > Actions**):
+
+| Secret | Required | Description |
+|---|---|---|
+| `ANTHROPIC_API_KEY` | Yes | Claude API key for topic extraction |
+| `GH_SYNC_TOKEN` | For GitHub | Personal access token (needs `repo` scope) |
+| `GOOGLE_TOKEN_JSON` | For Google Docs | Contents of your `token.json` after first `lifegraph auth` |
+| `GOOGLE_CREDENTIALS_JSON` | For Google Docs | Contents of your `credentials.json` |
+| `CONFLUENCE_URL` | For Confluence | Your Confluence base URL |
+| `CONFLUENCE_EMAIL` | For Confluence | Your email |
+| `CONFLUENCE_API_TOKEN` | For Confluence | API token |
+| `CONFLUENCE_SPACE_KEY` | For Confluence | Optional space filter |
+| `SLACK_TOKEN` | For Slack | Bot token |
+| `SLACK_CHANNELS` | For Slack | Comma-separated channel names |
+| `SLACK_WORKSPACE_URL` | For Slack | e.g. `https://yourteam.slack.com` |
+
+Only add the secrets for connectors you use — the action skips any that aren't configured. To get your Google token, run `lifegraph auth` locally first, then paste the contents of `token.json` as the `GOOGLE_TOKEN_JSON` secret.
+
 ## Architecture
 
 ```
