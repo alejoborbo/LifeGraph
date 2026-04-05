@@ -195,10 +195,11 @@ def sync_github_discover(top_topics, max_results):
         click.echo(f"  Searching: {topic}...", nl=False)
 
         try:
+            # Use gh api to search issues/PRs in repos you have access to
+            import urllib.parse
+            q = urllib.parse.quote(f"{topic} org:DataDog")
             result = subprocess.run(
-                ["gh", "search", "issues", topic, "--owner=DataDog",
-                 "--limit", str(per_topic), "--json",
-                 "number,title,url,author,repository,state,createdAt,body"],
+                ["gh", "api", f"search/issues?q={q}&per_page={per_topic}&sort=updated"],
                 capture_output=True, text=True, timeout=30
             )
             if result.returncode != 0:
@@ -206,21 +207,24 @@ def sync_github_discover(top_topics, max_results):
                 continue
 
             import json
-            items = json.loads(result.stdout)
+            data = json.loads(result.stdout)
+            items = data.get("items", []) if isinstance(data, dict) else data
         except Exception as e:
             click.echo(f" error: {e}")
             continue
 
         count = 0
         for item in items:
-            repo = item.get("repository", {}).get("nameWithOwner", "")
+            # gh api returns repository_url like "https://api.github.com/repos/DataDog/dd-source"
+            repo_url = item.get("repository_url", "")
+            repo = "/".join(repo_url.rstrip("/").split("/")[-2:]) if repo_url else ""
             number = item.get("number", "")
             source_id = f"gh-discover:{repo}#{number}"
             if source_id in seen or document_exists("github", source_id):
                 continue
             seen.add(source_id)
 
-            author = item.get("author", {}).get("login", "")
+            author = (item.get("user") or {}).get("login", "")
             body = (item.get("body") or "")[:2000]
 
             doc = Document(
@@ -228,8 +232,8 @@ def sync_github_discover(top_topics, max_results):
                 title=f"[{repo}] {item.get('title', '')}",
                 source="github",
                 source_id=source_id,
-                source_url=item.get("url", ""),
-                created_at=item.get("createdAt"),
+                source_url=item.get("html_url", item.get("url", "")),
+                created_at=item.get("created_at", item.get("createdAt")),
                 fetched_at=datetime.now(timezone.utc).isoformat(),
                 raw_text=f"{item.get('title', '')}\n\n{body}",
                 author=author,

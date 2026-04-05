@@ -3,7 +3,7 @@
     {
       "id": 1,
       "name": "Monitoring Posture & Coverage",
-      "doc_count": 88,
+      "doc_count": 83,
       "doc_ids": [
         1,
         6,
@@ -85,14 +85,9 @@
         206,
         207,
         208,
-        209,
-        211,
-        215,
-        216,
-        217,
-        219,
-        220,
-        222
+        234,
+        251,
+        252
       ],
       "category": "posture",
       "trend": [
@@ -126,7 +121,7 @@
         },
         {
           "month": "2025-12",
-          "count": 6
+          "count": 5
         },
         {
           "month": "2026-01",
@@ -138,11 +133,11 @@
         },
         {
           "month": "2026-03",
-          "count": 28
+          "count": 25
         },
         {
           "month": "2026-04",
-          "count": 2
+          "count": 5
         }
       ],
       "is_new": false
@@ -150,7 +145,7 @@
     {
       "id": 2,
       "name": "Datadog-Managed Monitors",
-      "doc_count": 63,
+      "doc_count": 65,
       "doc_ids": [
         1,
         2,
@@ -214,7 +209,9 @@
         203,
         204,
         205,
-        221
+        233,
+        234,
+        251
       ],
       "category": "automation",
       "trend": [
@@ -264,7 +261,7 @@
         },
         {
           "month": "2026-04",
-          "count": 3
+          "count": 6
         }
       ],
       "is_new": false
@@ -433,7 +430,7 @@
     {
       "id": 5,
       "name": "Threshold & Configuration",
-      "doc_count": 21,
+      "doc_count": 24,
       "doc_ids": [
         1,
         13,
@@ -455,7 +452,10 @@
         186,
         187,
         189,
-        206
+        206,
+        235,
+        266,
+        269
       ],
       "category": "automation",
       "trend": [
@@ -485,15 +485,15 @@
         },
         {
           "month": "2026-02",
-          "count": 4
+          "count": 5
         },
         {
           "month": "2026-03",
-          "count": 8
+          "count": 9
         },
         {
           "month": "2026-04",
-          "count": 1
+          "count": 2
         }
       ],
       "is_new": false
@@ -1564,7 +1564,7 @@
     {
       "source": 1,
       "target": 2,
-      "weight": 33,
+      "weight": 35,
       "doc_ids": [
         1,
         6,
@@ -1598,7 +1598,9 @@
         194,
         202,
         203,
-        204
+        204,
+        234,
+        251
       ]
     },
     {
@@ -4450,93 +4452,73 @@
       "is_new": false
     },
     {
-      "id": 209,
-      "title": "[vrwmiller/outdoorsportsclub] chore: close monitoring coverage gaps before prod launch (ODQ #20)",
+      "id": 233,
+      "title": "[DataDog/dd-source] feat(coverag-controller): compute stats for Datadog Managed Monitors (MOPU-406)",
       "source": "github",
-      "source_url": "https://github.com/vrwmiller/outdoorsportsclub/issues/83",
-      "created_at": "2026-03-22T03:12:05Z",
-      "author": "vrwmiller",
-      "snippet": "chore: close monitoring coverage gaps before prod launch (ODQ #20)  ## Summary  Section 10 of the design defines Lambda structured logging, three CloudWatch Alarms (Lambda error rate, API Gateway 5xx,",
+      "source_url": "https://github.com/DataDog/dd-source/pull/402553",
+      "created_at": "2026-04-04T16:45:46Z",
+      "author": "alejoborbo",
+      "snippet": "feat(coverag-controller): compute stats for Datadog Managed Monitors (MOPU-406)  Compute stats to track Datadog Managed monitors, and send them as metrics.\r \r This PR implements the `statsReporter` us",
       "is_new": true
     },
     {
-      "id": 211,
-      "title": "[lukwam/gcf-slack-endpoint] Add a tool for monitoring coverage",
+      "id": 234,
+      "title": "[DataDog/dd-source] feat(coverage-controller): fetch datadog managed monitors (MOPU-406)",
       "source": "github",
-      "source_url": "https://github.com/lukwam/gcf-slack-endpoint/issues/2",
-      "created_at": "2020-08-13T22:42:22Z",
-      "author": "lukwam",
-      "snippet": "Add a tool for monitoring coverage",
+      "source_url": "https://github.com/DataDog/dd-source/pull/402552",
+      "created_at": "2026-04-04T16:44:38Z",
+      "author": "alejoborbo",
+      "snippet": "feat(coverage-controller): fetch datadog managed monitors (MOPU-406)  Fetch Datadog Managed monitors using the retriever. Datadog Managed monitors are fetched from the `caniche.alerting.datadog_manage",
       "is_new": true
     },
     {
-      "id": 215,
-      "title": "[hkreik/macro-dashboard] [Code Quality Monitor] Quality Issues Detected - 2026-03-07",
+      "id": 235,
+      "title": "[DataDog/dd-source] feat(dbm-recommendations): suppress recommendations for indexes already in use",
       "source": "github",
-      "source_url": "https://github.com/hkreik/macro-dashboard/issues/1",
-      "created_at": "2026-03-07T22:04:35Z",
-      "author": "hkreik",
-      "snippet": "[Code Quality Monitor] Quality Issues Detected - 2026-03-07  ## Code Quality Monitor Report  **Scan Time:** 2026-03-07 22:04 UTC **Repo:** hkreik/macro-dashboard  ---  ## CRITICAL: CI Pipeline Never T",
+      "source_url": "https://github.com/DataDog/dd-source/pull/402440",
+      "created_at": "2026-04-03T21:20:56Z",
+      "author": "edengorevoy",
+      "snippet": "feat(dbm-recommendations): suppress recommendations for indexes already in use  ## Summary  - Adds `ObservedIndex` struct and `CollectIndexesInUse` function to the algorithms package \u2014 traverses all I",
       "is_new": true
     },
     {
-      "id": 216,
-      "title": "[dcasota/photonos-scripts] Monitor quality improvements over multiple runs",
+      "id": 251,
+      "title": "[DataDog/dd-source] refactor(monitor-posture): fetch Datadog Managed Monitors from retriever (MOPU-406)",
       "source": "github",
-      "source_url": "https://github.com/dcasota/photonos-scripts/issues/47",
-      "created_at": "2025-12-15T14:02:34Z",
-      "author": "dcasota",
-      "snippet": "Monitor quality improvements over multiple runs  ## Task Description Long-term monitoring of quality metrics across multiple automated runs.  ## Monitoring Plan 1. Track metrics per run:    - Overall",
+      "source_url": "https://github.com/DataDog/dd-source/pull/401774",
+      "created_at": "2026-04-03T14:14:22Z",
+      "author": "alejoborbo",
+      "snippet": "refactor(monitor-posture): fetch Datadog Managed Monitors from retriever (MOPU-406)  Fetch Datadog-Managed monitors from the Coverage Controller",
       "is_new": true
     },
     {
-      "id": 217,
-      "title": "[Alzamanan/lab-agile-planning] Monitor Quality ",
+      "id": 252,
+      "title": "[DataDog/dd-source] refactor(monitor-posture): put fetcher in shared library (MOPU-406)",
       "source": "github",
-      "source_url": "https://github.com/Alzamanan/lab-agile-planning/issues/5",
-      "created_at": "2022-08-23T19:22:23Z",
-      "author": "Alzamanan",
-      "snippet": "Monitor Quality",
+      "source_url": "https://github.com/DataDog/dd-source/pull/401680",
+      "created_at": "2026-04-03T13:17:26Z",
+      "author": "alejoborbo",
+      "snippet": "refactor(monitor-posture): put fetcher in shared library (MOPU-406)  ## Summary  - Moves `Fetcher[T]` and all data types (`MonitorResource`, `MonitorWithGroups`, `Group`, `MonitorsPerService`, `Monito",
       "is_new": true
     },
     {
-      "id": 219,
-      "title": "[CDCgov/prime-reportstream] Data monitoring & quality research",
+      "id": 266,
+      "title": "[DataDog/dd-analytics] [AAITTSE-1050] Add threshold-based outage detection models with model-agnostic training pipeline",
       "source": "github",
-      "source_url": "https://github.com/CDCgov/prime-reportstream/issues/1362",
-      "created_at": "2021-06-22T13:18:18Z",
-      "author": "drew-usds",
-      "snippet": "Data monitoring & quality research  ### Documents  - https://docs.google.com/document/d/1sAhymSXICnNZo06efkrgaseVPrhxU96d7X11i0XxR8Y/edit?usp=sharing",
+      "source_url": "https://github.com/DataDog/dd-analytics/pull/61592",
+      "created_at": "2026-02-05T15:18:33Z",
+      "author": "marcelosancor-dd",
+      "snippet": "[AAITTSE-1050] Add threshold-based outage detection models with model-agnostic training pipeline  ## What does this PR do?  Adds new outage detection model families to the EPS (External Provider Statu",
       "is_new": true
     },
     {
-      "id": 220,
-      "title": "[RTGS-Lab/Firmware_-_FlightControl] Improve battery monitoring quality",
+      "id": 269,
+      "title": "[DataDog/dd-analytics] Add generic score threshold for EPS evaluation pipeline",
       "source": "github",
-      "source_url": "https://github.com/RTGS-Lab/Firmware_-_FlightControl/issues/7",
-      "created_at": "2023-11-08T15:20:48Z",
-      "author": "bschulz1701",
-      "snippet": "Improve battery monitoring quality  ## Issue:\r Battery reporting often drifts and despite a high charge state (>4V) the SoC is reported as less than 10%\r \r This could be because of being kept at a hig",
-      "is_new": true
-    },
-    {
-      "id": 221,
-      "title": "[mojtaba-eshghie/HighGuard] Implement CLI tool for automatic monitor creation and running. ",
-      "source": "github",
-      "source_url": "https://github.com/mojtaba-eshghie/HighGuard/issues/30",
-      "created_at": "2023-09-16T15:38:15Z",
-      "author": "mojtaba-eshghie",
-      "snippet": "Implement CLI tool for automatic monitor creation and running.",
-      "is_new": true
-    },
-    {
-      "id": 222,
-      "title": "[CultureSpatial/Vinejocketandwinedigitas] Admin posture: tenant onboarding, secret management, monitoring, offboarding",
-      "source": "github",
-      "source_url": "https://github.com/CultureSpatial/Vinejocketandwinedigitas/issues/37",
-      "created_at": "2026-03-29T05:33:06Z",
-      "author": "cultura-d",
-      "snippet": "Admin posture: tenant onboarding, secret management, monitoring, offboarding  ## Purpose  Defines the operational procedures for administering the multi-tenant Execution Substrate. Covers: new tenant",
+      "source_url": "https://github.com/DataDog/dd-analytics/pull/64724",
+      "created_at": "2026-03-10T16:43:00Z",
+      "author": "jgoriasilva",
+      "snippet": "Add generic score threshold for EPS evaluation pipeline  <!--\u2702\ufe0f You can also use the following templates by adding `&templateName` to the URL before creating the PR ``` &template=data-science-engineer",
       "is_new": true
     }
   ],
@@ -6724,9 +6706,9 @@
   ],
   "diff": {
     "new_nodes": 0,
-    "new_docs": 9,
+    "new_docs": 7,
     "new_edges": 0,
     "node_names": [],
-    "generated_at": "2026-04-05T23:44:01.041192+00:00"
+    "generated_at": "2026-04-05T23:49:48.801082+00:00"
   }
 }
