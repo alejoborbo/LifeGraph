@@ -386,15 +386,31 @@
       margin-bottom: 32px; padding: 24px; border-radius: 16px;
       border: 1px solid #6366f133; background: linear-gradient(135deg, #0f0f1a 0%, #12122a 100%);
     }
+    .suggestions-toggle {
+      display: flex; align-items: center; justify-content: space-between;
+      cursor: pointer; user-select: none; margin-bottom: 16px;
+    }
+    .suggestions-toggle:hover .suggestions-header { color: #c4b5fd; }
+    .suggestions-toggle .collapse-arrow {
+      font-size: 10px; color: #555; transition: transform 0.2s;
+    }
+    .suggestions-toggle .collapse-arrow.collapsed { transform: rotate(-90deg); }
     .suggestions-header {
-      font-size: 18px; font-weight: 700; color: #a78bfa; margin-bottom: 4px;
+      font-size: 18px; font-weight: 700; color: #a78bfa; margin-bottom: 4px; transition: color 0.15s;
+    }
+    .suggestions-count {
+      font-size: 13px; font-weight: 500; color: #6366f1;
+      background: #6366f122; padding: 2px 8px; border-radius: 10px; margin-left: 8px;
     }
     .suggestions-sub {
-      font-size: 12px; color: #555; margin-bottom: 16px;
+      font-size: 12px; color: #555;
     }
     .suggestions-grid {
       display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px;
+      overflow: hidden; transition: max-height 0.3s ease, opacity 0.3s ease;
+      max-height: 2000px; opacity: 1;
     }
+    .suggestions-grid.collapsed { max-height: 0; opacity: 0; margin: 0; }
     .suggestion-card {
       display: flex; align-items: center; gap: 14px;
       padding: 14px 18px; border-radius: 12px; cursor: pointer;
@@ -1960,9 +1976,14 @@
       // Suggestions section
       if (suggestions.length > 0 && !searchQuery) {
         html += `<div class="suggestions-section">
-          <div class="suggestions-header">You should talk to...</div>
-          <div class="suggestions-sub">People working on your topics that you haven't interacted with yet</div>
-          <div class="suggestions-grid">`;
+          <div class="suggestions-toggle" onclick="document.getElementById('suggestGrid').classList.toggle('collapsed'); this.querySelector('.collapse-arrow').classList.toggle('collapsed')">
+            <div>
+              <div class="suggestions-header">You should talk to... <span class="suggestions-count">${suggestions.length}</span></div>
+              <div class="suggestions-sub">People working on your topics that you haven't interacted with yet</div>
+            </div>
+            <span class="collapse-arrow">&#9660;</span>
+          </div>
+          <div class="suggestions-grid" id="suggestGrid">`;
         suggestions.forEach(person => {
           const initials = person.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
           const color = nameColor(person.name);
