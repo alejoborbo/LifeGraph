@@ -1945,7 +1945,7 @@
       else if (sortBy === 'recent') filtered.sort((a, b) => (b.latestDate || '').localeCompare(a.latestDate || ''));
 
       // Split into suggestions (unknown + high overlap) and everyone else
-      const suggestions = filtered.filter(p => !p.isKnown && p.sharedCount >= 2);
+      const suggestions = filtered.filter(p => !p.isKnown && p.sharedCount >= 1);
       const rest = filtered.filter(p => p.isKnown || p.sharedCount < 2);
 
       document.getElementById('peopleSub').textContent =
@@ -2002,7 +2002,7 @@
 
         const badge = person.isKnown
           ? ''
-          : (person.sharedCount >= 2 ? `<div class="person-suggested">suggested</div>` : '');
+          : (person.sharedCount >= 1 ? `<div class="person-suggested">suggested</div>` : '');
 
         return `<div class="person-card ${isExpanded ? 'expanded' : ''}" onclick="togglePerson('${person.name.replace(/'/g, "\\'")}')">
           <div class="person-top">
