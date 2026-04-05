@@ -943,32 +943,6 @@
         .attr('font-weight', 600)
         .style('pointer-events', 'none');
 
-      // Sparkline trends (below node)
-      nodeGroup.each(function(d) {
-        const trend = d.trend || [];
-        if (trend.length < 2) return;
-        const sparkW = Math.max(24, sizeScale(d.doc_count) * 2);
-        const sparkH = 10;
-        const counts = trend.map(t => t.count);
-        const maxC = Math.max(...counts, 1);
-        const xS = d3.scaleLinear().domain([0, counts.length - 1]).range([-sparkW/2, sparkW/2]);
-        const yS = d3.scaleLinear().domain([0, maxC]).range([sparkH, 0]);
-        const line = d3.line().x((v, i) => xS(i)).y(v => yS(v)).curve(d3.curveMonotoneX);
-        const sparkG = d3.select(this).append('g')
-          .attr('transform', `translate(0, ${sizeScale(d.doc_count) + 6})`);
-        sparkG.append('path')
-          .attr('d', line(counts))
-          .attr('fill', 'none')
-          .attr('stroke', catColors[d.category] || '#555')
-          .attr('stroke-width', 1.5)
-          .attr('stroke-opacity', 0.6);
-        // Dot on last value
-        sparkG.append('circle')
-          .attr('cx', xS(counts.length - 1))
-          .attr('cy', yS(counts[counts.length - 1]))
-          .attr('r', 2)
-          .attr('fill', catColors[d.category] || '#555');
-      });
 
       simulation.on('tick', () => {
         linkEls

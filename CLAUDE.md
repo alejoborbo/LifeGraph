@@ -6,7 +6,13 @@ LifeGraph is a personal knowledge graph that visualizes what someone works on ac
 
 Run the full setup automatically. Do all steps — don't ask, just do it.
 
-### Step 1: Fetch their documents via MCP
+### Step 1: Install
+
+```bash
+pip install -e . -q
+```
+
+### Step 2: Fetch documents via MCP
 
 Create `scripts/mcp_output/` directory, then fetch from all available sources:
 
@@ -25,7 +31,6 @@ Create `scripts/mcp_output/` directory, then fetch from all available sources:
 ```json
 [{"id": "page_id", "title": "Page Title", "html": "<p>body html...</p>", "url": "https://...", "created_at": "2026-01-01T00:00:00Z", "author": "Author Name"}]
 ```
-For author names: personal spaces have the person's name in `resultGlobalContainer.title`.
 
 **Jira** — use Atlassian MCP:
 1. `mcp__datadog-atlassian__search_issues` with `jql: "assignee = currentUser() OR reporter = currentUser() ORDER BY updated DESC"`, `max_results: 100`
@@ -34,28 +39,58 @@ For author names: personal spaces have the person's name in `resultGlobalContain
 [{"key": "PROJ-123", "title": "Issue title", "status": "In Progress", "priority": "High", "assignee": "username", "project_name": "Project Name", "url": "https://datadoghq.atlassian.net/browse/PROJ-123", "created_at": "2026-01-01T00:00:00Z"}]
 ```
 
-**GitHub** — handled automatically by `sync_mcp.py` via the `gh` CLI (no MCP needed). If the user has `gh` installed and authenticated, it just works.
+**GitHub** — handled automatically by `sync_mcp.py` via the `gh` CLI (no MCP needed).
 
-**Slack** — requires a bot token. Skip unless the user has `SLACK_TOKEN` in .env.
-
-### Step 2: Install deps and run setup
+### Step 3: Import into DB
 
 ```bash
-pip install -e . -q
-python setup_my_graph.py
+python scripts/sync_mcp.py
 ```
 
-This imports MCP output + GitHub, extracts topics, builds the graph, and opens the UI.
+### Step 4: Extract topics (YOU do this — no API key needed)
 
-### Step 3: Discover related docs by others
+For each document in the DB that doesn't have topics yet, extract 2-10 specific topics with relevance scores. Do this yourself (you ARE the LLM) instead of calling the Anthropic API.
 
-After the graph is built, search Confluence for pages by OTHER people that match the user's top topics. This powers the "People" tab — the silo-breaking feature.
+1. Read documents without topics:
+```python
+from lifegraph.db import get_documents_without_topics
+docs = get_documents_without_topics()
+```
 
-1. Get the user's top 10 topics from the DB
-2. For each topic, search Confluence: `mcp__datadog-atlassian__search_content` with `cql: "type = page AND text ~ \"topic name\" ORDER BY lastmodified DESC"`, `max_results: 10`
-3. For interesting results (from personal spaces = individual authors), call `mcp__datadog-atlassian__get_page` to get content
-4. Insert into DB with author info using a Python script (see previous conversations for pattern)
-5. Link to existing topics, rebuild graph: `lifegraph graph`
+2. For each document, decide on 2-10 specific topics (e.g. "Datadog Log Pipelines", "Monitor Alert Fatigue") with relevance 0.0-1.0. Topics should be specific, not vague.
+
+3. Save to `scripts/mcp_output/topics.json`:
+```json
+[{"doc_id": 123, "topics": [{"topic": "Specific Topic Name", "relevance": 0.9}, ...]}, ...]
+```
+
+4. Run: `python scripts/extract_topics_inline.py`
+
+### Step 5: Auto-cluster topics (YOU do this too)
+
+Group all topic names into 15-40 meaningful clusters. Save to `scripts/mcp_output/clusters.json`:
+```json
+{"clusters": {"Cluster Name": {"topics": ["Topic A", "Topic B"], "category": "posture"}, ...}}
+```
+Categories: posture, automation, strategy, ux, team, teaching, code, personal, other
+
+Then run: `python scripts/auto_cluster_inline.py`
+
+### Step 6: Build and serve
+
+```bash
+lifegraph graph
+lifegraph serve
+```
+
+### Step 7: Discover related docs by others
+
+Search Confluence for pages by OTHER people that match the user's top topics. This powers the "People" tab.
+
+1. Get top topics from DB
+2. For each, search Confluence across all spaces
+3. Insert results with author info
+4. Rebuild graph: `lifegraph graph`
 
 ## Architecture notes
 
@@ -63,6 +98,5 @@ After the graph is built, search Confluence for pages by OTHER people that match
 - Frontend: static HTML + D3.js in `web/index.html` (no build step)
 - Graph/Timeline/Report/Projects views = personal docs only
 - People view = other authors' docs that share topics with the user
-- Topic extraction uses Claude API (needs ANTHROPIC_API_KEY)
+- No API key needed — Claude Code handles topic extraction and clustering directly
 - `web/graph.json` is the bridge between backend and frontend
-- `lifegraph digest` sends weekly Slack notifications about new related docs (needs DIGEST_SLACK_WEBHOOK)

@@ -15,7 +15,7 @@ Build a knowledge graph from everything you work on — Google Docs, Confluence,
 
 ## Quick start for Datadog employees
 
-No GCP project, no API tokens, no OAuth. Just Claude Code.
+No GCP project, no API keys, no OAuth, no config files. Just Claude Code.
 
 ```bash
 git clone https://github.com/capmann/LifeGraph.git
@@ -31,7 +31,8 @@ That's it. Claude will:
 2. Fetch your **Confluence pages** via the Atlassian MCP
 3. Fetch your **Jira issues** via the Atlassian MCP
 4. Fetch your **GitHub PRs/issues** via the `gh` CLI (if installed)
-5. Extract topics, build the graph, and open the UI
+5. Extract topics and auto-cluster them (Claude Code IS the LLM — no API key needed)
+6. Build the graph and open the UI
 
 Click the **People** tab to see who across DD is working on the same topics as you.
 
