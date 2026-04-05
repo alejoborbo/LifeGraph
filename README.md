@@ -1,14 +1,17 @@
 # LifeGraph
 
-Build a knowledge graph from all the documents you've written across Google Docs, Confluence, and more. Visualize your content as an interactive graph organized by topics.
+Build a knowledge graph from everything you work on — Google Docs, Confluence, Slack, GitHub, Jira — and visualize it as an interactive graph organized by topics and projects.
 
 ![LifeGraph](https://img.shields.io/badge/python-3.10+-blue) ![License](https://img.shields.io/badge/license-MIT-green)
 
 ## How it works
 
-1. **Connect** your Google Docs (more connectors coming)
+1. **Connect** your sources (Google Docs, Confluence, Slack, GitHub)
 2. **Extract** topics from each document using Claude
-3. **Visualize** an interactive knowledge graph in your browser -- topics are nodes, shared documents are edges
+3. **Visualize** an interactive knowledge graph — topics are nodes, shared documents are edges
+4. **Track projects** with auto-computed phases (Planning → Building → Shipped)
+5. **Search** everything with full-text search across all sources
+6. **Generate AI summaries** of your work for any time period
 
 ## Quick start
 
@@ -28,11 +31,24 @@ pip install -e .
 cp .env.example .env
 ```
 
-Edit `.env` and fill in:
-- **`ANTHROPIC_API_KEY`** -- get one at [console.anthropic.com](https://console.anthropic.com/)
-- **Google OAuth credentials** -- see below
+Edit `.env` and fill in the services you want to connect (you don't need all of them — start with one):
 
-### 3. Set up Google OAuth
+| Variable | Required | Description |
+|---|---|---|
+| `ANTHROPIC_API_KEY` | Yes | Claude API key from [console.anthropic.com](https://console.anthropic.com/) |
+| `GOOGLE_CREDENTIALS_PATH` | For Google Docs | OAuth credentials JSON (see below) |
+| `CONFLUENCE_URL` | For Confluence | Your Confluence base URL |
+| `CONFLUENCE_EMAIL` | For Confluence | Your email |
+| `CONFLUENCE_API_TOKEN` | For Confluence | API token from [Atlassian](https://id.atlassian.com/manage-profile/security/api-tokens) |
+| `SLACK_TOKEN` | For Slack | Bot token (see below) |
+| `SLACK_CHANNELS` | For Slack | Comma-separated channel names to sync |
+| `SLACK_WORKSPACE_URL` | For Slack | e.g. `https://yourteam.slack.com` |
+| `GITHUB_TOKEN` | For GitHub | Personal access token (or use `gh auth token`) |
+
+### 3. Set up your connectors
+
+<details>
+<summary><strong>Google Docs</strong></summary>
 
 1. Go to [Google Cloud Console](https://console.cloud.google.com/)
 2. Create a project (or select an existing one)
@@ -44,33 +60,99 @@ Edit `.env` and fill in:
    - Application type: **Desktop app**
    - Download the JSON file and save it as `credentials.json` in the project root
 
-### 4. Run the pipeline
+```bash
+lifegraph auth                 # Opens browser for OAuth
+lifegraph sync google-docs     # Fetches all your docs
+```
+</details>
+
+<details>
+<summary><strong>Confluence</strong></summary>
+
+1. Generate an API token at [Atlassian API tokens](https://id.atlassian.com/manage-profile/security/api-tokens)
+2. Add to `.env`: `CONFLUENCE_URL`, `CONFLUENCE_EMAIL`, `CONFLUENCE_API_TOKEN`
+3. Optionally set `CONFLUENCE_SPACE_KEY` to limit to one space
 
 ```bash
-# Authenticate with Google (opens browser)
-lifegraph auth
+lifegraph sync confluence
+```
+</details>
 
-# Sync your Google Docs
-lifegraph sync google-docs
+<details>
+<summary><strong>Slack</strong></summary>
 
-# Extract topics using Claude
+1. Create a Slack app at [api.slack.com/apps](https://api.slack.com/apps) — choose "From a manifest" and paste:
+
+```json
+{
+  "display_information": { "name": "LifeGraph" },
+  "oauth_config": {
+    "scopes": {
+      "bot": ["channels:history", "channels:read", "groups:history", "groups:read", "users:read"]
+    }
+  },
+  "settings": { "org_deploy_enabled": false, "socket_mode_enabled": false }
+}
+```
+
+2. Install to your workspace, copy the Bot User OAuth Token
+3. Add to `.env`: `SLACK_TOKEN`, `SLACK_CHANNELS`, `SLACK_WORKSPACE_URL`
+
+```bash
+lifegraph sync slack                    # Sync all configured channels
+lifegraph sync slack --channel general  # Sync a single channel
+```
+
+Slack threads become searchable documents — each thread (parent + replies) is stored as one document.
+</details>
+
+<details>
+<summary><strong>GitHub</strong></summary>
+
+Uses GitHub's search API to fetch all PRs you authored, issues you opened, and PRs you reviewed — across all repos you have access to.
+
+1. Create a token at [github.com/settings/tokens](https://github.com/settings/tokens) or use the GitHub CLI:
+
+```bash
+export GITHUB_TOKEN=$(gh auth token)
+```
+
+2. Add `GITHUB_TOKEN` to `.env`
+
+```bash
+lifegraph sync github
+```
+
+GitHub items are automatically matched to LifeGraph projects by keywords in the PR/issue title. You can also set explicit mappings in `.env`:
+
+```
+GITHUB_REPO_PROJECT_MAP={"DataDog/web-ui": "Monitoring Posture & Coverage"}
+```
+</details>
+
+### 4. Build the graph
+
+```bash
+# Extract topics from all documents using Claude
 lifegraph extract
 
-# Generate the graph
+# Build the knowledge graph
 lifegraph graph
 
-# Open the visualization
-open web/index.html
+# Start the local server
+lifegraph serve
+# Open http://localhost:8042
 ```
 
 ### 5. Explore
 
-Open `web/index.html` in your browser. You can:
-- **Hover** over nodes to see connections
-- **Click** a topic to see its documents
-- **Search** topics with the search bar
-- **Drag** nodes to rearrange the layout
-- **Zoom** and pan to explore
+The web UI has 5 views:
+
+- **Graph** — Interactive force-directed graph of topic clusters. Click nodes to see documents, hover to highlight connections. Use category filters (top-right) to focus on specific areas — click multiple to combine.
+- **Timeline** — Documents plotted by date and topic.
+- **Report** — Documents grouped by topic category for a date range. Sections are collapsible. Switch to **Summary** mode and click **Generate Summary** to get an AI-written work update.
+- **Projects** — Card grid of all projects with status badges, phase indicators (Planning/Building/Shipped), doc counts, Jira tickets, and GitHub items. Filter by status or phase.
+- **Overview** — Compact category breakdown with top topics.
 
 ## CLI reference
 
@@ -78,16 +160,36 @@ Open `web/index.html` in your browser. You can:
 |---|---|
 | `lifegraph auth` | Authenticate with Google |
 | `lifegraph sync google-docs` | Fetch all your Google Docs |
-| `lifegraph extract` | Extract topics from documents using Claude |
-| `lifegraph extract --limit N` | Process only N documents |
-| `lifegraph topics` | List all extracted topics |
+| `lifegraph sync confluence` | Fetch Confluence pages |
+| `lifegraph sync slack` | Fetch Slack threads as documents |
+| `lifegraph sync github` | Fetch your PRs, issues, and reviews |
+| `lifegraph extract` | Extract topics using Claude |
 | `lifegraph graph` | Export the knowledge graph to `web/graph.json` |
-| `lifegraph graph --min-edge N` | Set minimum co-occurrence threshold (default: 2) |
+| `lifegraph serve` | Start local web server (needed for AI summaries) |
+| `lifegraph search "query"` | Full-text search across all documents |
+| `lifegraph search "jira:posture"` | Search Jira tickets |
+| `lifegraph search "github:monitor"` | Search GitHub items |
+| `lifegraph search "status:active"` | Find projects by status |
+| `lifegraph summary --days 7` | Generate an AI work summary |
+| `lifegraph compute-phases` | Auto-compute project phases from artifacts |
+| `lifegraph projects` | List all projects |
+| `lifegraph project "name"` | Show project details |
+| `lifegraph set-status "name" shipped` | Update project status |
+| `lifegraph topics` | List all extracted topics |
 | `lifegraph status` | Show document counts by source |
+| `lifegraph rebuild-fts` | Rebuild full-text search index |
 
-## Roadmap
+## Architecture
 
-- [ ] Google Slides connector
-- [ ] Google Sheets connector
-- [ ] Confluence connector
-- [ ] Hosted web app (no local setup needed)
+```
+Google Docs ─┐
+Confluence ──┤
+Slack ───────┼──→ SQLite DB ──→ Claude API ──→ Topics ──→ graph.json ──→ D3.js UI
+GitHub ──────┤       ↑                                        ↑
+Jira ────────┘   FTS5 index                            AI summaries
+```
+
+- **Backend**: Python + SQLite + Click CLI
+- **Frontend**: Static HTML + D3.js (no build step)
+- **AI**: Claude API for topic extraction and work summaries
+- **Search**: SQLite FTS5 with BM25 ranking
