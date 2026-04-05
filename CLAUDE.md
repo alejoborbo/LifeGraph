@@ -90,12 +90,29 @@ lifegraph serve
 
 ### Step 7: Discover related docs by others
 
-Search Confluence for pages by OTHER people that match the user's top topics. This powers the "People" tab.
+Search across ALL sources for content by OTHER people that matches the user's topics. This powers the "People" tab and Insights.
 
-1. Get top topics from DB
-2. For each, search Confluence across all spaces
-3. Insert results with author info
-4. Rebuild graph: `lifegraph graph`
+**Confluence** — use Atlassian MCP:
+1. Get top 10 topics from DB
+2. For each topic, search: `mcp__datadog-atlassian__search_content` with `cql: "type = page AND text ~ \"topic name\" ORDER BY lastmodified DESC"`, max 10
+3. For results from personal spaces (author visible in `resultGlobalContainer.title`), call `get_page` for content
+4. Insert into DB with author info
+
+**GitHub** — use gh CLI:
+```bash
+lifegraph sync github-discover --top-topics 10
+```
+
+**Google Docs** — use Google Workspace MCP:
+1. For each top topic, search: `mcp__datadog-google-workspace-mcp__search_files` with `query: "fullText contains 'topic name'"`, max 10
+2. For each result, get content and check if it's by someone else (compare owner email)
+3. Save to `scripts/mcp_output/google_docs_others.json` with author info
+
+After all discovery:
+```bash
+lifegraph extract   # or do inline extraction (step 4)
+lifegraph graph
+```
 
 ## When the user says "prep me for my meeting with X" or similar
 

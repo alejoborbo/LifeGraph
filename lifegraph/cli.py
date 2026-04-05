@@ -158,6 +158,92 @@ def sync_confluence_discover(spaces, max_pages, top_topics):
     click.echo("Run 'lifegraph extract' to extract topics from new pages.")
 
 
+@sync.command("github-discover")
+@click.option("--top-topics", default=5, help="Number of top topics to search for.")
+@click.option("--max-results", default=50, help="Max results per topic query.")
+def sync_github_discover(top_topics, max_results):
+    """Discover GitHub PRs/issues by others related to your topics."""
+    import subprocess
+    from datetime import datetime, timezone
+    from lifegraph.db import upsert_document, document_exists
+    from lifegraph.models import Document
+
+    # Check gh CLI
+    try:
+        result = subprocess.run(["gh", "auth", "status"], capture_output=True, text=True, timeout=5)
+        if result.returncode != 0:
+            click.echo("Error: gh CLI not authenticated. Run 'gh auth login'.", err=True)
+            raise SystemExit(1)
+    except FileNotFoundError:
+        click.echo("Error: gh CLI not found. Install it: https://cli.github.com", err=True)
+        raise SystemExit(1)
+
+    topics = get_all_topics_with_counts()
+    if not topics:
+        click.echo("No topics yet. Run 'lifegraph extract' first.")
+        raise SystemExit(1)
+
+    search_topics = topics[:top_topics]
+    click.echo(f"Searching GitHub for PRs/issues related to your top {len(search_topics)} topics...")
+
+    total = 0
+    seen = set()
+    per_topic = max(max_results // top_topics, 5)
+
+    for t in search_topics:
+        topic = t["name"]
+        click.echo(f"  Searching: {topic}...", nl=False)
+
+        try:
+            result = subprocess.run(
+                ["gh", "search", "issues", topic, "--owner=DataDog",
+                 "--limit", str(per_topic), "--json",
+                 "number,title,url,author,repository,state,createdAt,body"],
+                capture_output=True, text=True, timeout=30
+            )
+            if result.returncode != 0:
+                click.echo(" error")
+                continue
+
+            import json
+            items = json.loads(result.stdout)
+        except Exception as e:
+            click.echo(f" error: {e}")
+            continue
+
+        count = 0
+        for item in items:
+            repo = item.get("repository", {}).get("nameWithOwner", "")
+            number = item.get("number", "")
+            source_id = f"gh-discover:{repo}#{number}"
+            if source_id in seen or document_exists("github", source_id):
+                continue
+            seen.add(source_id)
+
+            author = item.get("author", {}).get("login", "")
+            body = (item.get("body") or "")[:2000]
+
+            doc = Document(
+                id=None,
+                title=f"[{repo}] {item.get('title', '')}",
+                source="github",
+                source_id=source_id,
+                source_url=item.get("url", ""),
+                created_at=item.get("createdAt"),
+                fetched_at=datetime.now(timezone.utc).isoformat(),
+                raw_text=f"{item.get('title', '')}\n\n{body}",
+                author=author,
+            )
+            upsert_document(doc)
+            count += 1
+
+        click.echo(f" {count} item(s)")
+        total += count
+
+    click.echo(f"\nDone! Discovered {total} GitHub item(s).")
+    click.echo("Run 'lifegraph extract' then 'lifegraph graph' to update.")
+
+
 @sync.command("slack")
 @click.option("--channel", default=None, help="Sync a single channel (name or ID) instead of all configured.")
 def sync_slack(channel):

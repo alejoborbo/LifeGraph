@@ -3,7 +3,7 @@
     {
       "id": 1,
       "name": "Monitoring Posture & Coverage",
-      "doc_count": 80,
+      "doc_count": 88,
       "doc_ids": [
         1,
         6,
@@ -84,7 +84,15 @@
         204,
         206,
         207,
-        208
+        208,
+        209,
+        211,
+        215,
+        216,
+        217,
+        219,
+        220,
+        222
       ],
       "category": "posture",
       "trend": [
@@ -118,7 +126,7 @@
         },
         {
           "month": "2025-12",
-          "count": 5
+          "count": 6
         },
         {
           "month": "2026-01",
@@ -130,7 +138,7 @@
         },
         {
           "month": "2026-03",
-          "count": 25
+          "count": 28
         },
         {
           "month": "2026-04",
@@ -142,7 +150,7 @@
     {
       "id": 2,
       "name": "Datadog-Managed Monitors",
-      "doc_count": 62,
+      "doc_count": 63,
       "doc_ids": [
         1,
         2,
@@ -205,7 +213,8 @@
         202,
         203,
         204,
-        205
+        205,
+        221
       ],
       "category": "automation",
       "trend": [
@@ -4439,6 +4448,96 @@
       "author": "Ismael Hajy",
       "snippet": "RT 00012 Monitor coverage",
       "is_new": false
+    },
+    {
+      "id": 209,
+      "title": "[vrwmiller/outdoorsportsclub] chore: close monitoring coverage gaps before prod launch (ODQ #20)",
+      "source": "github",
+      "source_url": "https://github.com/vrwmiller/outdoorsportsclub/issues/83",
+      "created_at": "2026-03-22T03:12:05Z",
+      "author": "vrwmiller",
+      "snippet": "chore: close monitoring coverage gaps before prod launch (ODQ #20)  ## Summary  Section 10 of the design defines Lambda structured logging, three CloudWatch Alarms (Lambda error rate, API Gateway 5xx,",
+      "is_new": true
+    },
+    {
+      "id": 211,
+      "title": "[lukwam/gcf-slack-endpoint] Add a tool for monitoring coverage",
+      "source": "github",
+      "source_url": "https://github.com/lukwam/gcf-slack-endpoint/issues/2",
+      "created_at": "2020-08-13T22:42:22Z",
+      "author": "lukwam",
+      "snippet": "Add a tool for monitoring coverage",
+      "is_new": true
+    },
+    {
+      "id": 215,
+      "title": "[hkreik/macro-dashboard] [Code Quality Monitor] Quality Issues Detected - 2026-03-07",
+      "source": "github",
+      "source_url": "https://github.com/hkreik/macro-dashboard/issues/1",
+      "created_at": "2026-03-07T22:04:35Z",
+      "author": "hkreik",
+      "snippet": "[Code Quality Monitor] Quality Issues Detected - 2026-03-07  ## Code Quality Monitor Report  **Scan Time:** 2026-03-07 22:04 UTC **Repo:** hkreik/macro-dashboard  ---  ## CRITICAL: CI Pipeline Never T",
+      "is_new": true
+    },
+    {
+      "id": 216,
+      "title": "[dcasota/photonos-scripts] Monitor quality improvements over multiple runs",
+      "source": "github",
+      "source_url": "https://github.com/dcasota/photonos-scripts/issues/47",
+      "created_at": "2025-12-15T14:02:34Z",
+      "author": "dcasota",
+      "snippet": "Monitor quality improvements over multiple runs  ## Task Description Long-term monitoring of quality metrics across multiple automated runs.  ## Monitoring Plan 1. Track metrics per run:    - Overall",
+      "is_new": true
+    },
+    {
+      "id": 217,
+      "title": "[Alzamanan/lab-agile-planning] Monitor Quality ",
+      "source": "github",
+      "source_url": "https://github.com/Alzamanan/lab-agile-planning/issues/5",
+      "created_at": "2022-08-23T19:22:23Z",
+      "author": "Alzamanan",
+      "snippet": "Monitor Quality",
+      "is_new": true
+    },
+    {
+      "id": 219,
+      "title": "[CDCgov/prime-reportstream] Data monitoring & quality research",
+      "source": "github",
+      "source_url": "https://github.com/CDCgov/prime-reportstream/issues/1362",
+      "created_at": "2021-06-22T13:18:18Z",
+      "author": "drew-usds",
+      "snippet": "Data monitoring & quality research  ### Documents  - https://docs.google.com/document/d/1sAhymSXICnNZo06efkrgaseVPrhxU96d7X11i0XxR8Y/edit?usp=sharing",
+      "is_new": true
+    },
+    {
+      "id": 220,
+      "title": "[RTGS-Lab/Firmware_-_FlightControl] Improve battery monitoring quality",
+      "source": "github",
+      "source_url": "https://github.com/RTGS-Lab/Firmware_-_FlightControl/issues/7",
+      "created_at": "2023-11-08T15:20:48Z",
+      "author": "bschulz1701",
+      "snippet": "Improve battery monitoring quality  ## Issue:\r Battery reporting often drifts and despite a high charge state (>4V) the SoC is reported as less than 10%\r \r This could be because of being kept at a hig",
+      "is_new": true
+    },
+    {
+      "id": 221,
+      "title": "[mojtaba-eshghie/HighGuard] Implement CLI tool for automatic monitor creation and running. ",
+      "source": "github",
+      "source_url": "https://github.com/mojtaba-eshghie/HighGuard/issues/30",
+      "created_at": "2023-09-16T15:38:15Z",
+      "author": "mojtaba-eshghie",
+      "snippet": "Implement CLI tool for automatic monitor creation and running.",
+      "is_new": true
+    },
+    {
+      "id": 222,
+      "title": "[CultureSpatial/Vinejocketandwinedigitas] Admin posture: tenant onboarding, secret management, monitoring, offboarding",
+      "source": "github",
+      "source_url": "https://github.com/CultureSpatial/Vinejocketandwinedigitas/issues/37",
+      "created_at": "2026-03-29T05:33:06Z",
+      "author": "cultura-d",
+      "snippet": "Admin posture: tenant onboarding, secret management, monitoring, offboarding  ## Purpose  Defines the operational procedures for administering the multi-tenant Execution Substrate. Covers: new tenant",
+      "is_new": true
     }
   ],
   "projects": [
@@ -6625,9 +6724,9 @@
   ],
   "diff": {
     "new_nodes": 0,
-    "new_docs": 0,
+    "new_docs": 9,
     "new_edges": 0,
     "node_names": [],
-    "generated_at": "2026-04-05T23:38:56.790766+00:00"
+    "generated_at": "2026-04-05T23:44:01.041192+00:00"
   }
 }
