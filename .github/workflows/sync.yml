@@ -102,6 +102,19 @@ jobs:
           lifegraph graph
           lifegraph rebuild-fts
 
+      - name: Weekly digest (Mondays only)
+        if: github.event.schedule != '' && contains('Mon', env.DAY_OF_WEEK) || github.event_name == 'workflow_dispatch'
+        working-directory: code
+        env:
+          DIGEST_SLACK_WEBHOOK: ${{ secrets.DIGEST_SLACK_WEBHOOK }}
+          DAY_OF_WEEK: ${{ steps.date.outputs.day }}
+        run: |
+          if [ -n "$DIGEST_SLACK_WEBHOOK" ]; then
+            lifegraph digest --days 7 || echo "Digest failed — skipping"
+          else
+            echo "No DIGEST_SLACK_WEBHOOK — skipping digest"
+          fi
+
       - name: Deploy to gh-pages
         working-directory: site
         run: |

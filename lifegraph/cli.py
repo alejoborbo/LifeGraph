@@ -599,6 +599,18 @@ def rebuild_fts_cmd():
     click.echo("FTS index rebuilt.")
 
 
+@cli.command()
+@click.option("--days", default=7, help="Number of days to look back.")
+@click.option("--no-slack", is_flag=True, help="Print only, don't post to Slack.")
+def digest(days, no_slack):
+    """Weekly digest: new docs by others on your topics."""
+    from lifegraph.digest import run_digest
+
+    click.echo(f"Building digest for the last {days} days...\n")
+    result = run_digest(days=days, post=not no_slack)
+    click.echo(result)
+
+
 @cli.command("compute-phases")
 def compute_phases():
     """Auto-compute project phases (Planning/Building/Shipped) from artifacts."""

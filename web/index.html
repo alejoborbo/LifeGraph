@@ -381,6 +381,35 @@
       background: #16162a; color: #666; white-space: nowrap;
     }
 
+    /* Suggestions */
+    .suggestions-section {
+      margin-bottom: 32px; padding: 24px; border-radius: 16px;
+      border: 1px solid #6366f133; background: linear-gradient(135deg, #0f0f1a 0%, #12122a 100%);
+    }
+    .suggestions-header {
+      font-size: 18px; font-weight: 700; color: #a78bfa; margin-bottom: 4px;
+    }
+    .suggestions-sub {
+      font-size: 12px; color: #555; margin-bottom: 16px;
+    }
+    .suggestions-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px;
+    }
+    .suggestion-card {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 18px; border-radius: 12px; cursor: pointer;
+      border: 1px solid #6366f133; background: #16162a;
+      transition: all 0.2s;
+    }
+    .suggestion-card:hover { border-color: #6366f1; background: #1a1a3a; transform: translateY(-1px); }
+    .suggestion-info { flex: 1; min-width: 0; }
+    .suggestion-reason { font-size: 12px; color: #6366f1; margin-top: 3px; }
+    .person-suggested {
+      display: inline-block; font-size: 9px; padding: 2px 8px; border-radius: 8px;
+      background: #6366f122; color: #a78bfa; margin-left: 8px; vertical-align: middle;
+      font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+
     /* Password gate */
     #gate {
       position: fixed; inset: 0; z-index: 100;
@@ -1867,22 +1896,39 @@
         }
       });
 
-      return { authors: Object.values(authors), myTopics, docTopicMap };
+      // Detect interactions: scan your docs' text for other people's names
+      const myDocsText = (graphData.allDocuments || [])
+        .filter(d => !d.author || d.author === 'Capucine Marteau')
+        .map(d => ((d.snippet || '') + ' ' + (d.title || '')).toLowerCase())
+        .join(' ');
+
+      const knownPeople = new Set();
+      Object.values(authors).forEach(a => {
+        // Check if person's name (or parts of it) appear in your docs
+        const nameParts = a.name.toLowerCase().split(' ').filter(p => p.length > 2);
+        const fullName = a.name.toLowerCase();
+        if (myDocsText.includes(fullName) || nameParts.every(p => myDocsText.includes(p))) {
+          knownPeople.add(a.name);
+        }
+      });
+
+      return { authors: Object.values(authors), myTopics, docTopicMap, knownPeople };
     }
 
     let expandedPerson = null;
 
     function renderPeople() {
       try {
-      const { authors, myTopics, docTopicMap } = buildPeopleData();
-      console.log('People data:', authors.length, 'authors,', myTopics.size, 'myTopics');
+      const { authors, myTopics, docTopicMap, knownPeople } = buildPeopleData();
+      console.log('People data:', authors.length, 'authors,', myTopics.size, 'myTopics,', knownPeople.size, 'known');
       const searchQuery = (document.getElementById('peopleSearch').value || '').toLowerCase();
       const sortBy = document.getElementById('peopleSort').value;
 
-      // Calculate shared topics for each author
+      // Calculate shared topics and interaction status for each author
       const peopleList = authors.map(a => {
         const sharedTopics = [...a.topics].filter(t => myTopics.has(t));
-        return { ...a, sharedTopics, sharedCount: sharedTopics.length };
+        const isKnown = knownPeople.has(a.name);
+        return { ...a, sharedTopics, sharedCount: sharedTopics.length, isKnown };
       });
 
       // Filter
@@ -1898,22 +1944,47 @@
       else if (sortBy === 'name') filtered.sort((a, b) => a.name.localeCompare(b.name));
       else if (sortBy === 'recent') filtered.sort((a, b) => (b.latestDate || '').localeCompare(a.latestDate || ''));
 
+      // Split into suggestions (unknown + high overlap) and everyone else
+      const suggestions = filtered.filter(p => !p.isKnown && p.sharedCount >= 2);
+      const rest = filtered.filter(p => p.isKnown || p.sharedCount < 2);
+
       document.getElementById('peopleSub').textContent =
         `${filtered.length} people across ${graphData.allDocuments.filter(d => d.author && d.author !== 'Capucine Marteau').length} documents · ${myTopics.size} of your topics`;
 
       let html = '';
-      filtered.forEach(person => {
+
+      // Suggestions section
+      if (suggestions.length > 0 && !searchQuery) {
+        html += `<div class="suggestions-section">
+          <div class="suggestions-header">You should talk to...</div>
+          <div class="suggestions-sub">People working on your topics that you haven't interacted with yet</div>
+          <div class="suggestions-grid">`;
+        suggestions.forEach(person => {
+          const initials = person.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+          const color = nameColor(person.name);
+          const topShared = person.sharedTopics.slice(0, 3).join(', ');
+          html += `<div class="suggestion-card" onclick="togglePerson('${person.name.replace(/'/g, "\\'")}')">
+            <div class="person-avatar" style="background:${color}">${initials}</div>
+            <div class="suggestion-info">
+              <div class="person-name">${person.name}</div>
+              <div class="suggestion-reason">${person.sharedCount} shared topic${person.sharedCount > 1 ? 's' : ''}: ${topShared}</div>
+            </div>
+          </div>`;
+        });
+        html += `</div></div>`;
+      }
+
+      // Everyone section
+      function renderPersonCard(person) {
         const initials = person.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
         const color = nameColor(person.name);
         const isExpanded = expandedPerson === person.name;
 
-        // Top shared topics (max 8)
         const topTopics = person.sharedTopics.slice(0, 5)
           .map(t => `<span class="person-topic shared">${t}</span>`).join('');
         const otherTopics = [...person.topics].filter(t => !myTopics.has(t)).slice(0, 5)
           .map(t => `<span class="person-topic">${t}</span>`).join('');
 
-        // Recent docs (shown when expanded)
         let docsHtml = '';
         if (isExpanded) {
           const sortedDocs = person.docs
@@ -1929,11 +2000,15 @@
           }).join('') + '</div>';
         }
 
-        html += `<div class="person-card ${isExpanded ? 'expanded' : ''}" onclick="togglePerson('${person.name.replace(/'/g, "\\'")}')">
+        const badge = person.isKnown
+          ? ''
+          : (person.sharedCount >= 2 ? `<div class="person-suggested">suggested</div>` : '');
+
+        return `<div class="person-card ${isExpanded ? 'expanded' : ''}" onclick="togglePerson('${person.name.replace(/'/g, "\\'")}')">
           <div class="person-top">
             <div class="person-avatar" style="background:${color}">${initials}</div>
             <div class="person-info">
-              <div class="person-name">${person.name}</div>
+              <div class="person-name">${person.name}${badge}</div>
               <div class="person-stats">${person.docs.length} docs · ${person.topics.size} topics${person.latestDate ? ' · Last active: ' + person.latestDate.split('T')[0] : ''}</div>
             </div>
             ${person.sharedCount > 0 ? `<div class="person-shared">${person.sharedCount} shared topic${person.sharedCount > 1 ? 's' : ''}</div>` : ''}
@@ -1941,7 +2016,9 @@
           ${(topTopics || otherTopics) ? `<div class="person-topics">${topTopics}${otherTopics}</div>` : ''}
           ${docsHtml}
         </div>`;
-      });
+      }
+
+      filtered.forEach(person => { html += renderPersonCard(person); });
 
       if (!html) html = '<div style="text-align:center;color:#555;padding:40px;font-size:14px">No people found. Run <code>lifegraph sync confluence-discover</code> then <code>lifegraph extract</code> to discover related docs by others.</div>';
 

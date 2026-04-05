@@ -41,3 +41,6 @@ GITHUB_REPO_PROJECT_MAP = _json.loads(os.getenv("GITHUB_REPO_PROJECT_MAP", "{}")
 SLACK_TOKEN = os.getenv("SLACK_TOKEN", "")  # xoxb-... or xoxp-...
 SLACK_CHANNELS = os.getenv("SLACK_CHANNELS", "")  # comma-separated channel names or IDs
 SLACK_WORKSPACE_URL = os.getenv("SLACK_WORKSPACE_URL", "")  # e.g. https://datadog.slack.com
+
+# Digest
+DIGEST_SLACK_WEBHOOK = os.getenv("DIGEST_SLACK_WEBHOOK", "")  # Incoming webhook URL
