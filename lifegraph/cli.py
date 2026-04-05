@@ -564,7 +564,7 @@ def summary(days, since_date, until_date, copy):
 
 @cli.command()
 @click.argument("query")
-@click.option("--source", type=click.Choice(["google_docs", "confluence", "slack", "github"]), default=None)
+@click.option("--source", type=click.Choice(["google-docs", "google-slides", "confluence", "slack", "github"]), default=None)
 @click.option("--project", default=None, help="Filter to a project name (partial match).")
 @click.option("--limit", default=20)
 def search(query, source, project, limit):

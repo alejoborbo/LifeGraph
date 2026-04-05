@@ -520,8 +520,8 @@
     <input type="text" placeholder="Search topics, docs, projects... (jira: github: status:)" id="searchInput">
     <div class="filter-chips">
       <button class="filter-chip active" data-source="all" onclick="setSearchFilter(this)">All</button>
-      <button class="filter-chip" data-source="google_docs" onclick="setSearchFilter(this)">Google Docs</button>
-      <button class="filter-chip" data-source="google_slides" onclick="setSearchFilter(this)">Slides</button>
+      <button class="filter-chip" data-source="google-docs" onclick="setSearchFilter(this)">Google Docs</button>
+      <button class="filter-chip" data-source="google-slides" onclick="setSearchFilter(this)">Slides</button>
       <button class="filter-chip" data-source="confluence" onclick="setSearchFilter(this)">Confluence</button>
       <button class="filter-chip" data-source="jira" onclick="setSearchFilter(this)">Jira</button>
       <button class="filter-chip" data-source="slack" onclick="setSearchFilter(this)">Slack</button>
@@ -1212,9 +1212,9 @@
         const sf = searchSourceFilter;
         if (q.length < 2 && sf === 'all') { results.classList.remove('visible'); return; }
 
-        // Source-only browse (no query needed)
+        // Source-only browse (no query needed) — search all docs including others'
         if (q.length < 2 && sf !== 'all') {
-          let browseDocs = graphData.documents.filter(d => d.source === sf)
+          let browseDocs = (graphData.allDocuments || graphData.documents).filter(d => d.source === sf)
             .sort((a, b) => (b.created_at || '').localeCompare(a.created_at || ''))
             .slice(0, 15);
           if (!browseDocs.length) { results.innerHTML = '<div class="result-section">No documents</div>'; results.classList.add('visible'); return; }
@@ -1290,7 +1290,7 @@
         const topicMatches = graphData.nodes.filter(n => n.name.toLowerCase().includes(q)).slice(0, 5);
 
         // Search documents by title + snippet, with source filter
-        let filteredDocs = graphData.documents;
+        let filteredDocs = graphData.allDocuments || graphData.documents;
         if (sf !== 'all' && sf !== 'jira' && sf !== 'github') {
           filteredDocs = filteredDocs.filter(d => d.source === sf);
         }
