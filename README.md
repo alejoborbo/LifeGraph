@@ -29,10 +29,16 @@ Edit `.env` — you just need two things to start:
 Then run:
 
 ```bash
-lifegraph setup
+lifegraph sync
 ```
 
-That's it. One command. It syncs all configured sources, extracts topics via Claude API, builds the graph, and opens the UI in your browser.
+That's it. One command. It:
+1. **Downloads docs** from all configured sources (Confluence, GitHub, etc.)
+2. **Calls Claude API** to extract topics from each document
+3. **Stores everything in SQLite** (docs, topics, doc↔topic links)
+4. **Builds the graph** for the web UI
+
+To view it: `lifegraph serve` (or `lifegraph setup` to sync + serve in one shot).
 
 ### Source setup
 
