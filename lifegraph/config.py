@@ -22,6 +22,8 @@ GOOGLE_SCOPES = [
     "https://www.googleapis.com/auth/documents.readonly",
 ]
 
+LIFEGRAPH_AUTHOR = os.getenv("LIFEGRAPH_AUTHOR", "")
+
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
 ANTHROPIC_MODEL = os.getenv("ANTHROPIC_MODEL", "claude-sonnet-4-20250514")
 

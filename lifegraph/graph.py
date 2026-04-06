@@ -3,7 +3,7 @@ import json
 import sqlite3
 from collections import defaultdict
 
-from lifegraph.config import DATABASE_PATH
+from lifegraph.config import DATABASE_PATH, LIFEGRAPH_AUTHOR
 
 
 def build_graph(min_docs: int = 2, min_edge_weight: int = 1) -> dict:
@@ -96,11 +96,14 @@ def build_graph(min_docs: int = 2, min_edge_weight: int = 1) -> dict:
     # Nodes
     nodes = sorted(topic_map.values(), key=lambda x: -x["doc_count"])
 
-    return {
+    result = {
         "nodes": nodes,
         "edges": edges,
         "documents": documents,
     }
+    if LIFEGRAPH_AUTHOR:
+        result["author"] = LIFEGRAPH_AUTHOR
+    return result
 
 
 def export_graph_json(path: str, **kwargs):

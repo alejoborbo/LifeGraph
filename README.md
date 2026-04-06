@@ -22,9 +22,10 @@ pip install -e .
 cp .env.example .env
 ```
 
-Edit `.env` — you just need two things to start:
-1. **`ANTHROPIC_API_KEY`** — get one at [console.anthropic.com](https://console.anthropic.com/)
-2. **At least one source** — Confluence is the easiest (just an API token)
+Edit `.env` — you need three things to start:
+1. **`LIFEGRAPH_AUTHOR`** — your display name (e.g. `John Smith`). Used to distinguish your docs from others' in the UI.
+2. **`ANTHROPIC_API_KEY`** — get one at [console.anthropic.com](https://console.anthropic.com/)
+3. **At least one source** — Confluence is the easiest (just an API token)
 
 Then run:
 

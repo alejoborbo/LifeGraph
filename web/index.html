@@ -822,7 +822,10 @@
       graphData.summaries = graphData.summaries || [];
       // Keep all docs for People view, but filter "my docs" for other views
       graphData.allDocuments = graphData.documents;
-      graphData.documents = graphData.documents.filter(d => !d.author || d.author === 'Capucine Marteau');
+      const LIFEGRAPH_AUTHOR = graphData.author || '';
+      graphData.documents = LIFEGRAPH_AUTHOR
+        ? graphData.documents.filter(d => !d.author || d.author === LIFEGRAPH_AUTHOR)
+        : graphData.documents;
       const myDocIds = new Set(graphData.documents.map(d => d.id));
       graphData.allDocuments.forEach(d => docMap[d.id] = d);
 
