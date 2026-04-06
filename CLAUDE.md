@@ -4,122 +4,80 @@ LifeGraph is a personal knowledge graph that visualizes what someone works on ac
 
 ## When the user says "set up my graph" or similar
 
-Run the full setup automatically. Do all steps — don't ask, just do it.
+Do everything automatically. Don't ask — just do it, step by step.
 
 ### Step 1: Install
 
 ```bash
-pip install -e . -q
+pip install -e . -q 2>/dev/null
 ```
 
-### Step 2: Fetch documents via MCP
+### Step 2: Fetch documents
 
-Create `scripts/mcp_output/` directory, then fetch from all available sources:
+Try each source. If an MCP isn't available, skip it and move on — don't fail.
 
-**Google Docs** — use Google Workspace MCP:
-1. `mcp__datadog-google-workspace-mcp__search_files` with `query: "mimeType = 'application/vnd.google-apps.document'"`, `max_results: 100`
-2. For each doc, call `mcp__datadog-google-workspace-mcp__read_document` with the document ID
-3. Save results to `scripts/mcp_output/google_docs.json`:
-```json
-[{"id": "doc_id", "title": "Doc Title", "content": "plain text...", "url": "https://docs.google.com/document/d/...", "created_at": "2026-01-01T00:00:00Z"}]
-```
+Create `scripts/mcp_output/` directory first: `mkdir -p scripts/mcp_output`
 
-**Google Slides** — use Google Workspace MCP:
-1. `mcp__datadog-google-workspace-mcp__search_files` with `query: "mimeType = 'application/vnd.google-apps.presentation'"`, `max_results: 100`
-2. For each presentation, call `mcp__datadog-google-workspace-mcp__get_file_content` with the file ID (exports as text)
-3. Save results to `scripts/mcp_output/google_slides.json` (same format as google_docs.json)
+**Google Docs** (try Google Workspace MCP):
+- Try calling `mcp__datadog-google-workspace-mcp__search_files` with `query: "mimeType = 'application/vnd.google-apps.document'"`, `max_results: 100`
+- If the MCP isn't available, tell the user: "Google Workspace MCP not configured. To add it, see the MCP setup section in README.md"
+- If it works: for each doc, call `mcp__datadog-google-workspace-mcp__read_document` with the document ID
+- Save to `scripts/mcp_output/google_docs.json`: `[{"id": "...", "title": "...", "content": "...", "url": "...", "created_at": "..."}]`
 
-**Confluence** — use Atlassian MCP:
-1. `mcp__datadog-atlassian__search_content` with `cql: "type = page AND contributor = currentUser() ORDER BY lastmodified DESC"`, `max_results: 50`
-2. For each page, call `mcp__datadog-atlassian__get_page` with the page ID to get body content
-3. Save to `scripts/mcp_output/confluence_pages.json`:
-```json
-[{"id": "page_id", "title": "Page Title", "html": "<p>body html...</p>", "url": "https://...", "created_at": "2026-01-01T00:00:00Z", "author": "Author Name"}]
-```
+**Google Slides** (same MCP):
+- Search with `query: "mimeType = 'application/vnd.google-apps.presentation'"`, `max_results: 50`
+- For each, call `mcp__datadog-google-workspace-mcp__get_file_content`
+- Save to `scripts/mcp_output/google_slides.json`
 
-**Jira** — use Atlassian MCP:
-1. `mcp__datadog-atlassian__search_issues` with `jql: "assignee = currentUser() OR reporter = currentUser() ORDER BY updated DESC"`, `max_results: 100`
-2. Save to `scripts/mcp_output/jira_issues.json`:
-```json
-[{"key": "PROJ-123", "title": "Issue title", "status": "In Progress", "priority": "High", "assignee": "username", "project_name": "Project Name", "url": "https://datadoghq.atlassian.net/browse/PROJ-123", "created_at": "2026-01-01T00:00:00Z"}]
-```
+**Confluence** (try Atlassian MCP):
+- Try calling `mcp__datadog-atlassian__search_content` with `cql: "type = page AND contributor = currentUser() ORDER BY lastmodified DESC"`, `max_results: 50`
+- If the MCP isn't available, tell the user: "Atlassian MCP not configured. To add it, see the MCP setup section in README.md"
+- If it works: for each page, call `mcp__datadog-atlassian__get_page` to get the body
+- Save to `scripts/mcp_output/confluence_pages.json`: `[{"id": "...", "title": "...", "html": "...", "url": "...", "created_at": "...", "author": "..."}]`
 
-**GitHub** — handled automatically by `sync_mcp.py` via the `gh` CLI (no MCP needed).
+**Jira** (same Atlassian MCP):
+- `mcp__datadog-atlassian__search_issues` with `jql: "assignee = currentUser() OR reporter = currentUser() ORDER BY updated DESC"`, `max_results: 100`
+- Save to `scripts/mcp_output/jira_issues.json`
 
-### Step 3: Import into DB
+**GitHub** — no MCP needed, handled by `sync_mcp.py` via the `gh` CLI.
+
+### Step 3: Import, extract topics, build graph
 
 ```bash
 python scripts/sync_mcp.py
 ```
 
-### Step 4: Extract topics (YOU do this — no API key needed)
+Then extract topics. Try the API first, fall back to doing it yourself:
 
-For each document in the DB that doesn't have topics yet, extract 2-10 specific topics with relevance scores. Do this yourself (you ARE the LLM) instead of calling the Anthropic API.
-
-1. Read documents without topics:
-```python
-from lifegraph.db import get_documents_without_topics
-docs = get_documents_without_topics()
+```bash
+lifegraph extract --limit 50
 ```
 
-2. For each document, decide on 2-10 specific topics (e.g. "Datadog Log Pipelines", "Monitor Alert Fatigue") with relevance 0.0-1.0. Topics should be specific, not vague.
-
-3. Save to `scripts/mcp_output/topics.json`:
-```json
-[{"doc_id": 123, "topics": [{"topic": "Specific Topic Name", "relevance": 0.9}, ...]}, ...]
-```
-
+If that fails (no ANTHROPIC_API_KEY), YOU extract topics yourself:
+1. Read documents: `from lifegraph.db import get_documents_without_topics; docs = get_documents_without_topics()`
+2. For each doc, decide 2-10 specific topics with relevance 0.0-1.0
+3. Save to `scripts/mcp_output/topics.json`: `[{"doc_id": 123, "topics": [{"topic": "Name", "relevance": 0.9}]}]`
 4. Run: `python scripts/extract_topics_inline.py`
 
-### Step 5: Auto-cluster topics (YOU do this too)
-
-Group all topic names into 15-40 meaningful clusters. Save to `scripts/mcp_output/clusters.json`:
-```json
-{"clusters": {"Cluster Name": {"topics": ["Topic A", "Topic B"], "category": "posture"}, ...}}
-```
-Categories: posture, automation, strategy, ux, team, teaching, code, personal, other
-
-Then run: `python scripts/auto_cluster_inline.py`
-
-### Step 6: Build and serve
-
+Then build and serve:
 ```bash
 lifegraph graph
 lifegraph serve
 ```
 
-### Step 7: Discover related docs by others
+### Step 4: Discover related docs by others
 
-Search across ALL sources for content by OTHER people that matches the user's topics. This powers the "People" tab and Insights.
+After the graph is built, search for content by OTHER people on the user's topics.
 
-**Confluence** — use Atlassian MCP:
-1. Get top 10 topics from DB
-2. For each topic, search: `mcp__datadog-atlassian__search_content` with `cql: "type = page AND text ~ \"topic name\" ORDER BY lastmodified DESC"`, max 10
-3. For results from personal spaces (author visible in `resultGlobalContainer.title`), call `get_page` for content
-4. Insert into DB with author info
+**Confluence** (if MCP available): search each top topic across all spaces, fetch pages with author info.
+**GitHub**: `lifegraph sync github-discover --top-topics 10`
 
-**GitHub** — use gh CLI:
-```bash
-lifegraph sync github-discover --top-topics 10
-```
+## When the user says "prep me for my meeting with X"
 
-**Google Docs** — use Google Workspace MCP:
-1. For each top topic, search: `mcp__datadog-google-workspace-mcp__search_files` with `query: "fullText contains 'topic name'"`, max 10
-2. For each result, get content and check if it's by someone else (compare owner email)
-3. Save to `scripts/mcp_output/google_docs_others.json` with author info
-
-After all discovery:
-```bash
-lifegraph extract   # or do inline extraction (step 4)
-lifegraph graph
-```
-
-## When the user says "prep me for my meeting with X" or similar
-
-Look up X in the People data and provide a briefing:
-1. Read graph.json to find the person
-2. List shared topics, their recent docs, and suggested talking points
-3. The Insights view also has a Meeting Prep feature in the UI
+Look up X in the graph data and provide a briefing:
+1. Read `web/graph.json`
+2. Find the person in the documents (match by author name)
+3. List shared topics, their recent docs, and suggest talking points
 
 ## Architecture notes
 
@@ -127,5 +85,5 @@ Look up X in the People data and provide a briefing:
 - Frontend: static HTML + D3.js in `web/index.html` (no build step)
 - Graph/Timeline/Report/Projects views = personal docs only
 - People view = other authors' docs that share topics with the user
-- No API key needed — Claude Code handles topic extraction and clustering directly
+- Insights view = time allocation, topic momentum, impact, meeting prep
 - `web/graph.json` is the bridge between backend and frontend

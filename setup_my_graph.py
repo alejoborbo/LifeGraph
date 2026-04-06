@@ -4,13 +4,6 @@
 Usage:
     python setup_my_graph.py
 
-This script:
-1. Installs dependencies
-2. Looks for MCP output files (from Claude Code) and imports them
-3. Extracts topics using Claude API
-4. Builds the knowledge graph
-5. Opens the UI in your browser
-
 For Datadog employees: just open this repo in Claude Code and say "set up my graph".
 Claude will fetch your docs via MCP and run this script automatically.
 """
@@ -30,11 +23,11 @@ def run(cmd, **kwargs):
 
 
 def main():
-    # 1. Install deps (if not already)
     print("=" * 60)
     print("  LifeGraph Setup")
     print("=" * 60)
 
+    # 1. Install deps
     try:
         import lifegraph  # noqa
     except ImportError:
@@ -49,43 +42,66 @@ def main():
     # 3. Import MCP output if available
     mcp_files = list(MCP_OUTPUT.glob("*.json")) if MCP_OUTPUT.exists() else []
     if mcp_files:
-        print(f"\nFound {len(mcp_files)} MCP output file(s), importing...")
+        print(f"\nImporting {len(mcp_files)} MCP output file(s)...")
         run(f"{sys.executable} scripts/sync_mcp.py")
-    else:
-        print("\nNo MCP output found in scripts/mcp_output/")
-        print("If you're in Claude Code, ask Claude to fetch your docs first.")
-        print("Otherwise, set up connectors in .env (see README).")
 
-    # 4. Check how many docs we have
+    # 4. Import inline topics if available
+    topics_file = MCP_OUTPUT / "topics.json"
+    if topics_file.exists():
+        print("\nImporting extracted topics...")
+        run(f"{sys.executable} scripts/extract_topics_inline.py")
+
+    # 5. Import auto-clusters if available
+    clusters_file = MCP_OUTPUT / "clusters.json"
+    if clusters_file.exists():
+        print("\nImporting auto-clusters...")
+        run(f"{sys.executable} scripts/auto_cluster_inline.py")
+
+    # 6. Check doc count
     from lifegraph.db import count_documents_by_source
     counts = count_documents_by_source()
     total = sum(counts.values())
 
     if total == 0:
-        print("\nNo documents yet. Set up at least one source:")
-        print("  - In Claude Code: say 'fetch my Google Docs and Confluence pages'")
-        print("  - Or manually: cp .env.example .env && edit .env")
+        print("\n" + "=" * 60)
+        print("  No documents found.")
+        print()
+        print("  If you're in Claude Code, make sure MCP servers are configured:")
+        print("    - Google Workspace MCP (for Google Docs/Slides)")
+        print("    - Atlassian MCP (for Confluence/Jira)")
+        print("  See README.md for setup instructions.")
+        print()
+        print("  Then say: 'set up my graph'")
+        print("=" * 60)
         return
 
-    print(f"\n{total} documents in DB: {counts}")
+    print(f"\n{total} documents: {counts}")
 
-    # 5. Extract topics
+    # 7. Extract topics if needed (try API, it's OK if it fails)
     from lifegraph.db import get_documents_without_topics
     pending = get_documents_without_topics()
     if pending:
-        print(f"\nExtracting topics for {len(pending)} document(s)...")
-        result = run("lifegraph extract")
+        print(f"\n{len(pending)} document(s) need topic extraction...")
+        result = run("lifegraph extract --limit 50")
         if result.returncode != 0:
-            print("Topic extraction failed — do you have ANTHROPIC_API_KEY set?")
-            print("Set it: export ANTHROPIC_API_KEY=sk-ant-...")
-    else:
-        print("\nAll documents already have topics.")
+            print("\nTopic extraction via API failed (no ANTHROPIC_API_KEY).")
+            print("That's OK — Claude Code can extract topics inline.")
+            print("If you're in Claude Code, it will handle this automatically.")
 
-    # 6. Build graph
+    # 8. Build graph
     print("\nBuilding knowledge graph...")
     run("lifegraph graph")
 
-    # 7. Launch
+    # 9. Check if we have topics
+    from lifegraph.db import get_all_topics_with_counts
+    topic_count = len(get_all_topics_with_counts())
+    if topic_count == 0:
+        print("\nNo topics extracted yet. The graph will be empty.")
+        print("Claude Code will extract topics and rebuild the graph.")
+    else:
+        print(f"\n{topic_count} topics in the graph.")
+
+    # 10. Launch
     print("\n" + "=" * 60)
     print("  Done! Starting server...")
     print("  Open http://localhost:8042")

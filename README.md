@@ -15,33 +15,59 @@ Build a knowledge graph from everything you work on — Google Docs, Confluence,
 
 ## Quick start for Datadog employees
 
-No GCP project, no API keys, no OAuth, no config files. Just Claude Code.
-
 ```bash
 git clone https://github.com/capmann/LifeGraph.git
 cd LifeGraph
 ```
 
+### 1. Configure your MCP servers (one-time)
+
+LifeGraph uses MCP servers to access Google Docs and Confluence. You need to add them to your Claude Code config.
+
+Run `claude mcp add` for each server, or add them to `~/.claude/settings.json`:
+
+```json
+{
+  "mcpServers": {
+    "google-workspace": {
+      "command": "npx",
+      "args": ["-y", "@anthropic/datadog-google-workspace-mcp"]
+    },
+    "atlassian": {
+      "command": "npx",
+      "args": ["-y", "@anthropic/datadog-atlassian-mcp"]
+    }
+  }
+}
+```
+
+> **Note**: The exact MCP server names/packages may differ in your DD setup. Check with your team or `#claude-code` Slack channel for the right config. If the MCPs are already configured org-wide, skip this step.
+
+### 2. Set up your graph
+
 Open this folder in **Claude Code** and say:
 
 > **Set up my graph**
 
-That's it. Claude will:
-1. Fetch your **Google Docs** via the Google Workspace MCP
-2. Fetch your **Confluence pages** via the Atlassian MCP
-3. Fetch your **Jira issues** via the Atlassian MCP
-4. Fetch your **GitHub PRs/issues** via the `gh` CLI (if installed)
-5. Extract topics and auto-cluster them (Claude Code IS the LLM — no API key needed)
-6. Build the graph and open the UI
+Claude will:
+1. Fetch your **Google Docs & Slides** via the Google Workspace MCP
+2. Fetch your **Confluence pages & Jira issues** via the Atlassian MCP
+3. Fetch your **GitHub PRs/issues** via the `gh` CLI
+4. Extract topics (Claude Code does this itself — no API key needed)
+5. Build the graph and open the UI
 
-Click the **People** tab to see who across DD is working on the same topics as you.
+If an MCP isn't configured, Claude will skip it and tell you what to set up.
+
+### 3. Explore
+
+Click the **People** tab to see who across DD is working on the same topics as you. Click **Insights** for time allocation and meeting prep.
 
 | Source | How it works | Setup needed |
 |--------|-------------|--------------|
-| Google Docs | Google Workspace MCP | None |
-| Google Slides | Google Workspace MCP | None |
-| Confluence | Atlassian MCP | None |
-| Jira | Atlassian MCP | None |
+| Google Docs | Google Workspace MCP | MCP config (step 1) |
+| Google Slides | Google Workspace MCP | MCP config (step 1) |
+| Confluence | Atlassian MCP | MCP config (step 1) |
+| Jira | Atlassian MCP | MCP config (step 1) |
 | GitHub | `gh` CLI | `gh auth login` (most already have it) |
 | Slack | Bot token | Manual ([see below](#slack)) |
 
