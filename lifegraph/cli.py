@@ -29,6 +29,144 @@ def cli():
 
 
 @cli.command()
+def setup():
+    """One-command setup: sync all sources, extract topics, build graph, serve."""
+    from lifegraph.config import (
+        ANTHROPIC_API_KEY, CONFLUENCE_URL, SLACK_TOKEN, GITHUB_TOKEN,
+        GOOGLE_CREDENTIALS_PATH, GOOGLE_TOKEN_PATH,
+    )
+
+    click.echo("=" * 60)
+    click.echo("  LifeGraph Setup")
+    click.echo("=" * 60)
+
+    if not ANTHROPIC_API_KEY:
+        click.echo("\nError: ANTHROPIC_API_KEY not set.")
+        click.echo("Get one at https://console.anthropic.com/ and add to .env")
+        raise SystemExit(1)
+
+    # Sync each configured source
+    sources_synced = 0
+
+    if GOOGLE_TOKEN_PATH.exists() or GOOGLE_CREDENTIALS_PATH.exists():
+        click.echo("\n[1/5] Syncing Google Docs...")
+        try:
+            from lifegraph.connectors.google_docs import GoogleDocsConnector
+            c = GoogleDocsConnector()
+            c.authenticate()
+            count = c.sync()
+            click.echo(f"  {count} document(s)")
+            sources_synced += 1
+        except Exception as e:
+            click.echo(f"  Skipped: {e}")
+    else:
+        click.echo("\n[1/5] Google Docs — not configured (no credentials.json)")
+
+    if CONFLUENCE_URL:
+        click.echo("\n[2/5] Syncing Confluence...")
+        try:
+            from lifegraph.connectors.confluence import ConfluenceConnector
+            c = ConfluenceConnector()
+            c.authenticate()
+            count = c.sync()
+            click.echo(f"  {count} page(s)")
+            sources_synced += 1
+        except Exception as e:
+            click.echo(f"  Skipped: {e}")
+    else:
+        click.echo("\n[2/5] Confluence — not configured (set CONFLUENCE_URL in .env)")
+
+    if SLACK_TOKEN:
+        click.echo("\n[3/5] Syncing Slack...")
+        try:
+            from lifegraph.connectors.slack import SlackConnector
+            c = SlackConnector()
+            c.authenticate()
+            count = c.sync()
+            click.echo(f"  {count} thread(s)")
+            sources_synced += 1
+        except Exception as e:
+            click.echo(f"  Skipped: {e}")
+    else:
+        click.echo("\n[3/5] Slack — not configured (set SLACK_TOKEN in .env)")
+
+    if GITHUB_TOKEN:
+        click.echo("\n[4/5] Syncing GitHub...")
+        try:
+            from lifegraph.connectors.github import GitHubConnector
+            c = GitHubConnector()
+            c.authenticate()
+            count = c.sync()
+            click.echo(f"  {count} item(s)")
+            sources_synced += 1
+        except Exception as e:
+            click.echo(f"  Skipped: {e}")
+    else:
+        # Try gh CLI as fallback
+        import subprocess
+        try:
+            r = subprocess.run(["gh", "auth", "token"], capture_output=True, text=True, timeout=5)
+            if r.returncode == 0 and r.stdout.strip():
+                click.echo("\n[4/5] Syncing GitHub (via gh CLI)...")
+                import lifegraph.config
+                lifegraph.config.GITHUB_TOKEN = r.stdout.strip()
+                from lifegraph.connectors.github import GitHubConnector
+                c = GitHubConnector()
+                c.token = r.stdout.strip()
+                c.authenticate()
+                count = c.sync()
+                click.echo(f"  {count} item(s)")
+                sources_synced += 1
+            else:
+                click.echo("\n[4/5] GitHub — not configured (set GITHUB_TOKEN or run gh auth login)")
+        except Exception:
+            click.echo("\n[4/5] GitHub — not configured")
+
+    if sources_synced == 0:
+        click.echo("\nNo sources configured. Edit .env and add at least one source.")
+        click.echo("See .env.example for all options.")
+        raise SystemExit(1)
+
+    # Extract topics
+    click.echo("\n[5/5] Extracting topics...")
+    docs = get_documents_without_topics()
+    if docs:
+        click.echo(f"  Processing {len(docs)} document(s)...")
+        for i, doc in enumerate(docs, 1):
+            click.echo(f"  [{i}/{len(docs)}] {doc['title'][:50]}...", nl=False)
+            try:
+                topics = process_document(doc["id"], doc["title"], doc["raw_text"])
+                click.echo(f" -> {len(topics)} topics")
+            except Exception as e:
+                click.echo(f" error: {e}")
+    else:
+        click.echo("  All documents already have topics.")
+
+    # Build graph
+    click.echo("\nBuilding knowledge graph...")
+    import json, os
+    os.makedirs("web", exist_ok=True)
+    g = build_clustered_graph(min_edge_weight=2)
+    with open("web/graph.json", "w") as f:
+        json.dump(g, f, indent=2)
+    click.echo(f"  {len(g['nodes'])} topics, {len(g['edges'])} connections, {len(g['documents'])} docs")
+
+    # Done
+    click.echo("\n" + "=" * 60)
+    click.echo("  Done! Starting server at http://localhost:8042")
+    click.echo("=" * 60 + "\n")
+
+    try:
+        import webbrowser
+        webbrowser.open("http://localhost:8042")
+    except Exception:
+        pass
+
+    from lifegraph.server import main as serve_main
+    serve_main(port=8042)
+
+
+@cli.command()
 def auth():
     """Authenticate with Google (opens browser for OAuth consent)."""
     connector = GoogleDocsConnector()

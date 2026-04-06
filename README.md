@@ -13,63 +13,43 @@ Build a knowledge graph from everything you work on — Google Docs, Confluence,
 5. **Search** everything with full-text search across all sources
 6. **Generate AI summaries** of your work for any time period
 
-## Quick start for Datadog employees
+## Quick start
 
 ```bash
 git clone https://github.com/capmann/LifeGraph.git
 cd LifeGraph
+pip install -e .
+cp .env.example .env
 ```
 
-### 1. Configure your MCP servers (one-time)
+Edit `.env` — you just need two things to start:
+1. **`ANTHROPIC_API_KEY`** — get one at [console.anthropic.com](https://console.anthropic.com/)
+2. **At least one source** — Confluence is the easiest (just an API token)
 
-LifeGraph uses MCP servers to access Google Docs and Confluence. You need to add them to your Claude Code config.
+Then run:
 
-Run `claude mcp add` for each server, or add them to `~/.claude/settings.json`:
-
-```json
-{
-  "mcpServers": {
-    "google-workspace": {
-      "command": "npx",
-      "args": ["-y", "@anthropic/datadog-google-workspace-mcp"]
-    },
-    "atlassian": {
-      "command": "npx",
-      "args": ["-y", "@anthropic/datadog-atlassian-mcp"]
-    }
-  }
-}
+```bash
+lifegraph setup
 ```
 
-> **Note**: The exact MCP server names/packages may differ in your DD setup. Check with your team or `#claude-code` Slack channel for the right config. If the MCPs are already configured org-wide, skip this step.
+That's it. One command. It syncs all configured sources, extracts topics via Claude API, builds the graph, and opens the UI in your browser.
 
-### 2. Set up your graph
+### Source setup
 
-Open this folder in **Claude Code** and say:
+You don't need all of them — start with one and add more later.
 
-> **Set up my graph**
+| Source | What to add in `.env` | How to get it |
+|--------|----------------------|---------------|
+| Confluence | `CONFLUENCE_URL`, `CONFLUENCE_EMAIL`, `CONFLUENCE_API_TOKEN` | [Generate API token](https://id.atlassian.com/manage-profile/security/api-tokens) |
+| GitHub | `GITHUB_TOKEN` | `gh auth token` or [create token](https://github.com/settings/tokens) |
+| Google Docs | `GOOGLE_CREDENTIALS_PATH` | [GCP Console](https://console.cloud.google.com/) OAuth credentials → `lifegraph auth` |
+| Slack | `SLACK_TOKEN`, `SLACK_CHANNELS` | [Create Slack app](https://api.slack.com/apps) with `channels:history` scope |
 
-Claude will:
-1. Fetch your **Google Docs & Slides** via the Google Workspace MCP
-2. Fetch your **Confluence pages & Jira issues** via the Atlassian MCP
-3. Fetch your **GitHub PRs/issues** via the `gh` CLI
-4. Extract topics (Claude Code does this itself — no API key needed)
-5. Build the graph and open the UI
+> **Datadog employees**: Use `CONFLUENCE_URL=https://datadoghq.atlassian.net`. For GitHub, most of you have `gh` installed — just run `gh auth login` and skip the token.
 
-If an MCP isn't configured, Claude will skip it and tell you what to set up.
+### Using with Claude Code (optional)
 
-### 3. Explore
-
-Click the **People** tab to see who across DD is working on the same topics as you. Click **Insights** for time allocation and meeting prep.
-
-| Source | How it works | Setup needed |
-|--------|-------------|--------------|
-| Google Docs | Google Workspace MCP | MCP config (step 1) |
-| Google Slides | Google Workspace MCP | MCP config (step 1) |
-| Confluence | Atlassian MCP | MCP config (step 1) |
-| Jira | Atlassian MCP | MCP config (step 1) |
-| GitHub | `gh` CLI | `gh auth login` (most already have it) |
-| Slack | Bot token | Manual ([see below](#slack)) |
+If you have Claude Code with MCP servers (Google Workspace, Atlassian), you can open this folder and say **"set up my graph"** — Claude will fetch docs via MCP. But `lifegraph setup` works standalone without Claude Code.
 
 ---
 
@@ -236,6 +216,7 @@ The web UI has 6 views:
 
 | Command | Description |
 |---|---|
+| `lifegraph setup` | **One-command setup**: sync, extract, build, serve |
 | `lifegraph sync google-docs` | Fetch all your Google Docs |
 | `lifegraph sync confluence` | Fetch Confluence pages |
 | `lifegraph sync confluence-discover` | Discover Confluence pages by others on your topics |
