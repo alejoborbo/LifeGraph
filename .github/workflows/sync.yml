@@ -118,10 +118,16 @@ jobs:
       - name: Deploy to gh-pages
         working-directory: site
         run: |
-          # Copy updated files
+          # Only overwrite graph.json if it has data (avoid empty deploys)
           cp ../code/web/index.html index.html
-          cp ../code/web/graph.json graph.json
-          cp ../code/web/graph.empty.json graph.empty.json
+          NEW_DOCS=$(python3 -c "import json; g=json.load(open('../code/web/graph.json')); print(len(g.get('documents',[])))")
+          if [ "$NEW_DOCS" -gt 0 ]; then
+            cp ../code/web/graph.json graph.json
+            echo "Deploying graph with $NEW_DOCS documents"
+          else
+            echo "Skipping graph.json deploy — no documents (secrets not configured?)"
+          fi
+          cp ../code/web/graph.empty.json graph.empty.json 2>/dev/null || true
           cp ../code/lifegraph.db lifegraph.db
 
           # Commit and push
