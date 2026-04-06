@@ -1,6 +1,7 @@
 """Confluence connector - fetches pages via REST API."""
 import html
 import re
+import sys
 from datetime import datetime, timezone
 
 import requests
@@ -80,19 +81,18 @@ class ConfluenceConnector(BaseConnector):
         cql += ' ORDER BY lastmodified DESC'
 
         pages = []
-        start = 0
-        limit = 50
+        next_url = (
+            f"{self.base_url}/wiki/rest/api/content/search"
+            f"?cql={cql}&limit=50&expand=history.createdBy"
+        )
 
-        while True:
-            resp = self.session.get(
-                f"{self.base_url}/wiki/rest/api/content/search",
-                params={
-                    "cql": cql,
-                    "start": start,
-                    "limit": limit,
-                    "expand": "history.createdBy",
-                },
+        while next_url:
+            sys.stderr.write(
+                f"\r  Listing pages... {len(pages)} found"
             )
+            sys.stderr.flush()
+
+            resp = self.session.get(next_url)
             resp.raise_for_status()
             data = resp.json()
 
@@ -111,11 +111,15 @@ class ConfluenceConnector(BaseConnector):
                     "url": f"{self.base_url}/wiki{page.get('_links', {}).get('webui', '')}",
                 })
 
-            # Pagination
-            if data.get("size", 0) < limit:
-                break
-            start += limit
+            # Follow next link if available
+            next_path = data.get("_links", {}).get("next")
+            if next_path:
+                base = data.get("_links", {}).get("base", self.base_url)
+                next_url = f"{base}{next_path}"
+            else:
+                next_url = None
 
+        sys.stderr.write(f"\r  Listing pages... {len(pages)} found\n")
         return pages
 
     def fetch_content(self, page_id: str) -> str:
@@ -135,9 +139,17 @@ class ConfluenceConnector(BaseConnector):
         self._ensure_auth()
 
         pages = self.list_documents()
+        total = len(pages)
         count = 0
 
-        for page in pages:
+        for i, page in enumerate(pages, 1):
+            title = page["title"]
+            truncated = (title[:40] + "...") if len(title) > 40 else title
+            sys.stderr.write(
+                f"\r  [{i}/{total}] Fetching: {truncated:<43}"
+            )
+            sys.stderr.flush()
+
             try:
                 text = self.fetch_content(page["id"])
                 if not text.strip():
@@ -157,8 +169,9 @@ class ConfluenceConnector(BaseConnector):
                 upsert_document(doc)
                 count += 1
             except Exception as e:
-                print(f"  Warning: failed to sync '{page['title']}': {e}")
+                sys.stderr.write(f"\n  Warning: failed '{title}': {e}\n")
 
+        sys.stderr.write("\n")
         return count
 
     def search_pages(self, cql: str, max_results: int = 50) -> list[dict]:
