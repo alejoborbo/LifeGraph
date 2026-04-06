@@ -399,8 +399,6 @@ def build_clustered_graph(min_edge_weight: int = 2) -> dict:
     cluster_id_map = {}
     # Build doc date lookup for trends
     doc_dates = {}
-    if all_doc_ids_precheck := set():
-        pass
     date_rows = conn.execute("SELECT id, created_at FROM documents WHERE created_at IS NOT NULL").fetchall()
     for r in date_rows:
         doc_dates[r["id"]] = r["created_at"][:7] if r["created_at"] else None  # "2026-03"

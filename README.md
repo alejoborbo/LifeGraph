@@ -199,35 +199,34 @@ You can re-run these commands anytime to pull in new data. Each `sync` is increm
 
 The web UI has 6 views:
 
-- **Graph** — Interactive force-directed graph of topic clusters. Click nodes to see documents, hover to highlight connections. Use category filters (top-right) to focus on specific areas — click multiple to combine.
+- **Graph** — Interactive force-directed graph of topic clusters. Click nodes to see documents, hover to highlight connections. Use source filters (Google Docs, Confluence, etc.) to highlight nodes by source. Use category filters to focus on specific areas.
 - **Timeline** — Documents plotted by date and topic.
-- **Report** — Documents grouped by topic category for a date range. Sections are collapsible. Switch to **Summary** mode and click **Generate Summary** to get an AI-written work update.
-- **Projects** — Card grid of all projects with status badges, phase indicators (Planning/Building/Shipped), doc counts, Jira tickets, and GitHub items. Filter by status or phase.
-- **People** — Discover who else is working on similar topics. Shows other authors from Confluence who share topics with your graph, sorted by overlap. Click a person to see their docs. Great for breaking silos.
-- **Overview** — Compact category breakdown with top topics.
+- **Report** — Documents grouped by topic category for a date range. Switch to **Summary** mode for an AI-written work update.
+- **Projects** — Card grid with status badges, phase indicators, doc counts, Jira tickets, and GitHub items.
+- **People** — Discover who across your org is working on similar topics. Shows authors from Confluence and GitHub with shared topic overlap, suggested connections, and meeting prep.
+- **Insights** — Time allocation (weekly output chart), topic momentum (trending up/down), your reach (how many people work on your topics), and meeting prep (type a name, get a full briefing).
 
 ## CLI reference
 
 | Command | Description |
 |---|---|
-| `lifegraph auth` | Authenticate with Google |
 | `lifegraph sync google-docs` | Fetch all your Google Docs |
 | `lifegraph sync confluence` | Fetch Confluence pages |
-| `lifegraph sync confluence-discover` | Discover Confluence pages by others related to your topics |
+| `lifegraph sync confluence-discover` | Discover Confluence pages by others on your topics |
+| `lifegraph sync github-discover` | Discover GitHub PRs/issues by others (DataDog org) |
 | `lifegraph sync slack` | Fetch Slack threads as documents |
 | `lifegraph sync github` | Fetch your PRs, issues, and reviews |
 | `lifegraph extract` | Extract topics using Claude |
-| `lifegraph graph` | Export the knowledge graph to `web/graph.json` |
-| `lifegraph serve` | Start local web server (needed for AI summaries) |
+| `lifegraph auto-cluster` | Auto-cluster topics using Claude |
+| `lifegraph graph` | Build the knowledge graph |
+| `lifegraph serve` | Start local web server |
+| `lifegraph digest` | Weekly digest: new docs by others on your topics |
 | `lifegraph search "query"` | Full-text search across all documents |
-| `lifegraph search "jira:posture"` | Search Jira tickets |
-| `lifegraph search "github:monitor"` | Search GitHub items |
-| `lifegraph search "status:active"` | Find projects by status |
 | `lifegraph summary --days 7` | Generate an AI work summary |
-| `lifegraph compute-phases` | Auto-compute project phases from artifacts |
 | `lifegraph projects` | List all projects |
 | `lifegraph project "name"` | Show project details |
 | `lifegraph set-status "name" shipped` | Update project status |
+| `lifegraph compute-phases` | Auto-compute project phases |
 | `lifegraph topics` | List all extracted topics |
 | `lifegraph status` | Show document counts by source |
 | `lifegraph rebuild-fts` | Rebuild full-text search index |

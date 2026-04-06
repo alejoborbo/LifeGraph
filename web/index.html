@@ -571,7 +571,7 @@
   </div>
 
   <div id="search">
-    <input type="text" placeholder="Search topics, docs, projects... (jira: github: status:)" id="searchInput">
+    <input type="text" placeholder="Search topics, docs, projects..." id="searchInput">
     <div class="filter-chips">
       <button class="filter-chip active" data-source="all" onclick="setSearchFilter(this)">All</button>
       <button class="filter-chip" data-source="google-docs" onclick="setSearchFilter(this)">Google Docs</button>
@@ -591,7 +591,6 @@
     <button class="view-btn" id="projectsBtn" onclick="switchView('projects')">Projects</button>
     <button class="view-btn" id="peopleBtn" onclick="switchView('people')">People</button>
     <button class="view-btn" id="insightsBtn" onclick="switchView('insights')">Insights</button>
-    <button class="view-btn" id="overview-toggle" onclick="toggleOverview()">Overview</button>
   </div>
   <div id="catFilters"></div>
   <div id="overview">
@@ -2160,9 +2159,7 @@
     let expandedPerson = null;
 
     function renderPeople() {
-      try {
       const { authors, myTopics, docTopicMap, knownPeople } = buildPeopleData();
-      console.log('People data:', authors.length, 'authors,', myTopics.size, 'myTopics,', knownPeople.size, 'known');
       const searchQuery = (document.getElementById('peopleSearch').value || '').toLowerCase();
       const sortBy = document.getElementById('peopleSort').value;
 
@@ -2270,7 +2267,6 @@
       if (!html) html = '<div style="text-align:center;color:#555;padding:40px;font-size:14px">No people found. Run <code>lifegraph sync confluence-discover</code> then <code>lifegraph extract</code> to discover related docs by others.</div>';
 
       document.getElementById('peopleContent').innerHTML = html;
-      } catch(e) { console.error('renderPeople error:', e); document.getElementById('peopleContent').innerHTML = '<div style="color:red;padding:20px">Error: ' + e.message + '</div>'; }
     }
 
     // ── Insights View ──────────────────────────────────────────
